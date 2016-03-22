@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.65" fx:controller="com.qmp.admin.controllers.MainController">
+   <children>
+      <Label layoutX="205.0" layoutY="178.0" text="Accueil">
+         <font>
+            <Font name="System Bold Italic" size="96.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
