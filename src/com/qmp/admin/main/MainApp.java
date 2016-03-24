@@ -15,14 +15,12 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
-    
 
     /**
      * Constructor
      */
     public MainApp() {
         //TODO
-
     }
     
     
@@ -32,12 +30,11 @@ public class MainApp extends Application {
         this.primaryStage.setTitle("QuizzMakerPro 2016 Admin");
 
         initRootLayout();
-
        //Load Main Page
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/MainPage.fxml"));
+            loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/ConnexionLayout.fxml"));
             AnchorPane personOverview = (AnchorPane) loader.load();
 
             // Set person overview into the center of root layout.
