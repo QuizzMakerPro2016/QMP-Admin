@@ -16,7 +16,7 @@
    <children>
       <ImageView fitHeight="89.0" fitWidth="381.0" layoutX="124.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="124.0" AnchorPane.rightAnchor="124.0" AnchorPane.topAnchor="20.0">
          <image>
-            <Image url="@NomQMP-01.png" />
+            <Image url="@../../../../../assets/img/NomQMP-01.png" />
          </image>
       </ImageView>
       <GridPane layoutX="125.0" layoutY="121.0" prefHeight="153.0" prefWidth="354.0" AnchorPane.bottomAnchor="125.0" AnchorPane.leftAnchor="124.0" AnchorPane.rightAnchor="122.0" AnchorPane.topAnchor="120.0">
