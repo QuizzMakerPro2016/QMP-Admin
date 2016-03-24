@@ -1,6 +1,7 @@
 package com.qmp.admin;
 
 import java.io.IOException;
+import java.net.URL;
 
 import com.qmp.admin.controllers.MainController;
 
@@ -39,7 +40,9 @@ public class MainApp extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/ConnexionLayout.fxml"));
             AnchorPane personOverview = (AnchorPane) loader.load();
-
+            
+            personOverview.getStylesheets().add(MainApp.class.getResource("flatter.css").toExternalForm());
+            
             // Set person overview into the center of root layout.
             rootLayout.setCenter(personOverview);
 
