@@ -1,4 +1,4 @@
-package qcm.utils;
+package com.qmp.admin.utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
