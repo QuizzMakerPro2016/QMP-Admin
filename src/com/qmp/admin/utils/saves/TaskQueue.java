@@ -46,6 +46,26 @@ public class TaskQueue {
 		};
 		put(new Task(updateOperation, 5000));
 	}
+	
+	public void delete(Object o, Object id) {
+		SaveOperation deleteOperation = new SaveOperation(o, id) {
+			@Override
+			public Object call() throws Exception {
+				return webGate.delete(o, id);
+			}
+		};
+		put(new Task(deleteOperation, 5000));
+	}
+	
+	public void add(Object o) {
+		SaveOperation addOperation = new SaveOperation(o) {
+			@Override
+			public Object call() throws Exception {
+				return webGate.add(o);
+			}
+		};
+		put(new Task(addOperation, 5000));
+	}
 
 	public void start() {
 		thread.setName(name);
