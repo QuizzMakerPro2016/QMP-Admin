@@ -1,6 +1,6 @@
 package com.qmp.admin.controllers;
 
-import com.qmp.admin.main.MainApp;
+import com.qmp.admin.MainApp;
 
 import javafx.fxml.FXML;
 
