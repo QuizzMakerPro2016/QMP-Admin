@@ -3,6 +3,7 @@ package com.qmp.admin.utils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.http.NameValuePair;
@@ -32,7 +33,7 @@ public class HttpUtils {
 	    return result;
 	}
 	
-	public static String postHTML(String urlToRead, HashMap<String, Object> params) throws ClientProtocolException, IOException {
+	public static String postHTML(String urlToRead, Map<String, Object> map) throws ClientProtocolException, IOException {
 	    String result="";
 	    CloseableHttpClient httpClient = HttpClients.createDefault();
 	    try {
@@ -40,7 +41,7 @@ public class HttpUtils {
 	        
 	        ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 	        
-	        for (Entry<String, Object> entry : params.entrySet())
+	        for (Entry<String, Object> entry : map.entrySet())
 	        {
 	        	postParameters.add(new BasicNameValuePair(entry.getKey(), (String) entry.getValue().toString()));
 	        }
@@ -54,7 +55,7 @@ public class HttpUtils {
 	    return result;
 	}
 	
-	public static String putHTML(String urlToRead, HashMap<String, Object> params) throws ClientProtocolException, IOException {
+	public static String putHTML(String urlToRead, Map<String, Object> map) throws ClientProtocolException, IOException {
 	    String result="";
 	    CloseableHttpClient httpClient = HttpClients.createDefault();
 	    try {
@@ -62,7 +63,7 @@ public class HttpUtils {
 	        
 	        ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 	        
-	        for (Entry<String, Object> entry : params.entrySet())
+	        for (Entry<String, Object> entry : map.entrySet())
 	        {
 	        	postParameters.add(new BasicNameValuePair(entry.getKey(), (String) entry.getValue().toString()));
 	        }

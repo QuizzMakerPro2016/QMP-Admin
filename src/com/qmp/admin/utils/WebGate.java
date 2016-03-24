@@ -1,6 +1,7 @@
 package com.qmp.admin.utils;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,42 +12,76 @@ import org.apache.http.client.ClientProtocolException;
 import com.google.gson.Gson;
 
 public class WebGate {
-	private Map<String, String> tabCorr;
+	private Map<String, String> restUrlMappings;
 	private String baseUrl;
-	private Gson gson;
+	Gson gson;
+
 
 	public WebGate() {
-		baseUrl = "http://127.0.0.1:8080/QMP-Rest/rest/";
-		tabCorr = new HashMap<>();
-		tabCorr.put("Utilisateur", "user");
-		tabCorr.put("Domaine", "domain");
-		tabCorr.put("Groupe_utilisateur", "usergroup");
-		tabCorr.put("Groupe", "group");
-		tabCorr.put("Question", "question");
-		tabCorr.put("Questionnaire", "quizz");
-		tabCorr.put("Rang", "rank");
-		tabCorr.put("Reponse", "answer");
+		baseUrl = "http://127.0.0.1:8080/Quiz-Rest/rest/";
+
+		restUrlMappings = new HashMap<>();
+		restUrlMappings.put("Utilisateur", "user");
+		restUrlMappings.put("Domaine", "domain");
+		restUrlMappings.put("Groupe_utilisateur", "usergroup");
+		restUrlMappings.put("Groupe", "group");
+		restUrlMappings.put("Question", "question");
+		restUrlMappings.put("Questionnaire", "quizz");
+		restUrlMappings.put("Rang", "rank");
+		restUrlMappings.put("Reponse", "answer");
 		
 		gson = MyGsonBuilder.create();
 	}
 
-	public <T> List<T> getAll(Class<T> clazz, int cd) throws ClientProtocolException, IOException {
-		if(cd < 0) cd = 1;
-		
-		List<T> result = new ArrayList<T>();
-		String jsonObjects = HttpUtils.getHTML(baseUrl + tabCorr.get(clazz.getSimpleName()) + "/all");
-		result = gson.fromJson(jsonObjects, new ListType<T>(clazz));
+	private <T> String getControllerUrl(Class<T> clazz) {
+		String result = clazz.getSimpleName();
+		if (restUrlMappings.containsKey(result))
+			result = restUrlMappings.get(clazz.getSimpleName());
 		return result;
 	}
-	
-	public <T> T getOne(Class<T> clazz, int id, int cd) throws ClientProtocolException, IOException {
-		if(id < 0) return null;
-		if(cd < 0) cd = 1;
 
-		String jsonObject = HttpUtils.getHTML(baseUrl + tabCorr.get(clazz.getSimpleName()) + "/id/");
-		T result = gson.fromJson(jsonObject, clazz.getClass());
-		
+	private Map<String, Object> beanToMap(Object o) {
+		Map<String, Object> result = new HashMap<>();
+		Field[] declaredFields = o.getClass().getDeclaredFields();
+		for (Field field : declaredFields) {
+			if (field.getType().isPrimitive() || PrimitiveTypes.isWrapperType(field.getType())) {
+				field.setAccessible(true);
+				System.out.println(field.getName());
+				try {
+					result.put(field.getName(), field.get(o));
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 		return result;
+
+	}
+
+	public <T> List<T> getAll(Class<T> clazz) throws ClientProtocolException, IOException {
+		List<T> result = new ArrayList<T>();
+		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/all");
+		result = gson.fromJson(jsonUsers, new ListType<T>(clazz));
+		return result;
+	}
+
+	public <T> T getOne(Class<T> clazz, Object id) throws ClientProtocolException, IOException {
+		String jsonO = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/" + id);
+		T result = gson.fromJson(jsonO, clazz);
+		return result;
+	}
+
+	public <T> String delete(T object, Object id) throws ClientProtocolException, IOException {
+		return HttpUtils.deleteHTML(baseUrl + getControllerUrl(object.getClass()) + "/" + String.valueOf(id));
+	}
+
+	public <T> String add(T object) throws ClientProtocolException, IllegalArgumentException, IllegalAccessException, IOException {
+		return HttpUtils.putHTML(baseUrl + getControllerUrl(object.getClass()) + "/add", beanToMap(object));
+	}
+
+	public <T> String update(T object, Object id) throws ClientProtocolException, IllegalArgumentException, IllegalAccessException, IOException {
+		return HttpUtils.postHTML(baseUrl + getControllerUrl(object.getClass()) + "/update/" + id, beanToMap(object));
 	}
 
 }
