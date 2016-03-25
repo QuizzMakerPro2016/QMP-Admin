@@ -23,7 +23,7 @@ public class WebGate {
 
 
 	public WebGate() {
-		baseUrl = "http://127.0.0.1:8080/Quiz-Rest/rest/";
+		baseUrl = "http://127.0.0.1:8080/QMP-Rest/rest/";
 		
 		data = new HashMap<String, Object>();
 		lastGets = new HashMap<String, Object>();
@@ -78,7 +78,7 @@ public class WebGate {
 		
 		lastGets.put(getControllerUrl(clazz), new Date().getTime());
 		
-		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/modifs/" + date);
+		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/modif/" + date);
 		
 		if(jsonUsers.equals("false"))
 				return (List<T>) data.get(getControllerUrl(clazz));
