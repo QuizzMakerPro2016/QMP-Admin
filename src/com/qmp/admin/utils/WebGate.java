@@ -110,5 +110,13 @@ public class WebGate {
 	public <T> String update(T object, Object id) throws ClientProtocolException, IllegalArgumentException, IllegalAccessException, IOException {
 		return HttpUtils.postHTML(baseUrl + getControllerUrl(object.getClass()) + "/update/" + id, beanToMap(object));
 	}
+	
+	public <T> String connect(String login, String password) throws ClientProtocolException, IllegalArgumentException, IllegalAccessException, IOException {
+		HashMap <String, Object> map = new HashMap<String, Object>();
+		map.put("mail",login);
+		map.put("password",password);
+
+		return HttpUtils.postHTML(baseUrl + "/user/connect/", beanToMap(map));
+	}
 
 }

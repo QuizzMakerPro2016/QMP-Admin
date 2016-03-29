@@ -21,7 +21,8 @@ public class MainApp extends Application {
     private Stage primaryStage;
     private BorderPane rootLayout;
     private WebGate webGate;
-
+    private Utilisateur user;
+    
     /**
      * Constructor
      */
@@ -94,5 +95,13 @@ public class MainApp extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+    
+    public void setUser(Utilisateur user){
+    	this.user = user;
+    }
+    
+    public Utilisateur getUser(){
+    	return this.user;
     }
 }
