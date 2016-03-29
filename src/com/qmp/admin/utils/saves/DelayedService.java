@@ -23,6 +23,7 @@ public class DelayedService extends Service<Object> {
 						DelayedTask task = taskQueue.getTasks().take();
 						try {
 							Object result = task.call();
+							taskQueue.setChanged(task.getOperation().getType(), task.getOperation().getClazz(), result);
 							System.out.printf("[%s] - Take object = %s%n", Thread.currentThread().getName(), task);
 							updateProgress(max - taskQueue.getTasks().size(), max);
 						} catch (Exception ex) {
