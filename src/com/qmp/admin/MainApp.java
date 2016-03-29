@@ -2,8 +2,12 @@ package com.qmp.admin;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import com.qmp.admin.controllers.MainController;
+import com.qmp.admin.models.Groupe;
+import com.qmp.admin.models.Utilisateur;
+import com.qmp.admin.utils.WebGate;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,14 +20,21 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
-    
+    private WebGate webGate;
 
     /**
      * Constructor
      */
     public MainApp() {
-        //TODO
-
+        webGate = new WebGate();
+        try {
+			ArrayList<Utilisateur> users = (ArrayList<Utilisateur>) webGate.getAll(Utilisateur.class);
+			ArrayList<Groupe> groups = (ArrayList<Groupe>) webGate.getAll(Groupe.class);
+			users = (ArrayList<Utilisateur>) webGate.getAll(Utilisateur.class);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     

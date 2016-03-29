@@ -21,6 +21,5 @@ public class MainController {
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
-
-
+    
 }

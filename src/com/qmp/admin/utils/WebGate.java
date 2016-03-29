@@ -2,7 +2,9 @@ package com.qmp.admin.utils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.security.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,13 +16,19 @@ import com.google.gson.Gson;
 public class WebGate {
 	private Map<String, String> restUrlMappings;
 	private String baseUrl;
-	Gson gson;
+	private Gson gson;
+	
+	private HashMap<String, Object> data;
+	private HashMap<String, Object> lastGets;
 
 
 	public WebGate() {
-		baseUrl = "http://127.0.0.1:8080/Quiz-Rest/rest/";
-
-		restUrlMappings = new HashMap<>();
+		baseUrl = "http://127.0.0.1:8080/QMP-Rest/rest/";
+		
+		data = new HashMap<String, Object>();
+		lastGets = new HashMap<String, Object>();
+		
+		restUrlMappings = new HashMap<String, String>();
 		restUrlMappings.put("Utilisateur", "user");
 		restUrlMappings.put("Domaine", "domain");
 		restUrlMappings.put("Groupe_utilisateur", "usergroup");
@@ -61,8 +69,27 @@ public class WebGate {
 
 	public <T> List<T> getAll(Class<T> clazz) throws ClientProtocolException, IOException {
 		List<T> result = new ArrayList<T>();
-		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/all");
+		
+		long date = 0 ;
+		if(data.get(getControllerUrl(clazz)) != null ){
+			date = (long) lastGets.get(getControllerUrl(clazz));
+			lastGets.remove(getControllerUrl(clazz));
+		}
+		
+		lastGets.put(getControllerUrl(clazz), new Date().getTime());
+		
+		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/modif/" + date);
+		
+		if(jsonUsers.equals("false"))
+				return (List<T>) data.get(getControllerUrl(clazz));
+		
 		result = gson.fromJson(jsonUsers, new ListType<T>(clazz));
+		
+		if(data.get(getControllerUrl(clazz)) != null )
+			data.remove((getControllerUrl(clazz)));
+		
+		data.put(getControllerUrl(clazz), result);
+		
 		return result;
 	}
 
