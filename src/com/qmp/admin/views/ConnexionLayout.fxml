@@ -39,17 +39,17 @@
                <font>
                   <Font size="18.0" />
                </font></Label>
-            <TextField prefHeight="50.0" prefWidth="248.0" GridPane.columnIndex="1">
+            <TextField fx:id="loginField" prefHeight="50.0" prefWidth="248.0" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </TextField>
-            <TextField prefHeight="50.0" prefWidth="248.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TextField fx:id="passwordField" prefHeight="50.0" prefWidth="248.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </TextField>
-            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="253.0" style="-fx-background-color: #2C98D4; -fx-border-radius: 0;" text="Connexion" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Button mnemonicParsing="false" onAction="#handleConnect" prefHeight="50.0" prefWidth="253.0" style="-fx-background-color: #2C98D4; -fx-border-radius: 0;" text="Connexion" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <font>
                   <Font size="18.0" />
                </font>

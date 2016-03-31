@@ -67,21 +67,32 @@ public class WebGate {
 
 	}
 
-	public <T> List<T> getAll(Class<T> clazz) throws ClientProtocolException, IOException {
-		List<T> result = new ArrayList<T>();
+	@SuppressWarnings("unchecked")
+	public <T> List<T> getAll(Class<T> clazz, int offset, int limit) throws ClientProtocolException, IOException {
 		
 		long date = 0 ;
 		if(data.get(getControllerUrl(clazz)) != null ){
 			date = (long) lastGets.get(getControllerUrl(clazz));
 			lastGets.remove(getControllerUrl(clazz));
+		}else{
+			lastGets.put(getControllerUrl(clazz), new Date().getTime());
+			return _getAll(clazz, offset, limit);
 		}
 		
 		lastGets.put(getControllerUrl(clazz), new Date().getTime());
 		
-		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/modif/" + date);
+		String modifs = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/modif/" + date);
 		
-		if(jsonUsers.equals("false"))
-				return (List<T>) data.get(getControllerUrl(clazz));
+		if(modifs.equals("false"))
+			return (List<T>) data.get(getControllerUrl(clazz));
+		
+		return _getAll(clazz, offset, limit);
+	}
+	
+	private <T> List<T> _getAll(Class<T> clazz, int offset, int limit) throws ClientProtocolException, IOException {
+		List<T> result = new ArrayList<T>();
+		
+		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/limit/" + offset + "/" + limit);
 		
 		result = gson.fromJson(jsonUsers, new ListType<T>(clazz));
 		
@@ -109,6 +120,21 @@ public class WebGate {
 
 	public <T> String update(T object, Object id) throws ClientProtocolException, IllegalArgumentException, IllegalAccessException, IOException {
 		return HttpUtils.postHTML(baseUrl + getControllerUrl(object.getClass()) + "/update/" + id, beanToMap(object));
+	}
+	
+	public <T> String connect(String login, String password) throws ClientProtocolException, IllegalArgumentException, IllegalAccessException, IOException {
+		HashMap <String, Object> map = new HashMap<String, Object>();
+		map.put("mail",login);
+		map.put("password",password);
+
+		return HttpUtils.postHTML(baseUrl + "/user/connect/", beanToMap(map));
+	}
+	
+	public <T> int count(Class<T> clazz) throws ClientProtocolException, IOException {
+		String jsonO = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/count");
+		Gson gson = MyGsonBuilder.create();
+		int result = gson.fromJson(jsonO, Integer.class);
+		return result;
 	}
 
 }

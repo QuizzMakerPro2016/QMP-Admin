@@ -1,40 +1,51 @@
 package com.qmp.admin;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import com.qmp.admin.controllers.MainController;
-import com.qmp.admin.models.Groupe;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.WebGate;
+import com.qmp.admin.utils.saves.SaveOperationTypes;
+import com.qmp.admin.utils.saves.TaskQueue;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class MainApp extends Application {
+public class MainApp extends Application implements Observer {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
     private WebGate webGate;
 
+    private Utilisateur user;
+    
+
+    private TaskQueue taskQueue;
+    
+    private ObservableMap<String, Object> data;
+
     /**
      * Constructor
      */
     public MainApp() {
-        webGate = new WebGate();
-        try {
-			ArrayList<Utilisateur> users = (ArrayList<Utilisateur>) webGate.getAll(Utilisateur.class);
-			ArrayList<Groupe> groups = (ArrayList<Groupe>) webGate.getAll(Groupe.class);
-			users = (ArrayList<Utilisateur>) webGate.getAll(Utilisateur.class);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	super();
+		webGate = new WebGate();
+		taskQueue = new TaskQueue("mainFx", webGate);
+		taskQueue.addObserver(this);
+
+		data = FXCollections.observableHashMap();
+
+		taskQueue.getAll(Utilisateur.class);
     }
     
     
@@ -62,6 +73,7 @@ public class MainApp extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        taskQueue.start();
     }
 
     /**
@@ -95,4 +107,28 @@ public class MainApp extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
+    public void setUser(Utilisateur user){
+    	this.user = user;
+    }
+    
+    public Utilisateur getUser(){
+    	return this.user;
+    }
+
+	@Override
+	public void update(Observable arg0, Object arg) {
+		Object[] args = (Object[]) arg;
+		String key =  ((Class) args[1]).getSimpleName();
+		List<Object> objects = (List<Object>) args[2];
+		if (args[0].equals(SaveOperationTypes.GET)) {
+			List<Object> list = (List<Object>) data.get(key);
+			if(list == null){
+				list = new ArrayList<Object>();
+				data.put(key, list);
+			}
+			((List<Object>) data.get(key)).addAll(objects);		
+		}
+		
+	}
 }
