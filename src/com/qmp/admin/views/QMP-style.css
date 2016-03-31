@@ -31,6 +31,33 @@ AnchorPane {
 	-fx-background-radius:0px;
 }
 
+.button:hover{
+    -fx-background-color: #1976d2;
+}
+ 
+.button:pressed, .button:default:hover:pressed
+{
+  -fx-background-color: white;
+  -fx-text-fill: #ef6c00;
+}
+ 
+.button:disabled, .button:default:disabled
+{
+    -fx-opacity: 0.4;
+    -fx-background-color: #1d1d1d;
+    -fx-text-fill: white;
+}
+ 
+.button:default
+{
+    -fx-background-color: #008287;
+    -fx-text-fill: #ffffff;
+}
+ 
+.button:default:hover{
+    -fx-background-color: #219297;
+}
+
 /*		+-----------------------+	*/
 /*		|		TEXT FIELD 		|	*/
 /*		+-----------------------+	*/	
@@ -52,17 +79,32 @@ AnchorPane {
 .choice-box{
 	-fx-background-color: derive(#37474f,20%);
 }
- 
+
+.choice-box:hover{
+	-fx-background-color: derive(#37474f,30%);
+}
+
 .choice-box .text {
 	-fx-fill:#FFFFFF;
+}
+/*		+-----------------------+	*/
+/*		|		MENU BAR		|	*/
+/*		+-----------------------+	*/
+
+.menu-bar{
+	-fx-background-color:derive(#37474f,30%);
 }
 
 /*		+-----------------------+	*/
 /*		|		TABLE VIEW		|	*/
 /*		+-----------------------+	*/
+
 .table-view{
     -fx-background-color: #37474f;
     -fx-text-fill:#ffffff;
+}
+.table-view .table-column:hover{
+    -fx-background-color: derive(#37474f,30%);
 }
 .table-view .column-header{
 	-fx-background-color:derive(#37474f, 20%);
