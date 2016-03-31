@@ -10,6 +10,7 @@ import com.qmp.admin.utils.WebGate;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 public class MainController {
 	
@@ -18,13 +19,15 @@ public class MainController {
 	@FXML
 	private TextField passwordField;
     
+	@FXML
+	private Text errorText;
+	
 	 // Reference to the main application.
     private MainApp mainApp;
 
     private Utilisateur user ;
     
-    private WebGate webGate;
-    
+   
     public MainController(){
     	
     }
@@ -42,7 +45,12 @@ public class MainController {
     }
     
     @FXML
-    private void handleConnect() throws ClientProtocolException, IllegalArgumentException, IllegalAccessException, IOException {
-    		Utilisateur result = webGate.connect(loginField.getText(), passwordField.getText());
+    private void handleConnect()  {
+    		Utilisateur result = mainApp.getWebGate().connect(loginField.getText(), passwordField.getText());
+    		if (result != null){
+    			errorText.setText("Connection réussie");
+    		}else{
+    			errorText.setText("Connection échouée");
+    		}
     }
 }

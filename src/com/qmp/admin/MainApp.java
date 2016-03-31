@@ -25,7 +25,15 @@ public class MainApp extends Application implements Observer {
     private BorderPane rootLayout;
     private WebGate webGate;
 
-    private Utilisateur user;
+    /**
+	 * @return the webGate
+	 */
+	public WebGate getWebGate() {
+		return webGate;
+	}
+
+
+	private Utilisateur user;
     
 
     private TaskQueue taskQueue;
