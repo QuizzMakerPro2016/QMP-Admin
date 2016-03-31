@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TabPane minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@QMP-style.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab text="Information Général">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="95.0" layoutY="70.0" text="Nom du Questionnaire" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="628.0" />
+                        <Label layoutX="50.0" layoutY="138.0" text="Date de Réalisation" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="628.0" />
+                        <Label layoutX="50.0" layoutY="211.0" text="Description" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="628.0" />
+                        <TextField layoutX="221.0" layoutY="66.0" minWidth="300.0" prefWidth="500.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="100.0" />
+                        <DatePicker layoutX="200.0" layoutY="134.0" minWidth="300.0" prefWidth="500.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="100.0" />
+                        <TextArea layoutX="200.0" layoutY="211.0" prefHeight="300.0" prefWidth="500.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="100.0" />
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Question">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+            <Tab text="...">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

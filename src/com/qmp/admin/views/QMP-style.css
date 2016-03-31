@@ -122,3 +122,58 @@ AnchorPane {
 .table-view:focused .table-row-cell:filled:focused:selected {
     -fx-background-color: -fx-focus-color;
 }
+
+/*		+-----------------------+	*/
+/*		|		DATE PICKER		|	*/
+/*		+-----------------------+	*/
+
+.date-picker{
+	-fx-background-radius:0px;
+}
+
+.date-picker-popup{
+    -fx-padding: 0.588883em 0.5em 0.666667em 0.5em; /* 7 6 8 6 */
+    -fx-background-color: blue;
+}
+
+.date-picker-popup .current-date {
+    -fx-padding: 0.588883em 0.5em 0.666667em 0.5em; /* 7 6 8 6 */
+    -fx-background-color: green;
+}
+
+.date-picker .arrow-button {
+	-fx-background-color: ;
+	-fx-background-radius: 0px;
+}
+
+.date-picker .button {
+	-fx-background-color: blue;
+	-fx-background-radius: 0px;
+}
+
+
+.date-picker .text-field {
+	-fx-background-color: -fx-control-inner-background;
+	-fx-background-radius: 0px;
+}
+
+.date-picker:contains-focus {
+	-fx-background-color: -fx-focus-color;
+	-fx-background-radius: 0px;
+
+}
+
+.date-picker:focused > .text-field,
+.date-picker > .text-field:focused {
+	-fx-background-color: 
+		-fx-control-inner-background,
+		-fx-faint-focus-color,
+		linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
+	-fx-background-radius: 0px;
+}
+
+.date-picker:contains-focus .arrow-button {
+    -fx-background-color: -fx-inner-border, -fx-body-color, -fx-faint-focus-color, -fx-body-color;
+    -fx-background-radius: 0px;
+
+}
