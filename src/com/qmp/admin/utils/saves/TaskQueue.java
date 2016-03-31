@@ -66,18 +66,33 @@ public class TaskQueue extends Observable {
 		};
 		put(new DelayedTask(getOperation, 50));
 	}
+	
+	public void getLocal(Class<? extends Object> clazz) {
+		SaveOperation getOperation = new SaveOperation(SaveOperationTypes.GET_LOCAL, clazz) {
+			
+			@Override
+			public Object call() throws Exception {
+				return webGate.getAllLocal(clazz);
+			}
+		};
+		put(new DelayedTask(getOperation, 0));
+	}
 
 	public void getAll(Class<? extends Object> clazz) {
 		int size = 10;
 		try {
-			size = webGate.count(clazz);
+			if(webGate.getModifs(clazz)){
+				size = webGate.count(clazz);
+				for (int i = 0; i < size / rowGroupSize + 1; i++) {
+					get(clazz, i * rowGroupSize, rowGroupSize);
+				}
+			}else{
+				getLocal(clazz);
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		for (int i = 0; i < size / rowGroupSize + 1; i++) {
-			get(clazz, i * rowGroupSize, rowGroupSize);
-		}
+		}		
 	}
 
 	public void start() {

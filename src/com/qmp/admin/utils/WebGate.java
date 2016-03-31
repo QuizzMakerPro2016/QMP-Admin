@@ -70,23 +70,27 @@ public class WebGate {
 	@SuppressWarnings("unchecked")
 	public <T> List<T> getAll(Class<T> clazz, int offset, int limit) throws ClientProtocolException, IOException {
 		
-		long date = 0 ;
-		if(data.get(getControllerUrl(clazz)) != null ){
-			date = (long) lastGets.get(getControllerUrl(clazz));
-			lastGets.remove(getControllerUrl(clazz));
-		}else{
-			lastGets.put(getControllerUrl(clazz), new Date().getTime());
-			return _getAll(clazz, offset, limit);
-		}
+//		long date = 0 ;
+//		if(data.get(getControllerUrl(clazz)) != null ){
+//			date = (long) lastGets.get(getControllerUrl(clazz));
+//			lastGets.remove(getControllerUrl(clazz));
+//		}else{
+//			lastGets.put(getControllerUrl(clazz), new Date().getTime());
+//			return _getAll(clazz, offset, limit);
+//		}
+//		
+//		lastGets.put(getControllerUrl(clazz), new Date().getTime());
+//		
+//		String modifs = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/modif/" + date);
 		
-		lastGets.put(getControllerUrl(clazz), new Date().getTime());
-		
-		String modifs = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/modif/" + date);
-		
-		if(modifs.equals("false"))
-			return (List<T>) data.get(getControllerUrl(clazz));
+//		if(!this.getModifs(clazz))
+//			return (List<T>) data.get(getControllerUrl(clazz));
 		
 		return _getAll(clazz, offset, limit);
+	}
+	
+	public <T> List<T> getAllLocal(Class<T> clazz){
+		return (List<T>) this.data.get(getControllerUrl(clazz));
 	}
 	
 	private <T> List<T> _getAll(Class<T> clazz, int offset, int limit) throws ClientProtocolException, IOException {
@@ -127,6 +131,22 @@ public class WebGate {
 		Gson gson = MyGsonBuilder.create();
 		int result = gson.fromJson(jsonO, Integer.class);
 		return result;
+	}
+	
+	public <T> boolean getModifs(Class<T> clazz) throws ClientProtocolException, IOException {
+		long date = 0 ;
+		
+		if(data.get(getControllerUrl(clazz)) != null || lastGets.get(getControllerUrl(clazz)) != null){
+			date = (long) lastGets.get(getControllerUrl(clazz));
+			lastGets.remove(getControllerUrl(clazz));
+		}else{
+			lastGets.put(getControllerUrl(clazz), new Date().getTime());
+			return true;
+		}
+		
+		lastGets.put(getControllerUrl(clazz), new Date().getTime());
+		String modifs = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/modif/" + date);
+		return Boolean.valueOf(modifs);
 	}
 
 }

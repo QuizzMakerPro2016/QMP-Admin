@@ -42,6 +42,7 @@ public class MainApp extends Application implements Observer {
 		data = FXCollections.observableHashMap();
 
 		taskQueue.getAll(Utilisateur.class);
+		taskQueue.getAll(Utilisateur.class);
     }
     
     
@@ -110,11 +111,14 @@ public class MainApp extends Application implements Observer {
 		Object[] args = (Object[]) arg;
 		String key =  ((Class) args[1]).getSimpleName();
 		List<Object> objects = (List<Object>) args[2];
-		if (args[0].equals(SaveOperationTypes.GET)) {
+		if (args[0].equals(SaveOperationTypes.GET) || args[0].equals(SaveOperationTypes.GET_LOCAL)) {
 			List<Object> list = (List<Object>) data.get(key);
 			if(list == null){
 				list = new ArrayList<Object>();
 				data.put(key, list);
+			}else{
+				if(args[0].equals(SaveOperationTypes.GET_LOCAL))
+					list.clear();
 			}
 			((List<Object>) data.get(key)).addAll(objects);		
 		}
