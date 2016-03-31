@@ -1,7 +1,6 @@
 package com.qmp.admin;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -13,7 +12,6 @@ import com.qmp.admin.utils.saves.SaveOperationTypes;
 import com.qmp.admin.utils.saves.TaskQueue;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -33,6 +31,7 @@ public class MainApp extends Application implements Observer {
     private TaskQueue taskQueue;
     
     private ObservableMap<String, Object> data;
+	private List<Utilisateur> list;
 
     /**
      * Constructor
@@ -43,10 +42,9 @@ public class MainApp extends Application implements Observer {
 		taskQueue = new TaskQueue("mainFx", webGate);
 		taskQueue.addObserver(this);
 
-		data = FXCollections.observableHashMap();
 
-		taskQueue.getAll(Utilisateur.class);
-		taskQueue.getAll(Utilisateur.class);
+		webGate.getList(Utilisateur.class);
+		loadLists();
     }
     
     
@@ -75,6 +73,9 @@ public class MainApp extends Application implements Observer {
             e.printStackTrace();
         }
         taskQueue.start();
+        
+		list = webGate.getList(Utilisateur.class);
+
     }
 
     /**
@@ -117,22 +118,17 @@ public class MainApp extends Application implements Observer {
     	return this.user;
     }
 
+    @SuppressWarnings("unchecked")
 	@Override
-	public void update(Observable arg0, Object arg) {
+	public void update(Observable o, Object arg) {
 		Object[] args = (Object[]) arg;
-		String key =  ((Class) args[1]).getSimpleName();
-		List<Object> objects = (List<Object>) args[2];
-		if (args[0].equals(SaveOperationTypes.GET) || args[0].equals(SaveOperationTypes.GET_LOCAL)) {
-			List<Object> list = (List<Object>) data.get(key);
-			if(list == null){
-				list = new ArrayList<Object>();
-				data.put(key, list);
-			}else{
-				if(args[0].equals(SaveOperationTypes.GET_LOCAL))
-					list.clear();
-			}
-			((List<Object>) data.get(key)).addAll(objects);		
+		if (args[0].equals(SaveOperationTypes.GET)) {
+			webGate.addAll((List<Object>) args[2], (Class<Object>) args[1]);
 		}
-		
+	}
+
+
+	public void loadLists() {
+		taskQueue.getAll(Utilisateur.class);
 	}
 }

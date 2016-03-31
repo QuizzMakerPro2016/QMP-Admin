@@ -2,9 +2,7 @@ package com.qmp.admin.utils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.security.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,33 +10,25 @@ import java.util.Map;
 import org.apache.http.client.ClientProtocolException;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.qmp.admin.models.Utilisateur;
+import com.qmp.admin.utils.WebGateList;
+
+import javafx.collections.ObservableList;
 
 public class WebGate {
 	private Map<String, String> restUrlMappings;
+	private Map<Class<? extends Object>, WebGateList> modelLists;
 	private String baseUrl;
-	private Gson gson;
-	
-	private HashMap<String, Object> data;
-	private HashMap<String, Object> lastGets;
-
 
 	public WebGate() {
+		modelLists = new HashMap<>();
 		baseUrl = "http://127.0.0.1:8080/QMP-Rest/rest/";
-		
-		data = new HashMap<String, Object>();
-		lastGets = new HashMap<String, Object>();
-		
-		restUrlMappings = new HashMap<String, String>();
+		restUrlMappings = new HashMap<>();
 		restUrlMappings.put("Utilisateur", "user");
-		restUrlMappings.put("Domaine", "domain");
-		restUrlMappings.put("Groupe_utilisateur", "usergroup");
-		restUrlMappings.put("Groupe", "group");
+		restUrlMappings.put("Questionnaire", "quiz");
 		restUrlMappings.put("Question", "question");
-		restUrlMappings.put("Questionnaire", "quizz");
-		restUrlMappings.put("Rang", "rank");
-		restUrlMappings.put("Reponse", "answer");
-		
-		gson = MyGsonBuilder.create();
+		restUrlMappings.put("Reponse", "reponse");
 	}
 
 	private <T> String getControllerUrl(Class<T> clazz) {
@@ -67,49 +57,44 @@ public class WebGate {
 
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T> List<T> getAll(Class<T> clazz, int offset, int limit) throws ClientProtocolException, IOException {
-		
-//		long date = 0 ;
-//		if(data.get(getControllerUrl(clazz)) != null ){
-//			date = (long) lastGets.get(getControllerUrl(clazz));
-//			lastGets.remove(getControllerUrl(clazz));
-//		}else{
-//			lastGets.put(getControllerUrl(clazz), new Date().getTime());
-//			return _getAll(clazz, offset, limit);
-//		}
-//		
-//		lastGets.put(getControllerUrl(clazz), new Date().getTime());
-//		
-//		String modifs = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/modif/" + date);
-		
-//		if(!this.getModifs(clazz))
-//			return (List<T>) data.get(getControllerUrl(clazz));
-		
-		return _getAll(clazz, offset, limit);
+	public Utilisateur connect(String login, String password) {
+		Utilisateur user = null;
+		Map<String, Object> params = new HashMap<>();
+		params.put("login", login);
+		params.put("password", password);
+		try {
+			String jsonString = HttpUtils.postHTML(baseUrl + getControllerUrl(Utilisateur.class) + "/connect", params);
+			Gson gson = MyGsonBuilder.create();
+			JsonObject jso = gson.fromJson(jsonString, JsonObject.class);
+			if (jso.get("connected") != null) {
+				user = gson.fromJson(jso.get("utilisateur"), Utilisateur.class);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return user;
 	}
-	
-	public <T> List<T> getAllLocal(Class<T> clazz){
-		return (List<T>) this.data.get(getControllerUrl(clazz));
-	}
-	
-	private <T> List<T> _getAll(Class<T> clazz, int offset, int limit) throws ClientProtocolException, IOException {
+
+	public <T> List<T> getAll(Class<T> clazz) throws ClientProtocolException, IOException {
 		List<T> result = new ArrayList<T>();
-		
-		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/limit/" + offset + "/" + limit);
-		
+		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/all");
+		Gson gson = MyGsonBuilder.create();
 		result = gson.fromJson(jsonUsers, new ListType<T>(clazz));
-		
-		if(data.get(getControllerUrl(clazz)) != null )
-			data.remove((getControllerUrl(clazz)));
-		
-		data.put(getControllerUrl(clazz), result);
-		
+		return result;
+	}
+
+	public <T> List<T> getAll(Class<T> clazz, int offset, int limit) throws ClientProtocolException, IOException {
+		List<T> result = new ArrayList<T>();
+		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/limit/" + offset + "/" + limit);
+		Gson gson = MyGsonBuilder.create();
+		result = gson.fromJson(jsonUsers, new ListType<T>(clazz));
 		return result;
 	}
 
 	public <T> T getOne(Class<T> clazz, Object id) throws ClientProtocolException, IOException {
 		String jsonO = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/" + id);
+		Gson gson = MyGsonBuilder.create();
 		T result = gson.fromJson(jsonO, clazz);
 		return result;
 	}
@@ -125,36 +110,49 @@ public class WebGate {
 	public <T> String update(T object, Object id) throws ClientProtocolException, IllegalArgumentException, IllegalAccessException, IOException {
 		return HttpUtils.postHTML(baseUrl + getControllerUrl(object.getClass()) + "/update/" + id, beanToMap(object));
 	}
-	
-	public <T> String connect(String login, String password) throws ClientProtocolException, IllegalArgumentException, IllegalAccessException, IOException {
-		HashMap <String, Object> map = new HashMap<String, Object>();
-		map.put("mail",login);
-		map.put("password",password);
 
-		return HttpUtils.postHTML(baseUrl + "/user/connect/", beanToMap(map));
-	}
-	
 	public <T> int count(Class<T> clazz) throws ClientProtocolException, IOException {
 		String jsonO = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/count");
 		Gson gson = MyGsonBuilder.create();
 		int result = gson.fromJson(jsonO, Integer.class);
 		return result;
 	}
-	
-	public <T> boolean getModifs(Class<T> clazz) throws ClientProtocolException, IOException {
-		long date = 0 ;
-		
-		if(data.get(getControllerUrl(clazz)) != null || lastGets.get(getControllerUrl(clazz)) != null){
-			date = (long) lastGets.get(getControllerUrl(clazz));
-			lastGets.remove(getControllerUrl(clazz));
-		}else{
-			lastGets.put(getControllerUrl(clazz), new Date().getTime());
+
+	public <T> boolean isModified(Class<T> clazz) throws ClientProtocolException, IOException {
+		if (!modelLists.containsKey(clazz))
 			return true;
-		}
-		
-		lastGets.put(getControllerUrl(clazz), new Date().getTime());
-		String modifs = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/modif/" + date);
-		return Boolean.valueOf(modifs);
+		WebGateList wgList = modelLists.get(clazz);
+		if (wgList.getTimestamp() == null)
+			return true;
+		String jsonO = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/updated/" + wgList.getTimestamp());
+		Gson gson = MyGsonBuilder.create();
+		boolean result = gson.fromJson(jsonO, Boolean.class);
+		return result;
+	}
+
+	public <T> WebGateList getWebGateList(Class<T> clazz) {
+		if (!modelLists.containsKey(clazz))
+			modelLists.put(clazz, new WebGateList());
+		return modelLists.get(clazz);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends Object> ObservableList<T> getList(Class<T> clazz) {
+		if (!modelLists.containsKey(clazz))
+			modelLists.put(clazz, new WebGateList());
+		return (ObservableList<T>) modelLists.get(clazz).getList();
+	}
+
+	public <T extends Object> boolean add(T o, Class<T> clazz) {
+		return getList(clazz).add(o);
+	}
+
+	public boolean addAll(List<Object> list, Class<Object> clazz) {
+		return getList(clazz).addAll(list);
+	}
+
+	public void clearList(Class<Object> clazz) {
+		getList(clazz).clear();
 	}
 
 }

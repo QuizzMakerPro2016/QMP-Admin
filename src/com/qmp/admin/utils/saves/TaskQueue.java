@@ -6,6 +6,7 @@ import java.util.concurrent.DelayQueue;
 import java.util.concurrent.TimeUnit;
 
 import com.qmp.admin.utils.WebGate;
+import com.qmp.admin.utils.WebGateList;
 
 public class TaskQueue extends Observable {
 	private DelayQueue<DelayedTask> tasks;
@@ -18,7 +19,7 @@ public class TaskQueue extends Observable {
 		this.name = name;
 		tasks = new DelayQueue<DelayedTask>();
 		this.webGate = webGate;
-		this.rowGroupSize = 10;
+		this.rowGroupSize = 50;
 		service = new DelayedService(this);
 	}
 
@@ -53,7 +54,7 @@ public class TaskQueue extends Observable {
 				return webGate.delete(o, id);
 			}
 		};
-		put(new DelayedTask(deleteOperation, 10000));
+		put(new DelayedTask(deleteOperation, 5000));
 	}
 
 	public void get(Class<? extends Object> clazz, int offset, int limit) {
@@ -66,33 +67,29 @@ public class TaskQueue extends Observable {
 		};
 		put(new DelayedTask(getOperation, 50));
 	}
-	
-	public void getLocal(Class<? extends Object> clazz) {
-		SaveOperation getOperation = new SaveOperation(SaveOperationTypes.GET_LOCAL, clazz) {
-			
-			@Override
-			public Object call() throws Exception {
-				return webGate.getAllLocal(clazz);
-			}
-		};
-		put(new DelayedTask(getOperation, 0));
-	}
 
 	public void getAll(Class<? extends Object> clazz) {
 		int size = 10;
 		try {
-			if(webGate.getModifs(clazz)){
-				size = webGate.count(clazz);
+			if (webGate.isModified(clazz)) {
+				WebGateList wgList = webGate.getWebGateList(clazz);
+				wgList.getList().clear();
+				try {
+					size = webGate.count(clazz);
+					service.setOpCount(size);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				for (int i = 0; i < size / rowGroupSize + 1; i++) {
 					get(clazz, i * rowGroupSize, rowGroupSize);
 				}
-			}else{
-				getLocal(clazz);
+				wgList.setTimestamp(System.currentTimeMillis());
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	public void start() {
@@ -115,7 +112,7 @@ public class TaskQueue extends Observable {
 		return tasks;
 	}
 
-	public <T> void setChanged(SaveOperationTypes type, Class<T> clazz, Object resultCall) {
+	public void setChanged(SaveOperationTypes type, Class<?> clazz, Object resultCall) {
 		this.setChanged();
 		notifyObservers(new Object[] { type, clazz, resultCall });
 	}

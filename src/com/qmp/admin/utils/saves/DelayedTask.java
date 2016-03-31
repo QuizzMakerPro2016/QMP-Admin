@@ -7,12 +7,10 @@ public class DelayedTask implements Delayed {
 	private long startTime;
 	private SaveOperation operation;
 
-
 	public DelayedTask(SaveOperation operation, long delay) {
 		this.operation = operation;
 		this.startTime = System.currentTimeMillis() + delay;
 	}
-	
 
 	@Override
 	public long getDelay(TimeUnit unit) {
@@ -43,6 +41,9 @@ public class DelayedTask implements Delayed {
 	public SaveOperation getOperation() {
 		return operation;
 	}
-	
+
+	public Class<?> getClazz() {
+		return operation.getClazz();
+	}
 
 }

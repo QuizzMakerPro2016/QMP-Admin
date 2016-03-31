@@ -6,14 +6,13 @@ import java.util.concurrent.Callable;
 public abstract class SaveOperation implements Callable<Object> {
 	private Object[] datas;
 	private SaveOperationTypes type;
-	private Class<? extends Object> clazz;
+	private Class<?> clazz;
 
-
-	public SaveOperation(SaveOperationTypes type, Class<? extends Object> clazz, Object... datas) {
+	public SaveOperation(SaveOperationTypes type, Class<?> clazz, Object... datas) {
 		super();
+		this.clazz = clazz;
 		this.datas = datas;
 		this.type = type;
-		this.clazz = clazz;
 	}
 
 	public Object[] getDatas() {
@@ -36,12 +35,12 @@ public abstract class SaveOperation implements Callable<Object> {
 	public void setType(SaveOperationTypes type) {
 		this.type = type;
 	}
-	
-	public Class<? extends Object> getClazz(){
+
+	public Class<?> getClazz() {
 		return clazz;
 	}
-	
-	public void setClazz(Class<? extends Object> clazz){
+
+	public void setClazz(Class<?> clazz) {
 		this.clazz = clazz;
 	}
 }
