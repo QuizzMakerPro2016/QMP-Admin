@@ -126,6 +126,14 @@ public class WebGate {
 		return HttpUtils.postHTML(baseUrl + getControllerUrl(object.getClass()) + "/update/" + id, beanToMap(object));
 	}
 	
+	public <T> String connect(String login, String password) throws ClientProtocolException, IllegalArgumentException, IllegalAccessException, IOException {
+		HashMap <String, Object> map = new HashMap<String, Object>();
+		map.put("mail",login);
+		map.put("password",password);
+
+		return HttpUtils.postHTML(baseUrl + "/user/connect/", beanToMap(map));
+	}
+	
 	public <T> int count(Class<T> clazz) throws ClientProtocolException, IOException {
 		String jsonO = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/count");
 		Gson gson = MyGsonBuilder.create();

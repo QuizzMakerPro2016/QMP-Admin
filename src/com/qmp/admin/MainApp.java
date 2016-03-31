@@ -26,6 +26,10 @@ public class MainApp extends Application implements Observer {
     private Stage primaryStage;
     private BorderPane rootLayout;
     private WebGate webGate;
+
+    private Utilisateur user;
+    
+
     private TaskQueue taskQueue;
     
     private ObservableMap<String, Object> data;
@@ -105,6 +109,13 @@ public class MainApp extends Application implements Observer {
         launch(args);
     }
 
+    public void setUser(Utilisateur user){
+    	this.user = user;
+    }
+    
+    public Utilisateur getUser(){
+    	return this.user;
+    }
 
 	@Override
 	public void update(Observable arg0, Object arg) {
