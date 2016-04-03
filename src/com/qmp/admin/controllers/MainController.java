@@ -47,8 +47,9 @@ public class MainController {
     @FXML
     private void handleConnect()  {
     		Utilisateur result = mainApp.getWebGate().connect(loginField.getText(), passwordField.getText());
-    		if (result != null){
-    			errorText.setText("Connection réussie de "+ result.getPrenom() +" "+ result.getNom());
+    		mainApp.setUser(result);
+    		if (mainApp.isLogged() == true){
+    			errorText.setText("Connection réussie de "+ mainApp.getUser().getPrenom() +" "+ mainApp.getUser().getNom());
     		}else{
     			errorText.setText("Connection échouée");
     		}

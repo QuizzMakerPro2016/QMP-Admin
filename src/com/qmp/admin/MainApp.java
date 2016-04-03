@@ -125,7 +125,13 @@ public class MainApp extends Application implements Observer {
     public Utilisateur getUser(){
     	return this.user;
     }
-
+    public boolean isLogged(){
+    	if (this.getUser() != null){
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
     @SuppressWarnings("unchecked")
 	@Override
 	public void update(Observable o, Object arg) {
