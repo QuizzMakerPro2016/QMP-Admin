@@ -48,7 +48,7 @@ public class MainController {
     private void handleConnect()  {
     		Utilisateur result = mainApp.getWebGate().connect(loginField.getText(), passwordField.getText());
     		if (result != null){
-    			errorText.setText("Connection réussie");
+    			errorText.setText("Connection réussie de "+ result.getPrenom() +" "+ result.getNom());
     		}else{
     			errorText.setText("Connection échouée");
     		}
