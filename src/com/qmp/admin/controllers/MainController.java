@@ -9,7 +9,9 @@ import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.WebGate;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 
 public class MainController {
 	
@@ -43,6 +45,15 @@ public class MainController {
     
     @FXML
     private void handleConnect() throws ClientProtocolException, IllegalArgumentException, IllegalAccessException, IOException {
-    		Utilisateur result = webGate.connect(loginField.getText(), passwordField.getText());
+    	//Utilisateur result = webGate.connect(loginField.getText(), passwordField.getText());
+    	
+    	FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/ManageDomainLayout.fxml"));
+        AnchorPane domainOverview = (AnchorPane) loader.load();
+        
+        mainApp.getRootLayout().setCenter(domainOverview);
+
+        ManageDomainController controller = loader.getController();
+        controller.setMainApp(mainApp);
     }
 }

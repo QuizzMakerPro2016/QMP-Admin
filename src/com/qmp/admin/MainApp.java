@@ -6,6 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import com.qmp.admin.controllers.MainController;
+import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.WebGate;
 import com.qmp.admin.utils.saves.SaveOperationTypes;
@@ -130,5 +131,14 @@ public class MainApp extends Application implements Observer {
 
 	public void loadLists() {
 		taskQueue.getAll(Utilisateur.class);
+		taskQueue.getAll(Domaine.class);
+	}
+	
+	public WebGate getWebGate() {
+		return webGate;
+	}
+	
+	public BorderPane getRootLayout(){
+		return this.rootLayout;
 	}
 }
