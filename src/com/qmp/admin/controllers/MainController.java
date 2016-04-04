@@ -1,17 +1,11 @@
 package com.qmp.admin.controllers;
 
-import java.io.IOException;
-
-import org.apache.http.client.ClientProtocolException;
-
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Utilisateur;
-import com.qmp.admin.utils.WebGate;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 
 public class MainController {
 	
@@ -20,13 +14,15 @@ public class MainController {
 	@FXML
 	private TextField passwordField;
     
+	@FXML
+	private Text errorText;
+	
 	 // Reference to the main application.
     private MainApp mainApp;
 
     private Utilisateur user ;
     
-    private WebGate webGate;
-    
+   
     public MainController(){
     	
     }
@@ -44,16 +40,13 @@ public class MainController {
     }
     
     @FXML
-    private void handleConnect() throws ClientProtocolException, IllegalArgumentException, IllegalAccessException, IOException {
-    	//Utilisateur result = webGate.connect(loginField.getText(), passwordField.getText());
-    	
-    	FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/ManageDomainLayout.fxml"));
-        AnchorPane domainOverview = (AnchorPane) loader.load();
-        
-        mainApp.getRootLayout().setCenter(domainOverview);
-
-        ManageDomainController controller = loader.getController();
-        controller.setMainApp(mainApp);
+    private void handleConnect()  {
+		Utilisateur result = mainApp.getWebGate().connect(loginField.getText(), passwordField.getText());
+		mainApp.setUser(result);
+		if (mainApp.isLogged() == true){
+			errorText.setText("Connection réussie de "+ mainApp.getUser().getPrenom() +" "+ mainApp.getUser().getNom());
+		}else{
+			errorText.setText("Connection échouée");
+		}
     }
 }

@@ -41,7 +41,7 @@
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <Label layoutX="14.0" layoutY="6.0" text="Gestion des Utilisateurs" textFill="#19596e">
+                              <Label layoutX="14.0" layoutY="6.0" text="Gestion des Utilisateurs" textFill="WHITE">
                                  <font>
                                     <Font name="DejaVu Sans Bold" size="15.0" />
                                  </font>
@@ -60,9 +60,9 @@
                                   <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label text="Nom" />
-                                    <Label text="Mail" GridPane.rowIndex="2" />
-                                    <Label text="Rang" GridPane.rowIndex="4" />
+                                    <Label text="Nom" textFill="WHITE" />
+                                    <Label text="Mail" textFill="WHITE" GridPane.rowIndex="2" />
+                                    <Label text="Rang" textFill="WHITE" GridPane.rowIndex="4" />
                                     <TextField prefHeight="25.0" prefWidth="255.0" GridPane.rowIndex="1">
                                        <GridPane.margin>
                                           <Insets right="2.5" />
@@ -71,8 +71,8 @@
                                        <GridPane.margin>
                                           <Insets right="2.5" />
                                        </GridPane.margin></TextField>
-                                    <Label text="Prenom" GridPane.columnIndex="1" />
-                                    <Label text="Password" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label text="Prenom" textFill="WHITE" GridPane.columnIndex="1" />
+                                    <Label text="Password" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <TextField GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <GridPane.margin>
                                           <Insets left="5.0" />

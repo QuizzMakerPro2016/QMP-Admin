@@ -67,7 +67,7 @@ public class WebGate {
 			String jsonString = HttpUtils.postHTML(baseUrl + getControllerUrl(Utilisateur.class) + "/connect", params);
 			Gson gson = MyGsonBuilder.create();
 			JsonObject jso = gson.fromJson(jsonString, JsonObject.class);
-			if (jso.get("connected") != null) {
+			if (jso.get("error") == null) {
 				user = gson.fromJson(jso.get("utilisateur"), Utilisateur.class);
 			}
 		} catch (IOException e) {
