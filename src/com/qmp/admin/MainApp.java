@@ -133,6 +133,15 @@ public class MainApp extends Application implements Observer {
     		return false;
     	}
     }
+    
+    public boolean isAdmin(){
+    	if (this.getUser().getRang().getLibelle().equals("admin")){
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
+    
     @SuppressWarnings("unchecked")
 	@Override
 	public void update(Observable o, Object arg) {
@@ -146,10 +155,6 @@ public class MainApp extends Application implements Observer {
 	public void loadLists() {
 		taskQueue.getAll(Utilisateur.class);
 		taskQueue.getAll(Domaine.class);
-	}
-	
-	public WebGate getWebGate() {
-		return webGate;
 	}
 	
 	public BorderPane getRootLayout(){

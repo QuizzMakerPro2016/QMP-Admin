@@ -44,9 +44,13 @@ public class MainController {
 		Utilisateur result = mainApp.getWebGate().connect(loginField.getText(), passwordField.getText());
 		mainApp.setUser(result);
 		if (mainApp.isLogged() == true){
-			errorText.setText("Connection réussie de "+ mainApp.getUser().getPrenom() +" "+ mainApp.getUser().getNom());
+			if(mainApp.isAdmin()){
+				errorText.setText("Connection réussie de "+ mainApp.getUser().getPrenom() +" "+ mainApp.getUser().getNom());
+			}else{
+				errorText.setText("Cet utilisateur ne dispose pas des droits nécessaires ("+result.getRang().getLibelle()+")");
+			}
 		}else{
 			errorText.setText("Connection échouée");
 		}
-    }
+}
 }
