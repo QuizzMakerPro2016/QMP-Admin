@@ -18,6 +18,7 @@ public class Utilisateur {
 	private List<Groupe_utilisateur> groupe_utilisateurs;
 	private List<Question> questions;
 	private List<Questionnaire> questionnaires;
+	private List<Groupe> groupes;
 	private List<Realisation> realisations;
 
 	public Utilisateur() {
@@ -93,6 +94,19 @@ public class Utilisateur {
 	 */
 	public List<Questionnaire> getQuestionnaires(){
 		return this.questionnaires;
+	}
+	
+	/**
+	 * @return the groupes
+	 */
+	public List<Groupe> getGroupes() {
+		return groupes;
+	}
+	/**
+	 * @param groupes the groupes to set
+	 */
+	public void setGroupes(List<Groupe> groupes) {
+		this.groupes = groupes;
 	}
 	/**
 	 * return the value of realisations
