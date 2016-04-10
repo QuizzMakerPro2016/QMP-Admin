@@ -33,7 +33,6 @@ public class MainApp extends Application implements Observer {
 		return webGate;
 	}
 
-
 	private Utilisateur user;
     
 
@@ -55,7 +54,6 @@ public class MainApp extends Application implements Observer {
 		webGate.getList(Utilisateur.class);
 		loadLists();
     }
-    
     
     @Override
     public void start(Stage primaryStage) {
@@ -106,7 +104,6 @@ public class MainApp extends Application implements Observer {
         }
     }
 
-
     /**
      * Returns the main stage.
      * @return
@@ -150,7 +147,6 @@ public class MainApp extends Application implements Observer {
 			webGate.addAll((List<Object>) args[2], (Class<Object>) args[1]);
 		}
 	}
-
 
 	public void loadLists() {
 		taskQueue.getAll(Utilisateur.class);

@@ -1,7 +1,6 @@
 package com.qmp.admin.controllers;
 
 import com.qmp.admin.MainApp;
-import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Groupe;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Rang;
@@ -15,9 +14,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 
 public class ManageUserController {
 
@@ -76,8 +75,8 @@ public class ManageUserController {
     
     public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
-		ObservableList<Utilisateur> lstDo=mainApp.getWebGate().getList(Utilisateur.class);
-		userList.setItems(lstDo);
+		ObservableList<Utilisateur> userObs=mainApp.getWebGate().getList(Utilisateur.class);
+		userList.setItems(userObs);
 	}
     
     @FXML
@@ -85,6 +84,16 @@ public class ManageUserController {
 		surnameColumn.setCellValueFactory((CellDataFeatures<Utilisateur, String> feature) -> {
 			Utilisateur user = feature.getValue();
 			return new SimpleObjectProperty<>(user.getNom());
+		});
+		
+		nameColumn.setCellValueFactory((CellDataFeatures<Utilisateur, String> feature) -> {
+			Utilisateur user = feature.getValue();
+			return new SimpleObjectProperty<>(user.getNom());
+		});
+		
+		rankColumn.setCellValueFactory((CellDataFeatures<Rang, String> feature) -> {
+			Rang rang = feature.getValue();
+			return new SimpleObjectProperty<>(rang.getLibelle());
 		});
 		
 		quizzListColumn.setCellValueFactory((CellDataFeatures<Questionnaire, String> feature) -> {
@@ -99,9 +108,12 @@ public class ManageUserController {
 		
 		showUser(null);
 		userList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showUser(newValue));
+		
+		
 	}
     
     public void showUser(Utilisateur user){
+    	
     	if(user == null){
     		idField.setText("0");
     		surnameField.setText("");

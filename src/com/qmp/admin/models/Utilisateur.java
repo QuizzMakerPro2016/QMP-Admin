@@ -2,6 +2,7 @@ package com.qmp.admin.models;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection;
 
 
 /**
@@ -197,4 +198,5 @@ public class Utilisateur {
 	public String toString() {
 		return " [password] = " + password+" [mail] = " + mail+" [idRang] = " + idRang+" [id] = " + id+" [nom] = " + nom+" [prenom] = " + prenom;
 	}
+
 }
