@@ -50,7 +50,7 @@ public class MainController extends Controller {
 			if(mainApp.isAdmin()){
 				errorText.setText("Connection réussie de "+ mainApp.getUser().getPrenom() +" "+ mainApp.getUser().getNom());
 
-				GraphicUtils.switchView(mainApp,  "MainPage");
+				new GraphicUtils(mainApp).switchView("MainPage");
 
 			}else{
 				errorText.setText("Cet utilisateur ne dispose pas des droits nécessaires ("+result.getRang().getLibelle()+")");

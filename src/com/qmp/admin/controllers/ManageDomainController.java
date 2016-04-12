@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Questionnaire;
+import com.qmp.admin.utils.GraphicUtils;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -77,15 +78,9 @@ public class ManageDomainController extends Controller {
 
     @FXML
     void handleDelete(ActionEvent event) {
-    	//if(questionnaires > 0)
-    	//Ajouter dans le controller le currentDoamin
     	
-    	Alert alert = new Alert(AlertType.CONFIRMATION);
-    	alert.setTitle("Suppression de domaine");
-    	alert.setHeaderText("Look, a Confirmation Dialog");
-    	alert.setContentText("Are you ok with this?");
+    	Optional<ButtonType> result = gUtils.showDialog("TEST", "HEADER", "Content");
 
-    	Optional<ButtonType> result = alert.showAndWait();
     	if (result.get() == ButtonType.OK){
     		Alert alert2 = new Alert(AlertType.INFORMATION);
         	alert2.setTitle("Information Dialog");

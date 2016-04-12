@@ -8,6 +8,7 @@ import java.util.Observer;
 import com.qmp.admin.controllers.MainController;
 import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Utilisateur;
+import com.qmp.admin.utils.GraphicUtils;
 import com.qmp.admin.utils.WebGate;
 import com.qmp.admin.utils.saves.SaveOperationTypes;
 import com.qmp.admin.utils.saves.TaskQueue;
@@ -75,8 +76,8 @@ public class MainApp extends Application implements Observer {
             MainController controller = loader.getController();
             controller.setMainApp(this);
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            GraphicUtils.showException(e);
         }
         taskQueue.start();
         
@@ -99,8 +100,8 @@ public class MainApp extends Application implements Observer {
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+        	GraphicUtils.showException(e);
         }
     }
 
