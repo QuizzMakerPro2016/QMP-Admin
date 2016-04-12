@@ -1,6 +1,7 @@
 package com.qmp.admin.controllers;
 
 import com.qmp.admin.MainApp;
+import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Groupe;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Rang;
@@ -18,7 +19,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
-public class ManageUserController {
+public class ManageUserController extends Controller {
 
     @FXML
     private TableView<Utilisateur> userList;
@@ -70,17 +71,17 @@ public class ManageUserController {
 
     @FXML
     private TableColumn<Questionnaire, String> quizzListColumn;
-
-    private MainApp mainApp;
     
+    @Override
     public void setMainApp(MainApp mainApp) {
-		this.mainApp = mainApp;
-		ObservableList<Utilisateur> userObs=mainApp.getWebGate().getList(Utilisateur.class);
-		userList.setItems(userObs);
-	}
-    
+    	super.setMainApp(mainApp);
+    	ObservableList<Utilisateur> userObs = mainApp.getWebGate().getList(Utilisateur.class);
+    	userList.setItems(userObs);
+    }
+
     @FXML
 	private void initialize() {
+    		
 		surnameColumn.setCellValueFactory((CellDataFeatures<Utilisateur, String> feature) -> {
 			Utilisateur user = feature.getValue();
 			return new SimpleObjectProperty<>(user.getNom());

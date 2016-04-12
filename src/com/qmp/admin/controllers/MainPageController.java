@@ -15,7 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class MainPageController {
+public class MainPageController extends Controller {
 
     @FXML
     private Button userButton;
@@ -25,12 +25,6 @@ public class MainPageController {
 
     @FXML
     private Text userText;    
-    
-    private MainApp mainApp;
-
-    public void setMainApp(MainApp mainApp) {
-        this.mainApp = mainApp;
-    }
     
     public MainPageController(){
     	
@@ -45,12 +39,12 @@ public class MainPageController {
     
     @FXML
     void handleUser(ActionEvent event) throws IOException{
-        GraphicUtils.switchView(this, (Stage) ((Node) event.getSource()).getScene().getWindow(), "ManageUserLayout");
+    	GraphicUtils.switchView(mainApp, "ManageUserLayout");
     }
     
     @FXML
     void handleDomain(ActionEvent event) throws IOException{
-    	GraphicUtils.switchView(this, (Stage) ((Node) event.getSource()).getScene().getWindow(), "ManageDomainLayout");
+    	GraphicUtils.switchView(mainApp, "ManageDomainLayout");
     }
     
 }

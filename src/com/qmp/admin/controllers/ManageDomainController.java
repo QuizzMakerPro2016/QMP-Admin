@@ -21,7 +21,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
-public class ManageDomainController {
+public class ManageDomainController extends Controller {
 
 	@FXML
     private TableView<Domaine> tableDomainList;
@@ -50,17 +50,16 @@ public class ManageDomainController {
     @FXML
     private TableColumn<Questionnaire, String> tableQuizzesListCol;
     
-    private MainApp mainApp;
-    
+    @Override
     public void setMainApp(MainApp mainApp) {
-		this.mainApp = mainApp;
-		ObservableList<Domaine> lstDo=mainApp.getWebGate().getList(Domaine.class);
+    	super.setMainApp(mainApp);
+    	ObservableList<Domaine> lstDo = mainApp.getWebGate().getList(Domaine.class);
 		tableDomainList.setItems(lstDo);
-	}
-    
+    }
 
 	@FXML
 	private void initialize() {
+		
 		// Initialize the person table with the two columns.
 		tableDomainListColumn.setCellValueFactory((CellDataFeatures<Domaine, String> feature) -> {
 			Domaine domain = feature.getValue();

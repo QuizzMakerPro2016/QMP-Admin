@@ -14,7 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class MainController {
+public class MainController extends Controller {
 	
 	@FXML
     private TextField loginField;
@@ -25,9 +25,6 @@ public class MainController {
     
 	@FXML
 	private Text errorText;
-	
-	 // Reference to the main application.
-    private MainApp mainApp;
 
     private Utilisateur user ;
     
@@ -44,9 +41,6 @@ public class MainController {
     	
     }
     
-    public void setMainApp(MainApp mainApp) {
-        this.mainApp = mainApp;
-    }
     
     @FXML
     private void handleConnect(ActionEvent event) throws IOException {
@@ -56,7 +50,7 @@ public class MainController {
 			if(mainApp.isAdmin()){
 				errorText.setText("Connection réussie de "+ mainApp.getUser().getPrenom() +" "+ mainApp.getUser().getNom());
 
-				GraphicUtils.switchView(this, (Stage) ((Node) event.getSource()).getScene().getWindow(), "MainPage");
+				GraphicUtils.switchView(mainApp,  "MainPage");
 
 			}else{
 				errorText.setText("Cet utilisateur ne dispose pas des droits nécessaires ("+result.getRang().getLibelle()+")");

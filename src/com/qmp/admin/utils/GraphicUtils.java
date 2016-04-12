@@ -2,25 +2,30 @@ package com.qmp.admin.utils;
 
 import java.io.IOException;
 
+import com.qmp.admin.MainApp;
+import com.qmp.admin.controllers.Controller;
+
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import javafx.scene.layout.AnchorPane;
 
 public class GraphicUtils {
 	
-	public static void switchView(Object controller, Stage appStage, String viewName){
-		Parent dispatcher = null;
+	public static <T> void switchView(MainApp mainApp, String viewName){
 		try {
-			dispatcher = FXMLLoader.load(controller.getClass().getResource("/com/qmp/admin/views/" + viewName + ".fxml"));
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/" + viewName + ".fxml"));
+			AnchorPane domainOverview = (AnchorPane) loader.load();
+			mainApp.getRootLayout().setCenter(domainOverview);
+			Controller controller = loader.getController();
+			controller.setMainApp(mainApp);
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        Scene dispatcherScene = new Scene(dispatcher);
-        appStage.setScene(dispatcherScene);
 	}
+	
+	
 	
 	public static void showAlert(){
 		
@@ -31,3 +36,4 @@ public class GraphicUtils {
 	}
 
 }
+
