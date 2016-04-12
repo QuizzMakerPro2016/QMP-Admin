@@ -52,7 +52,6 @@ public class MainApp extends Application implements Observer {
 
 
 		webGate.getList(Utilisateur.class);
-		loadLists();
     }
     
     @Override
@@ -82,6 +81,7 @@ public class MainApp extends Application implements Observer {
         taskQueue.start();
         
 		list = webGate.getList(Utilisateur.class);
+		loadLists();
 
     }
 

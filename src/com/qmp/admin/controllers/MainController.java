@@ -4,13 +4,11 @@ import java.io.IOException;
 
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Utilisateur;
+import com.qmp.admin.utils.GraphicUtils;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -57,14 +55,9 @@ public class MainController {
 		if (mainApp.isLogged() == true){
 			if(mainApp.isAdmin()){
 				errorText.setText("Connection réussie de "+ mainApp.getUser().getPrenom() +" "+ mainApp.getUser().getNom());
-				
-		        Parent dispatcher = FXMLLoader.load(getClass().getResource("/com/qmp/admin/views/MainPage.fxml"));
-		        Scene dispatcherScene = new Scene(dispatcher);
-		        Stage appStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-		        appStage.hide(); //optional
-                appStage.setScene(dispatcherScene);
-                appStage.show();  			
-				
+
+				GraphicUtils.switchView(this, (Stage) ((Node) event.getSource()).getScene().getWindow(), "MainPage");
+
 			}else{
 				errorText.setText("Cet utilisateur ne dispose pas des droits nécessaires ("+result.getRang().getLibelle()+")");
 			}

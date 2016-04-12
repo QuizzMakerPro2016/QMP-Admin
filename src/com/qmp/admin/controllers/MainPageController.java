@@ -3,6 +3,7 @@ package com.qmp.admin.controllers;
 import java.io.IOException;
 
 import com.qmp.admin.MainApp;
+import com.qmp.admin.utils.GraphicUtils;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,9 +19,12 @@ public class MainPageController {
 
     @FXML
     private Button userButton;
+    
+    @FXML
+    private Button domainButton;
 
     @FXML
-    private Text userText;
+    private Text userText;    
     
     private MainApp mainApp;
 
@@ -41,14 +45,12 @@ public class MainPageController {
     
     @FXML
     void handleUser(ActionEvent event) throws IOException{
-
-    	Parent dispatcher = FXMLLoader.load(getClass().getResource("/com/qmp/admin/views/ManageUserLayout.fxml"));
-        Scene dispatcherScene = new Scene(dispatcher);
-        Stage appStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-        appStage.hide(); //optional
-        appStage.setScene(dispatcherScene);
-        appStage.show(); 
-        
+        GraphicUtils.switchView(this, (Stage) ((Node) event.getSource()).getScene().getWindow(), "ManageUserLayout");
+    }
+    
+    @FXML
+    void handleDomain(ActionEvent event) throws IOException{
+    	GraphicUtils.switchView(this, (Stage) ((Node) event.getSource()).getScene().getWindow(), "ManageDomainLayout");
     }
     
 }
