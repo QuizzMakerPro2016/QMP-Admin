@@ -1,7 +1,5 @@
 package com.qmp.admin.controllers;
 
-import java.util.Optional;
-
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Questionnaire;
@@ -12,10 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
@@ -85,7 +80,11 @@ public class ManageDomainController extends Controller {
 			boolean response = gUtils.showDialog("Suppression", "Supprimer un domaine ?", "Voulez-vous vraiment supprimer le domaine '" + selectedDomain.getLibelle() + "' ?");
 			if(response){
 				tableDomainList.getItems().remove(selInxdex);
-				mainApp.getTaskQueue().delete(selectedDomain, selectedDomain.getId());
+				try {
+					mainApp.getTaskQueue().delete(selectedDomain, selectedDomain.getId());
+				} catch (Exception e) {
+					GraphicUtils.showException(e);
+				}
 			}
 			
 		} else {

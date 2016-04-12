@@ -48,6 +48,7 @@ public class HttpUtils {
 	}
 
 	public static String getHTML(String urlToRead) throws ClientProtocolException, IOException {
+		System.out.println("GET:" + urlToRead);
 		String result = "";
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		try {
@@ -75,10 +76,12 @@ public class HttpUtils {
 	}
 
 	public static String putHTML(String urlToRead, Map<String, Object> params) throws ClientProtocolException, IOException {
+		System.out.println("PUT:" + urlToRead);
 		return sendHTML(new HttpPut(urlToRead), params);
 	}
 
 	public static String deleteHTML(String urlToRead) throws ClientProtocolException, IOException {
+		System.out.println("DELETE:" + urlToRead);
 		String result = "";
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		try {
