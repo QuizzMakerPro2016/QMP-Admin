@@ -1,7 +1,5 @@
 package com.qmp.admin.utils;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Optional;
@@ -82,13 +80,18 @@ public class GraphicUtils {
 		alert.showAndWait();
 	}
 	
-	public Optional<ButtonType> showDialog(String title, String header, String content){
+	public boolean showDialog(String title, String header, String content){
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 	    alert.setTitle(title);
 	    alert.setHeaderText(header);
 	    alert.setContentText(content);
 	    addStyle(alert);
-		return alert.showAndWait();
+	    Optional<ButtonType> result = alert.showAndWait();
+	    
+		if(result.get() == ButtonType.OK)
+			return true;
+		
+	    return false;
 	}
 	
 	private void addStyle(Alert alert){

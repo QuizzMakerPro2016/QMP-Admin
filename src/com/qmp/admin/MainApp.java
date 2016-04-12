@@ -157,4 +157,8 @@ public class MainApp extends Application implements Observer {
 	public BorderPane getRootLayout(){
 		return this.rootLayout;
 	}
+
+	public TaskQueue getTaskQueue() {
+		return taskQueue;
+	}
 }

@@ -125,7 +125,7 @@ public class WebGate {
 		WebGateList wgList = modelLists.get(clazz);
 		if (wgList.getTimestamp() == null)
 			return true;
-		String jsonO = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/updated/" + wgList.getTimestamp());
+		String jsonO = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/modif/" + wgList.getTimestamp());
 		Gson gson = MyGsonBuilder.create();
 		boolean result = gson.fromJson(jsonO, Boolean.class);
 		return result;

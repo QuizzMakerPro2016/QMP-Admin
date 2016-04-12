@@ -78,21 +78,20 @@ public class ManageDomainController extends Controller {
 
     @FXML
     void handleDelete(ActionEvent event) {
-    	
-    	Optional<ButtonType> result = gUtils.showDialog("TEST", "HEADER", "Content");
 
-    	if (result.get() == ButtonType.OK){
-    		Alert alert2 = new Alert(AlertType.INFORMATION);
-        	alert2.setTitle("Information Dialog");
-            alert2.setContentText("OK");
-            alert2.showAndWait();
-    	} else {
-    		Alert alert3 = new Alert(AlertType.INFORMATION);
-        	alert3.setTitle("Information Dialog");
-            alert3.setContentText("NOPE");
-            alert3.showAndWait();
-        	
-    	}
+    	int selInxdex = tableDomainList.getSelectionModel().getSelectedIndex();
+		Domaine selectedDomain = tableDomainList.getSelectionModel().getSelectedItem();
+		if (selInxdex >= 0) {
+			boolean response = gUtils.showDialog("Suppression", "Supprimer un domaine ?", "Voulez-vous vraiment supprimer le domaine '" + selectedDomain.getLibelle() + "' ?");
+			if(response){
+				tableDomainList.getItems().remove(selInxdex);
+				mainApp.getTaskQueue().delete(selectedDomain, selectedDomain.getId());
+			}
+			
+		} else {
+			//error no selected
+			//TODO create Bootstrap Like Alerts
+		}
     }
 
     @FXML
@@ -103,16 +102,30 @@ public class ManageDomainController extends Controller {
 
     @FXML
     void handleSave(ActionEvent event) {
-    	//TODO
-    	Alert alert = new Alert(AlertType.INFORMATION);
-    	alert.setTitle("Information Dialog");
-
-    	if(Integer.valueOf(tfDomainID.getText()) > 0){
-        	alert.setContentText("Domain Update : " + tfDomainID.getText());
-    	}else{
-        	alert.setContentText("New Domain");
-    	}
-    	alert.showAndWait();
+    	int selInxdex = tableDomainList.getSelectionModel().getSelectedIndex();
+		
+		if (selInxdex >= 0) {
+			//Update
+			Domaine selectedDomain = tableDomainList.getSelectionModel().getSelectedItem();
+			selectedDomain.setLibelle(tfLibelle.getText());
+			try {
+				mainApp.getWebGate().update(selectedDomain, selectedDomain.getId());
+				mainApp.getTaskQueue().getAll(Domaine.class);
+			} catch (Exception e) {
+				GraphicUtils.showException(e);
+			}
+		} else {
+			//Insertion
+			Domaine domain = new Domaine();
+			domain.setLibelle(tfLibelle.getText());
+			
+			mainApp.getWebGate().getList(Domaine.class).add(domain);
+			try {
+				mainApp.getWebGate().add(domain);
+			} catch (Exception e) {
+				GraphicUtils.showException(e);
+			}
+		}
     }
     
     public void showDomain(Domaine domain){
