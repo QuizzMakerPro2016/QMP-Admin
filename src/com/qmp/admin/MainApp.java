@@ -6,7 +6,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 import com.qmp.admin.controllers.MainController;
+import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Utilisateur;
+import com.qmp.admin.utils.GraphicUtils;
 import com.qmp.admin.utils.WebGate;
 import com.qmp.admin.utils.saves.SaveOperationTypes;
 import com.qmp.admin.utils.saves.TaskQueue;
@@ -32,7 +34,6 @@ public class MainApp extends Application implements Observer {
 		return webGate;
 	}
 
-
 	private Utilisateur user;
     
 
@@ -52,9 +53,7 @@ public class MainApp extends Application implements Observer {
 
 
 		webGate.getList(Utilisateur.class);
-		loadLists();
     }
-    
     
     @Override
     public void start(Stage primaryStage) {
@@ -77,12 +76,13 @@ public class MainApp extends Application implements Observer {
             MainController controller = loader.getController();
             controller.setMainApp(this);
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            GraphicUtils.showException(e);
         }
         taskQueue.start();
         
 		list = webGate.getList(Utilisateur.class);
+		loadLists();
 
     }
 
@@ -100,11 +100,10 @@ public class MainApp extends Application implements Observer {
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+        	GraphicUtils.showException(e);
         }
     }
-
 
     /**
      * Returns the main stage.
@@ -125,7 +124,22 @@ public class MainApp extends Application implements Observer {
     public Utilisateur getUser(){
     	return this.user;
     }
-
+    public boolean isLogged(){
+    	if (this.getUser() != null){
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
+    
+    public boolean isAdmin(){
+    	if (this.getUser().getRang().getLibelle().equals("admin")){
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
+    
     @SuppressWarnings("unchecked")
 	@Override
 	public void update(Observable o, Object arg) {
@@ -135,8 +149,16 @@ public class MainApp extends Application implements Observer {
 		}
 	}
 
-
 	public void loadLists() {
 		taskQueue.getAll(Utilisateur.class);
+		taskQueue.getAll(Domaine.class);
+	}
+	
+	public BorderPane getRootLayout(){
+		return this.rootLayout;
+	}
+
+	public TaskQueue getTaskQueue() {
+		return taskQueue;
 	}
 }

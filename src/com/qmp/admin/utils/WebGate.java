@@ -29,6 +29,7 @@ public class WebGate {
 		restUrlMappings.put("Questionnaire", "quiz");
 		restUrlMappings.put("Question", "question");
 		restUrlMappings.put("Reponse", "reponse");
+		restUrlMappings.put("Domaine", "domain");
 	}
 
 	private <T> String getControllerUrl(Class<T> clazz) {
@@ -66,7 +67,7 @@ public class WebGate {
 			String jsonString = HttpUtils.postHTML(baseUrl + getControllerUrl(Utilisateur.class) + "/connect", params);
 			Gson gson = MyGsonBuilder.create();
 			JsonObject jso = gson.fromJson(jsonString, JsonObject.class);
-			if (jso.get("connected") != null) {
+			if (jso.get("error") == null) {
 				user = gson.fromJson(jso.get("utilisateur"), Utilisateur.class);
 			}
 		} catch (IOException e) {
@@ -124,7 +125,7 @@ public class WebGate {
 		WebGateList wgList = modelLists.get(clazz);
 		if (wgList.getTimestamp() == null)
 			return true;
-		String jsonO = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/updated/" + wgList.getTimestamp());
+		String jsonO = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/modif/" + wgList.getTimestamp());
 		Gson gson = MyGsonBuilder.create();
 		boolean result = gson.fromJson(jsonO, Boolean.class);
 		return result;
