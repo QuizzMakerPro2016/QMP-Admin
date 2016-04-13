@@ -6,10 +6,12 @@ import com.qmp.admin.models.Groupe;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
+import com.qmp.admin.utils.GraphicUtils;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -31,7 +33,7 @@ public class ManageUserController extends Controller {
     private TableColumn<Utilisateur, String> nameColumn;
 
     @FXML
-    private TableColumn<Rang, String> rankColumn;
+    private TableColumn<Utilisateur, String> rankColumn;
 
     @FXML
     private Button newButton;
@@ -52,7 +54,7 @@ public class ManageUserController extends Controller {
     private PasswordField passwordField;
 
     @FXML
-    private ChoiceBox<Rang> rankField;
+    private ChoiceBox<String> rankField;
 
     @FXML
     private Button deleteButton;
@@ -92,9 +94,9 @@ public class ManageUserController extends Controller {
 			return new SimpleObjectProperty<>(user.getNom());
 		});
 		
-		rankColumn.setCellValueFactory((CellDataFeatures<Rang, String> feature) -> {
-			Rang rang = feature.getValue();
-			return new SimpleObjectProperty<>(rang.getLibelle());
+		rankColumn.setCellValueFactory((CellDataFeatures<Utilisateur, String> feature) -> {
+			Utilisateur user = feature.getValue();
+			return new SimpleObjectProperty<>(user.getRang().getLibelle());
 		});
 		
 		quizzListColumn.setCellValueFactory((CellDataFeatures<Questionnaire, String> feature) -> {
@@ -107,26 +109,97 @@ public class ManageUserController extends Controller {
 			return new SimpleObjectProperty<>(group.getLibelle());
 		});
 		
+		
+		
 		showUser(null);
-		userList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showUser(newValue));
-		
-		
+		userList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showUser(newValue));	
+	
 	}
     
     public void showUser(Utilisateur user){
+    	
     	
     	if(user == null){
     		idField.setText("0");
     		surnameField.setText("");
     		passwordField.setText("");
     		nameField.setText("");
+    		mailField.setText("");
     	}else{
     		idField.setText(String.valueOf(user.getId()));
     		surnameField.setText(user.getNom());
     		nameField.setText(user.getPrenom());
     		passwordField.setText("");
+    		mailField.setText(user.getMail());
     		quizzList.setItems(FXCollections.observableArrayList(user.getQuestionnaires()));
     		groupList.setItems(FXCollections.observableArrayList(user.getGroupes()));
     	}
     }
+    
+    @FXML
+    void handleSave(ActionEvent event) {
+    	int selInxdex = userList.getSelectionModel().getSelectedIndex();
+		if (selInxdex >= 0) {
+			//Update
+			Utilisateur selectedUser = userList.getSelectionModel().getSelectedItem();
+			selectedUser.setNom(surnameField.getText());
+			selectedUser.setPrenom(nameField.getText());
+			selectedUser.setMail(mailField.getText());
+			if(passwordField.getText() != ""){
+				selectedUser.setPassword(passwordField.getText());
+			}
+			/* TODO GERER LES RANGS */
+			try {
+				mainApp.getWebGate().update(selectedUser, selectedUser.getId());
+				mainApp.getTaskQueue().getAll(Utilisateur.class);
+			} catch (Exception e) {
+				GraphicUtils.showException(e);
+			}
+		} else {
+			//Insertion
+			Utilisateur user = new Utilisateur();
+			user.setNom(surnameField.getText());
+			user.setPrenom(nameField.getText());
+			user.setMail(mailField.getText());
+			user.setPassword(passwordField.getText());
+			
+			/* TODO GERER LES RANGS */
+			user.setIdRang(2);
+			
+			mainApp.getWebGate().getList(Utilisateur.class).add(user);
+			try {
+				mainApp.getWebGate().add(user);
+			} catch (Exception e) {
+				GraphicUtils.showException(e);
+			}
+		}
+    }
+    
+    @FXML
+    void handleNew(ActionEvent event) {
+    	showUser(null);
+    	userList.getSelectionModel().clearSelection();
+    }
+    
+    @FXML
+    void handleDelete(ActionEvent event) {
+
+    	int selInxdex = userList.getSelectionModel().getSelectedIndex();
+		Utilisateur selectedUser = userList.getSelectionModel().getSelectedItem();
+		if (selInxdex >= 0) {
+			boolean response = gUtils.showDialog("Suppression", "Supprimer un domaine ?", "Voulez-vous vraiment supprimer le domaine '" + selectedUser.getMail() + "' ?");
+			if(response){
+				userList.getItems().remove(selInxdex);
+				try {
+					mainApp.getTaskQueue().delete(selectedUser, selectedUser.getId());
+				} catch (Exception e) {
+					GraphicUtils.showException(e);
+				}
+			}
+			
+		} else {
+			new GraphicUtils(this.mainApp).showDialog("Erreur","","Veuillez selectionner un utilisateur");
+		}
+    }
+    
 }
