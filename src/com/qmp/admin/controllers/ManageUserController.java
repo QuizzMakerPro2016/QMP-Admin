@@ -1,10 +1,8 @@
 package com.qmp.admin.controllers;
 
 import com.qmp.admin.MainApp;
-import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Groupe;
 import com.qmp.admin.models.Questionnaire;
-import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
 
@@ -187,7 +185,7 @@ public class ManageUserController extends Controller {
     	int selInxdex = userList.getSelectionModel().getSelectedIndex();
 		Utilisateur selectedUser = userList.getSelectionModel().getSelectedItem();
 		if (selInxdex >= 0) {
-			boolean response = gUtils.showDialog("Suppression", "Supprimer un domaine ?", "Voulez-vous vraiment supprimer le domaine '" + selectedUser.getMail() + "' ?");
+			boolean response = gUtils.showDialog("Suppression", "Supprimer un utilisateur ?", "Voulez-vous vraiment supprimer l'utilisateur '" + selectedUser.getMail() + "' ?");
 			if(response){
 				userList.getItems().remove(selInxdex);
 				try {
@@ -196,7 +194,6 @@ public class ManageUserController extends Controller {
 					GraphicUtils.showException(e);
 				}
 			}
-			
 		} else {
 			new GraphicUtils(this.mainApp).showDialog("Erreur","","Veuillez selectionner un utilisateur");
 		}

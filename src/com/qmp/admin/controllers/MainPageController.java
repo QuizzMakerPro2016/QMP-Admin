@@ -14,6 +14,9 @@ public class MainPageController extends Controller {
     
     @FXML
     private Button domainButton;
+    
+    @FXML
+    private Button rankButton;
 
     @FXML
     private Text userText;    
@@ -32,6 +35,11 @@ public class MainPageController extends Controller {
     @FXML
     void handleUser(ActionEvent event) throws IOException{
     	gUtils.switchView("ManageUserLayout");
+    }
+    
+    @FXML
+    void handleRank(ActionEvent event) throws IOException{
+    	gUtils.switchView("ManageRankLayout");
     }
     
     @FXML
