@@ -10,7 +10,10 @@ import java.util.Map;
 import org.apache.http.client.ClientProtocolException;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.WebGateList;
 
@@ -38,6 +41,14 @@ public class WebGate {
 		if (restUrlMappings.containsKey(result))
 			result = restUrlMappings.get(clazz.getSimpleName());
 		return result;
+	}
+	
+	public <T> Object getObjectFromJson(String json, Class<T> clazz){
+		JsonElement jelement = new JsonParser().parse(json);
+	    JsonObject  jobject = jelement.getAsJsonObject();
+	    jobject = jobject.getAsJsonObject(getControllerUrl(clazz));
+	    Object o = new Gson().fromJson(jobject, clazz);
+		return o;
 	}
 
 	private Map<String, Object> beanToMap(Object o) {

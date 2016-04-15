@@ -124,10 +124,7 @@ public class ManageDomainController extends Controller {
 			
 			try {
 				String res = mainApp.getWebGate().add(domain);
-				JsonElement jelement = new JsonParser().parse(res);
-			    JsonObject  jobject = jelement.getAsJsonObject();
-			    jobject = jobject.getAsJsonObject("domain");
-			    Domaine d = new Gson().fromJson(jobject, Domaine.class);
+				Domaine d = (Domaine) mainApp.getWebGate().getObjectFromJson(res, Domaine.class);
 				mainApp.getWebGate().getList(Domaine.class).add(d);
 				showDomain(d);
 			} catch (Exception e) {
