@@ -8,6 +8,7 @@ import com.qmp.admin.MainApp;
 import com.qmp.admin.controllers.Controller;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -15,6 +16,7 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
@@ -31,6 +33,22 @@ public class GraphicUtils {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/" + viewName + ".fxml"));
 			AnchorPane domainOverview = (AnchorPane) loader.load();
+			//BorderPane domainOverview = (BorderPane) loader.load();
+			mainApp.getRootLayout().setCenter(domainOverview);
+			Controller controller = loader.getController();
+			controller.setMainApp(mainApp);
+		} catch (Exception e) {
+			showException(e);
+			//e.printStackTrace();
+		}
+	}
+	
+	public void homeLayout(){
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/MainPage.fxml"));
+			//AnchorPane domainOverview = (AnchorPane) loader.load();
+			BorderPane domainOverview = (BorderPane) loader.load();
 			mainApp.getRootLayout().setCenter(domainOverview);
 			Controller controller = loader.getController();
 			controller.setMainApp(mainApp);

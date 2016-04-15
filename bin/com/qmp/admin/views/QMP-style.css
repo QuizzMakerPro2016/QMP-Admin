@@ -6,6 +6,13 @@ AnchorPane {
 	-fx-background-color: #37474f;
 	-fx-border-color: none;
 }
+
+/*border pane*/
+BorderPane{
+    -fx-background-color: #37474f;
+    -fx-border-color: none;
+}
+
 /*grid pane*/
 .grid-pane{
 	-fx-background-color: #37474f;

@@ -63,11 +63,7 @@
                                     <Label text="Nom" textFill="WHITE" />
                                     <Label text="Mail" textFill="WHITE" GridPane.rowIndex="2" />
                                     <Label text="Rang" textFill="WHITE" GridPane.rowIndex="4" />
-<<<<<<< HEAD
-                                    <TextField prefHeight="25.0" prefWidth="255.0" GridPane.rowIndex="1">
-=======
                                     <TextField fx:id="surnameField" prefHeight="25.0" prefWidth="255.0" GridPane.rowIndex="1">
->>>>>>> origin/master
                                        <GridPane.margin>
                                           <Insets right="2.5" />
                                        </GridPane.margin></TextField>
@@ -77,11 +73,7 @@
                                        </GridPane.margin></TextField>
                                     <Label text="Prenom" textFill="WHITE" GridPane.columnIndex="1" />
                                     <Label text="Password" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-<<<<<<< HEAD
-                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="1">
-=======
                                     <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="1">
->>>>>>> origin/master
                                        <GridPane.margin>
                                           <Insets left="5.0" />
                                        </GridPane.margin></TextField>

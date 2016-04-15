@@ -31,7 +31,7 @@ public class MainPageController extends Controller {
     
     @FXML
     void handleUser(ActionEvent event) throws IOException{
-    	gUtils.switchView("ManageUserLayout");
+    	//gUtils.switchView("ManageUserLayout");
     }
     
     @FXML
