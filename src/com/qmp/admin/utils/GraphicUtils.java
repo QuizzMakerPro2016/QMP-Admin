@@ -42,8 +42,14 @@ public class GraphicUtils {
 	
 	
 	
-	public static void showAlert(){
-		
+	public static void showAlert(String title, String header, String content, AlertType type){
+		Alert alert = new Alert(type);
+	    alert.setTitle(title);
+	    alert.setHeaderText(header);
+	    alert.setContentText(content);
+	    addStyle(alert);
+	    alert.showAndWait();
+	   
 	}
 	
 	public static void showException(Exception e){
@@ -94,7 +100,7 @@ public class GraphicUtils {
 	    return false;
 	}
 	
-	private void addStyle(Alert alert){
+	private static void addStyle(Alert alert){
 		DialogPane dialogPane = alert.getDialogPane();
 		dialogPane.getStylesheets().add(
 				MainApp.class.getResource("/com/qmp/admin/views/QMP-style.css").toExternalForm());

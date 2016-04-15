@@ -44,10 +44,16 @@ public class WebGate {
 	}
 	
 	public <T> Object getObjectFromJson(String json, Class<T> clazz){
-		JsonElement jelement = new JsonParser().parse(json);
-	    JsonObject  jobject = jelement.getAsJsonObject();
-	    jobject = jobject.getAsJsonObject(getControllerUrl(clazz));
-	    Object o = new Gson().fromJson(jobject, clazz);
+		return getObjectFromJson(json, getControllerUrl(clazz), clazz);
+	}
+	
+	public <T> Object getObjectFromJson(String json, String jsonElement, Class<T> clazz){
+	    Gson gson = MyGsonBuilder.create();
+		Object o = null;
+		JsonObject jso = gson.fromJson(json, JsonObject.class);
+		if (jso.get("error") == null) {
+			o = gson.fromJson(jso.get(jsonElement), clazz);
+		}
 		return o;
 	}
 
