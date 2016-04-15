@@ -47,5 +47,10 @@ public class MainPageController extends Controller {
     	gUtils.switchView("ManageDomainLayout");
     }
     
+    @FXML
+    void handleGroup(ActionEvent event) throws IOException{
+    	gUtils.switchView("ManageGroupLayout");
+    }
+    
 }
 

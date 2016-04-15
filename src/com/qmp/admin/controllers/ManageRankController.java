@@ -1,6 +1,7 @@
 package com.qmp.admin.controllers;
 
 import com.qmp.admin.MainApp;
+import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
@@ -91,10 +92,11 @@ public class ManageRankController extends Controller{
 			//Insertion
 			Rang rank = new Rang();
 			rank.setLibelle(libelleField.getText());
-
-			mainApp.getWebGate().getList(Rang.class).add(rank);
 			try {
-				mainApp.getWebGate().add(rank);
+				String res = mainApp.getWebGate().add(rank);
+				Rang r = (Rang) mainApp.getWebGate().getObjectFromJson(res, Rang.class);
+				mainApp.getWebGate().getList(Rang.class).add(r);
+				showRank(r);
 			} catch (Exception e) {
 				GraphicUtils.showException(e);
 			}
