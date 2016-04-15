@@ -1,5 +1,9 @@
 package com.qmp.admin.controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Questionnaire;
@@ -118,9 +122,14 @@ public class ManageDomainController extends Controller {
 			Domaine domain = new Domaine();
 			domain.setLibelle(tfLibelle.getText());
 			
-			mainApp.getWebGate().getList(Domaine.class).add(domain);
 			try {
-				mainApp.getWebGate().add(domain);
+				String res = mainApp.getWebGate().add(domain);
+				JsonElement jelement = new JsonParser().parse(res);
+			    JsonObject  jobject = jelement.getAsJsonObject();
+			    jobject = jobject.getAsJsonObject("domain");
+			    Domaine d = new Gson().fromJson(jobject, Domaine.class);
+				mainApp.getWebGate().getList(Domaine.class).add(d);
+				showDomain(d);
 			} catch (Exception e) {
 				GraphicUtils.showException(e);
 			}
