@@ -12,9 +12,9 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@QMP-style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-      <GridPane BorderPane.alignment="CENTER">
+      <GridPane maxHeight="200.0" maxWidth="100.0" minHeight="200.0" minWidth="100.0" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="TOP_LEFT">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -22,17 +22,17 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" text="Domaine" />
-            <Button mnemonicParsing="false" text="User" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" text="Button" GridPane.rowIndex="2" />
+            <Button id="domainButton" maxHeight="50.0" maxWidth="100.0" minHeight="50.0" minWidth="100.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Domaine" />
+            <Button id="userButton" maxHeight="50.0" maxWidth="100.0" minHeight="50.0" minWidth="100.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="User" GridPane.rowIndex="1" />
+            <Button id="quizzButton" maxHeight="50.0" maxWidth="100.0" minHeight="50.0" minWidth="100.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Questionnaire" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </left>
    <bottom>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Logged" BorderPane.alignment="TOP_LEFT" />
+      <Text id="userText" strokeType="OUTSIDE" strokeWidth="0.0" text="Logged" BorderPane.alignment="TOP_LEFT" />
    </bottom>
    <top>
-      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+      <ImageView fitHeight="130.0" fitWidth="470.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
             <Image url="@../../../../../assets/img/NomQMP-01.png" />
          </image>
