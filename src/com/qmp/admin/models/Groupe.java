@@ -19,6 +19,8 @@ public class Groupe {
 	public Groupe() {
 		super();
 		groupe_utilisateurs=new ArrayList<>();groupe_questionnaires=new ArrayList<>();
+		utilisateurs=new ArrayList<>();
+		questionnaires=new ArrayList<>();
 	}
 	/**
 	 * return the value of code
@@ -55,32 +57,30 @@ public class Groupe {
 	public List<Groupe_utilisateur> getGroupe_utilisateurs(){
 		return this.groupe_utilisateurs;
 	}
-
-	
 	
 	/**
 	 * @return the utilisateurs
 	 */
 	public List<Utilisateur> getUtilisateurs() {
-		return utilisateurs;
+		return this.utilisateurs;
 	}
 	/**
 	 * @param utilisateurs the utilisateurs to set
 	 */
-	public void setUtilisateurs(List<Utilisateur> utilisateurs) {
-		this.utilisateurs = utilisateurs;
+	public void setUtilisateurs(List<Utilisateur> aUtilisateurs) {
+		this.utilisateurs = aUtilisateurs;
 	}
 	/**
 	 * @return the questionnaires
 	 */
 	public List<Questionnaire> getQuestionnaires() {
-		return questionnaires;
+		return this.questionnaires;
 	}
 	/**
 	 * @param questionnaires the questionnaires to set
 	 */
-	public void setQuestionnaires(List<Questionnaire> questionnaires) {
-		this.questionnaires = questionnaires;
+	public void setQuestionnaires(List<Questionnaire> aQuestionnaires) {
+		this.questionnaires = aQuestionnaires;
 	}
 	/**
 	 * set the value of code

@@ -5,6 +5,7 @@ import com.qmp.admin.models.Groupe;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
+import com.qmp.admin.utils.JBCrypt;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -144,7 +145,7 @@ public class ManageUserController extends Controller {
 			selectedUser.setPrenom(nameField.getText());
 			selectedUser.setMail(mailField.getText());
 			if(passwordField.getText() != ""){
-				selectedUser.setPassword(passwordField.getText());
+				selectedUser.setPassword(JBCrypt.hashpw(passwordField.getText(), JBCrypt.gensalt()));
 			}
 			/* TODO GERER LES RANGS */
 			try {
@@ -159,7 +160,7 @@ public class ManageUserController extends Controller {
 			user.setNom(surnameField.getText());
 			user.setPrenom(nameField.getText());
 			user.setMail(mailField.getText());
-			user.setPassword(passwordField.getText());
+			user.setPassword(JBCrypt.hashpw(passwordField.getText(), JBCrypt.gensalt()));
 			
 			/* TODO GERER LES RANGS */
 			user.setIdRang(2);
