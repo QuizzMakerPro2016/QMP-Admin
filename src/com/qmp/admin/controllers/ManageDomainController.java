@@ -1,9 +1,5 @@
 package com.qmp.admin.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Questionnaire;
@@ -14,7 +10,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -134,7 +129,7 @@ public class ManageDomainController extends Controller {
 		}
     }
     
-    public void showDomain(Domaine domain){
+    private void showDomain(Domaine domain){
     	if(domain == null){
     		tfDomainID.setText("0");
     		tfLibelle.setText("");

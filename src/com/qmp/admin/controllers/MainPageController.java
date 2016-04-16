@@ -2,6 +2,8 @@ package com.qmp.admin.controllers;
 
 import java.io.IOException;
 
+import com.qmp.admin.models.Questionnaire;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,6 +16,9 @@ public class MainPageController extends Controller {
     
     @FXML
     private Button domainButton;
+    
+    @FXML
+    private Text quizzButton;  
     
     @FXML
     private Button rankButton;
@@ -50,6 +55,12 @@ public class MainPageController extends Controller {
     @FXML
     void handleGroup(ActionEvent event) throws IOException{
     	gUtils.switchView("ManageGroupLayout");
+    }
+    
+    @FXML
+    void handleQuizz(ActionEvent event) throws IOException{
+    	QuizzController c = (QuizzController) gUtils.switchView("QuizzLayout");
+    	c.setQuizz(mainApp.getWebGate().getList(Questionnaire.class).get(0));
     }
     
 }

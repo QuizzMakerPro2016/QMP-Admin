@@ -10,12 +10,8 @@ import java.util.Map;
 import org.apache.http.client.ClientProtocolException;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Utilisateur;
-import com.qmp.admin.utils.WebGateList;
 
 import javafx.collections.ObservableList;
 
@@ -29,7 +25,7 @@ public class WebGate {
 		baseUrl = "http://127.0.0.1:8080/QMP-Rest/rest/";
 		restUrlMappings = new HashMap<>();
 		restUrlMappings.put("Utilisateur", "user");
-		restUrlMappings.put("Questionnaire", "quiz");
+		restUrlMappings.put("Questionnaire", "quizz");
 		restUrlMappings.put("Question", "question");
 		restUrlMappings.put("Reponse", "reponse");
 		restUrlMappings.put("Domaine", "domain");

@@ -26,7 +26,7 @@ public class GraphicUtils {
 		this.mainApp = mainApp;
 	}
 	
-	public <T> void switchView(String viewName){
+	public <T> Controller switchView(String viewName){
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/" + viewName + ".fxml"));
@@ -34,10 +34,12 @@ public class GraphicUtils {
 			mainApp.getRootLayout().setCenter(domainOverview);
 			Controller controller = loader.getController();
 			controller.setMainApp(mainApp);
+			return controller;
 		} catch (Exception e) {
 			showException(e);
 			//e.printStackTrace();
 		}
+		return null;
 	}
 	
 	

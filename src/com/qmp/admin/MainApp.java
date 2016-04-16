@@ -7,6 +7,7 @@ import java.util.Observer;
 import com.qmp.admin.controllers.MainController;
 import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Groupe;
+import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
@@ -155,6 +156,7 @@ public class MainApp extends Application implements Observer {
 		taskQueue.getAll(Utilisateur.class);
 		taskQueue.getAll(Domaine.class);
 		taskQueue.getAll(Groupe.class);
+		taskQueue.getAll(Questionnaire.class);
 	}
 	
 	public BorderPane getRootLayout(){
