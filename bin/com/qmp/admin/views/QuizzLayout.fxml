@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -53,7 +58,46 @@
           </Tab>
           <Tab fx:id="tabQuestions" text="Questions">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="429.0" prefWidth="690.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="429.0" prefWidth="690.0">
+                     <children>
+                        <SplitPane dividerPositions="0.4581589958158996" prefHeight="637.0" prefWidth="958.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <items>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                 <children>
+                                    <TableView prefHeight="584.0" prefWidth="435.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <columns>
+                                        <TableColumn prefWidth="433.0" text="Questions" />
+                                      </columns>
+                                    </TableView>
+                                    <Button layoutX="101.0" layoutY="595.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="166.0" text="Retirer du questionnaire" />
+                                    <Button layoutX="14.0" layoutY="595.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="73.0" text="Ajouter" />
+                                 </children>
+                              </AnchorPane>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="634.0" prefWidth="510.0">
+                                 <children>
+                                    <Label layoutX="35.0" layoutY="51.0" text="Question :" textFill="WHITE">
+                                       <font>
+                                          <Font name="DejaVu Sans Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField layoutX="35.0" layoutY="138.0" prefHeight="25.0" prefWidth="466.0" />
+                                    <Label layoutX="35.0" layoutY="115.0" text="Libellé" textFill="WHITE" />
+                                    <RadioButton layoutX="35.0" layoutY="183.0" mnemonicParsing="false" prefWidth="172.0" text="Question Ouverte" textFill="WHITE" />
+                                    <RadioButton layoutX="268.0" layoutY="183.0" mnemonicParsing="false" text="Question à Choix Multiples" textFill="WHITE" />
+                                    <Label layoutX="34.0" layoutY="229.0" text="Réponse" textFill="WHITE" />
+                                    <TextField layoutX="34.0" layoutY="246.0" prefHeight="25.0" prefWidth="470.0" />
+                                    <TableView layoutX="34.0" layoutY="280.0" prefHeight="307.0" prefWidth="468.0">
+                                      <columns>
+                                        <TableColumn prefWidth="467.0" text="Réponses" />
+                                      </columns>
+                                    </TableView>
+                                    <Button layoutX="334.0" layoutY="592.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="166.0" text="Retirer du questionnaire" />
+                                    <Button layoutX="257.0" layoutY="592.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="73.0" text="Ajouter" />
+                                 </children>
+                              </AnchorPane>
+                          </items>
+                        </SplitPane>
+                     </children></AnchorPane>
             </content>
           </Tab>
             <Tab text="...">
