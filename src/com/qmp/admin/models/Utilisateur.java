@@ -25,6 +25,7 @@ public class Utilisateur {
 	public Utilisateur() {
 		super();
 		realisations=new ArrayList<>();questionnaires=new ArrayList<>();questions=new ArrayList<>();groupe_utilisateurs=new ArrayList<>();rang=new Rang();
+		groupes = new ArrayList<>();
 	}
 	/**
 	 * return the value of id

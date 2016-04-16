@@ -1,8 +1,13 @@
 package com.qmp.admin.controllers;
 
+import java.io.IOException;
+
+import org.apache.http.client.ClientProtocolException;
+
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Groupe;
 import com.qmp.admin.models.Questionnaire;
+import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
 import com.qmp.admin.utils.JBCrypt;
@@ -136,7 +141,7 @@ public class ManageUserController extends Controller {
     }
     
     @FXML
-    void handleSave(ActionEvent event) {
+    void handleSave(ActionEvent event) throws ClientProtocolException, IOException {
     	int selInxdex = userList.getSelectionModel().getSelectedIndex();
 		if (selInxdex >= 0) {
 			//Update
@@ -164,10 +169,14 @@ public class ManageUserController extends Controller {
 			
 			/* TODO GERER LES RANGS */
 			user.setIdRang(2);
-			
-			mainApp.getWebGate().getList(Utilisateur.class).add(user);
+			Rang rang = mainApp.getWebGate().getOne(Rang.class, user.getIdRang());
+			user.setRang(rang);
+		
 			try {
-				mainApp.getWebGate().add(user);
+				String res = mainApp.getWebGate().add(user);
+				Utilisateur u = (Utilisateur) mainApp.getWebGate().getObjectFromJson(res, Utilisateur.class);
+				mainApp.getWebGate().getList(Utilisateur.class).add(u);
+				showUser(u);
 			} catch (Exception e) {
 				GraphicUtils.showException(e);
 			}

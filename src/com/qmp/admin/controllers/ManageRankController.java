@@ -1,8 +1,6 @@
 package com.qmp.admin.controllers;
 
 import com.qmp.admin.MainApp;
-import com.qmp.admin.models.Domaine;
-import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
