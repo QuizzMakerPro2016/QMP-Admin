@@ -30,11 +30,12 @@ public class GraphicUtils {
 	
 	public <T> void switchView(String viewName){
 		try {
+			//Load center
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/" + viewName + ".fxml"));
 			AnchorPane domainOverview = (AnchorPane) loader.load();
-			//BorderPane domainOverview = (BorderPane) loader.load();
 			mainApp.getRootLayout().setCenter(domainOverview);
+			
 			Controller controller = loader.getController();
 			controller.setMainApp(mainApp);
 		} catch (Exception e) {
@@ -45,13 +46,20 @@ public class GraphicUtils {
 	
 	public void homeLayout(){
 		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/MainPage.fxml"));
-			//AnchorPane domainOverview = (AnchorPane) loader.load();
-			BorderPane domainOverview = (BorderPane) loader.load();
-			mainApp.getRootLayout().setCenter(domainOverview);
-			Controller controller = loader.getController();
+			//Load menu
+			FXMLLoader loaderMenu = new FXMLLoader();
+			loaderMenu.setLocation(MainApp.class.getResource("/com/qmp/admin/views/MainPage.fxml"));
+			AnchorPane menuOverview = (AnchorPane) loaderMenu.load();
+			mainApp.getRootLayout().setLeft(menuOverview);
+			
+			Controller controller = loaderMenu.getController();
 			controller.setMainApp(mainApp);
+			
+			//Load home
+			FXMLLoader loaderHome = new FXMLLoader();
+			loaderHome.setLocation(MainApp.class.getResource("/com/qmp/admin/views/homeLayout.fxml"));
+			AnchorPane homeOverview = (AnchorPane) loaderHome.load();
+			mainApp.getRootLayout().setCenter(homeOverview);
 		} catch (Exception e) {
 			showException(e);
 			//e.printStackTrace();

@@ -48,16 +48,16 @@ public class MainController extends Controller {
 		mainApp.setUser(result);
 		if (mainApp.isLogged() == true){
 			if(mainApp.isAdmin()){
-				errorText.setText("Connection rÃ©ussie de "+ mainApp.getUser().getPrenom() +" "+ mainApp.getUser().getNom());
+				errorText.setText("Connection réussie de "+ mainApp.getUser().getPrenom() +" "+ mainApp.getUser().getNom());
 
 				//new GraphicUtils(mainApp).switchView("MainPage");
 				new GraphicUtils(mainApp).homeLayout();
 
 			}else{
-				errorText.setText("Cet utilisateur ne dispose pas des droits nÃ©cessaires ("+result.getRang().getLibelle()+")");
+				errorText.setText("Cet utilisateur ne dispose pas des droits nécessaires ("+result.getRang().getLibelle()+")");
 			}
 		}else{
-			errorText.setText("Connexion Ã©chouÃ©e");
+			errorText.setText("Connexion échouée");
 		}
     }
 }

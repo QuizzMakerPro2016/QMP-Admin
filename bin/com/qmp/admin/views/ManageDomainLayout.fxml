@@ -23,6 +23,9 @@
                     <columns>
                       <TableColumn fx:id="tableDomainListColumn" prefWidth="246.0" text="Libelle" />
                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
                   </TableView>
                   <Button fx:id="btnNew" layoutX="175.0" layoutY="568.0" mnemonicParsing="false" onAction="#handleNew" text="Nouveau" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="8.0" />
                </children>
@@ -33,7 +36,7 @@
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <Label layoutX="14.0" layoutY="6.0" text="Gestion des Domaines" textFill="#19596e">
+                              <Label layoutX="14.0" layoutY="6.0" text="Gestion des Domaines" textFill="WHITE">
                                  <font>
                                     <Font name="DejaVu Sans Bold" size="15.0" />
                                  </font>
@@ -48,7 +51,7 @@
                                     <RowConstraints maxHeight="55.0" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label text="Libelle" />
+                                    <Label text="Libelle" textFill="WHITE" />
                                     <TextField fx:id="tfLibelle" prefHeight="25.0" prefWidth="184.0" GridPane.rowIndex="1" />
                                     <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                       <buttons>
@@ -56,7 +59,7 @@
                                           <Button fx:id="btnSave" mnemonicParsing="false" onAction="#handleSave" text="Enregsitrer" />
                                       </buttons>
                                     </ButtonBar>
-                                    <Label fx:id="tfDomainID" text="Libelle" GridPane.columnIndex="1" />
+                                    <Label fx:id="tfDomainID" text="Libelle" textFill="WHITE" GridPane.columnIndex="1" />
                                  </children>
                               </GridPane>
                            </children>
@@ -67,6 +70,9 @@
                                 <columns>
                                   <TableColumn fx:id="tableQuizzesListCol" prefWidth="542.0" text="Quizzes traitant de ce domaine" />
                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
                               </TableView>
                            </children>
                         </AnchorPane>

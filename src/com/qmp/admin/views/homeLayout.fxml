@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@QMP-style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text fill="WHITE" layoutX="148.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenu" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="70.0">
+         <font>
+            <Font size="35.0" />
+         </font>
+      </Text>
+      <Text fill="WHITE" layoutX="148.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pour continuer choisissez une action dans le menu ci-contre." textAlignment="JUSTIFY" wrappingWidth="241.4208984375" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="150.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>
