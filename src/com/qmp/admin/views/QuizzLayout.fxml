@@ -66,7 +66,7 @@
                                  <children>
                                     <TableView fx:id="tableQuestionsList" prefHeight="584.0" prefWidth="435.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <columns>
-                                        <TableColumn prefWidth="433.0" text="Questions" />
+                                        <TableColumn fx:id="tableQuestionsCol" prefWidth="433.0" text="Questions" />
                                       </columns>
                                     </TableView>
                                     <Button fx:id="btnRemQuest" layoutX="254.0" layoutY="595.0" mnemonicParsing="false" onAction="#handleRemQuest" prefHeight="25.0" prefWidth="166.0" text="Retirer du questionnaire" />

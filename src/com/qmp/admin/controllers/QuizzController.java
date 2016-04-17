@@ -1,8 +1,12 @@
 package com.qmp.admin.controllers;
 
+import com.qmp.admin.models.Domaine;
+import com.qmp.admin.models.Question;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Reponse;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,6 +15,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 
 public class QuizzController extends Controller {
     @FXML
@@ -20,7 +25,10 @@ public class QuizzController extends Controller {
     private Tab tabQuestions;  
 
     @FXML
-    private TableView<?> tableQuestionsList;
+    private TableView<Question> tableQuestionsList;
+    
+    @FXML
+    private TableColumn<Question, String> tableQuestionsCol;
 
     @FXML
     private Button btnRemQuest;
@@ -53,6 +61,22 @@ public class QuizzController extends Controller {
     private Button btnAddAns;
     
     private Questionnaire quizz;
+    
+	@FXML
+	private void initialize() {
+		this.quizz = null;
+		
+		tableQuestionsCol.setCellValueFactory((CellDataFeatures<Question, String> feature) -> {
+			Question quest = feature.getValue();
+			return new SimpleObjectProperty<>(quest.getLibelle());
+		});
+		
+		tableAnsListCol.setCellValueFactory((CellDataFeatures<Reponse, String> feature) -> {
+			Reponse ans = feature.getValue();
+			return new SimpleObjectProperty<>(ans.getLibelle());
+		});
+		
+	}
 
 	/**
 	 * Add answer to question
@@ -110,11 +134,7 @@ public class QuizzController extends Controller {
     void handleRemQuest(ActionEvent event) {
 
     }
-
-	@FXML
-	private void initialize() {
-		this.quizz = null;
-	}
+    
 
 	public Questionnaire getQuizz() {
 		return quizz;
@@ -131,7 +151,8 @@ public class QuizzController extends Controller {
 	}
 	
 	private void showQuizzQuestions(){
-		//TODO
+		tableQuestionsList.setItems(FXCollections.observableArrayList(this.quizz.getQuestions()));
+		System.out.println(this.quizz.getQuestions());
 	}
 
 }

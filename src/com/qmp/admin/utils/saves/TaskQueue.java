@@ -57,18 +57,18 @@ public class TaskQueue extends Observable {
 		put(new DelayedTask(deleteOperation, 5000));
 	}
 
-	public void get(Class<? extends Object> clazz, int offset, int limit) {
+	public void get(Class<? extends Object> clazz, int offset, int limit, int cd) {
 		SaveOperation getOperation = new SaveOperation(SaveOperationTypes.GET, clazz) {
 
 			@Override
 			public Object call() throws Exception {
-				return webGate.getAll(clazz, offset, limit);
+				return webGate.getAll(clazz, offset, limit, cd);
 			}
 		};
 		put(new DelayedTask(getOperation, 50));
 	}
 
-	public void getAll(Class<? extends Object> clazz) {
+	public void getAll(Class<? extends Object> clazz, int cd) {
 		int size = 10;
 		try {
 			if (webGate.isModified(clazz)) {
@@ -82,7 +82,7 @@ public class TaskQueue extends Observable {
 					e.printStackTrace();
 				}
 				for (int i = 0; i < size / rowGroupSize + 1; i++) {
-					get(clazz, i * rowGroupSize, rowGroupSize);
+					get(clazz, i * rowGroupSize, rowGroupSize, cd);
 				}
 				wgList.setTimestamp(System.currentTimeMillis());
 			}
@@ -90,6 +90,10 @@ public class TaskQueue extends Observable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void getAll(Class<? extends Object> clazz){
+		getAll(clazz, 1);
 	}
 
 	public void start() {

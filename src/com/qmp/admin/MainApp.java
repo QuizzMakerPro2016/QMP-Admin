@@ -156,7 +156,10 @@ public class MainApp extends Application implements Observer {
 		taskQueue.getAll(Utilisateur.class);
 		taskQueue.getAll(Domaine.class);
 		taskQueue.getAll(Groupe.class);
-		taskQueue.getAll(Questionnaire.class);
+		taskQueue.getAll(Questionnaire.class, 2);
+		
+		List<Questionnaire> test = webGate.getList(Questionnaire.class);
+		System.out.println(test);
 	}
 	
 	public BorderPane getRootLayout(){

@@ -14,6 +14,7 @@ public class Questionnaire {
 	private int idUtilisateur;
 	private String libelle;
 	private Domaine domaine;
+	private List<Question> questions;
 	private List<Groupe_questionnaire> groupe_questionnaires;
 	private List<Question_questionnaire> question_questionnaires;
 	private List<Realisation> realisations;
@@ -21,7 +22,12 @@ public class Questionnaire {
 
 	public Questionnaire() {
 		super();
-		utilisateur=new Utilisateur();realisations=new ArrayList<>();question_questionnaires=new ArrayList<>();groupe_questionnaires=new ArrayList<>();domaine=new Domaine();
+		utilisateur=new Utilisateur();
+		realisations=new ArrayList<>();
+		question_questionnaires=new ArrayList<>();
+		groupe_questionnaires=new ArrayList<>();
+		questions = new ArrayList<>();
+		domaine=new Domaine();
 	}
 	/**
 	 * return the value of date
@@ -92,6 +98,14 @@ public class Questionnaire {
 	 */
 	public Utilisateur getUtilisateur(){
 		return this.utilisateur;
+	}
+	
+	/**
+	 * return the value of groupe_questionnaires
+	 * @return groupe_questionnaires
+	 */
+	public List<Question> getQuestions(){
+		return this.questions;
 	}
 
 	/**
