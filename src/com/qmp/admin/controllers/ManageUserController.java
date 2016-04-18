@@ -18,7 +18,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
@@ -58,7 +58,7 @@ public class ManageUserController extends Controller {
     private PasswordField passwordField;
 
     @FXML
-    private ChoiceBox<String> rankField;
+    private ComboBox<Rang> rankField;
 
     @FXML
     private Button deleteButton;
@@ -112,16 +112,36 @@ public class ManageUserController extends Controller {
 			Groupe group = feature.getValue();
 			return new SimpleObjectProperty<>(group.getLibelle());
 		});
+		  	
+    	
+    	rankField.getItems().clear();
+    	
+    	Rang e = new Rang();
+    	Rang t = new Rang();
+    	e.setId(1);
+    	t.setId(2);
+    	e.setLibelle("ga");
+    	t.setLibelle("ge");
+    	
+    	ObservableList<Rang> r = FXCollections.observableArrayList();
+    	r.add(e);
+    	r.add(t);
+    	
+    	
+    		
+    	for(Rang rang : mainApp.getWebGate().getList(Rang.class)){
+    		r.add(new Rang(rang.getId(), rang.getLibelle()));
+    	}
 		
-		
-		
+    	rankField.setItems(r);
+    	
 		showUser(null);
 		userList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showUser(newValue));	
 	
 	}
     
     public void showUser(Utilisateur user){
-    	
+ 
     	
     	if(user == null){
     		idField.setText("0");
