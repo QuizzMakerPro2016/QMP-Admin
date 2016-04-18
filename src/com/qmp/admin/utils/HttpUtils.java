@@ -44,6 +44,7 @@ public class HttpUtils {
 		} finally {
 			httpClient.close();
 		}
+		System.out.println(result);
 		return result;
 	}
 
@@ -67,6 +68,7 @@ public class HttpUtils {
 		} finally {
 			httpClient.close();
 		}
+		System.out.println(result);
 		return result;
 	}
 
@@ -91,6 +93,7 @@ public class HttpUtils {
 		} finally {
 			httpClient.close();
 		}
+		System.out.println(result);
 		return result;
 	}
 }

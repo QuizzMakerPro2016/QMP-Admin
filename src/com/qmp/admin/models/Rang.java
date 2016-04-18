@@ -16,6 +16,15 @@ public class Rang {
 		super();
 		utilisateurs=new ArrayList<>();
 	}
+	
+	public Rang(int id, String libelle) {
+		super();
+		this.id = id;
+		this.libelle = libelle;
+		this.utilisateurs=new ArrayList<>();
+	}
+	
+	
 	/**
 	 * return the value of id
 	 * @return id
@@ -61,6 +70,6 @@ public class Rang {
 	}
 	@Override
 	public String toString() {
-		return " [libelle] = " + libelle+" [id] = " + id;
+		return libelle;
 	}
 }

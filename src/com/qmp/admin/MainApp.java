@@ -1,12 +1,14 @@
 package com.qmp.admin;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import com.qmp.admin.controllers.MainController;
 import com.qmp.admin.models.Domaine;
+import com.qmp.admin.models.Groupe;
+import com.qmp.admin.models.Questionnaire;
+import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
 import com.qmp.admin.utils.WebGate;
@@ -150,8 +152,14 @@ public class MainApp extends Application implements Observer {
 	}
 
 	public void loadLists() {
-		taskQueue.getAll(Utilisateur.class);
+		taskQueue.getAll(Rang.class);
+		taskQueue.getAll(Utilisateur.class, 2);
 		taskQueue.getAll(Domaine.class);
+		taskQueue.getAll(Groupe.class, 2);
+		taskQueue.getAll(Questionnaire.class, 2);
+		
+		List<Questionnaire> test = webGate.getList(Questionnaire.class);
+		System.out.println(test);
 	}
 	
 	public BorderPane getRootLayout(){

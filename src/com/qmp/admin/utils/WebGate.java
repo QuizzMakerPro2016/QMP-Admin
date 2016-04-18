@@ -12,7 +12,6 @@ import org.apache.http.client.ClientProtocolException;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.qmp.admin.models.Utilisateur;
-import com.qmp.admin.utils.WebGateList;
 
 import javafx.collections.ObservableList;
 
@@ -26,10 +25,12 @@ public class WebGate {
 		baseUrl = "http://127.0.0.1:8080/QMP-Rest/rest/";
 		restUrlMappings = new HashMap<>();
 		restUrlMappings.put("Utilisateur", "user");
-		restUrlMappings.put("Questionnaire", "quiz");
+		restUrlMappings.put("Questionnaire", "quizz");
 		restUrlMappings.put("Question", "question");
 		restUrlMappings.put("Reponse", "reponse");
 		restUrlMappings.put("Domaine", "domain");
+		restUrlMappings.put("Rang", "rank");
+		restUrlMappings.put("Groupe", "group");
 	}
 
 	private <T> String getControllerUrl(Class<T> clazz) {
@@ -37,6 +38,20 @@ public class WebGate {
 		if (restUrlMappings.containsKey(result))
 			result = restUrlMappings.get(clazz.getSimpleName());
 		return result;
+	}
+	
+	public <T> Object getObjectFromJson(String json, Class<T> clazz){
+		return getObjectFromJson(json, getControllerUrl(clazz), clazz);
+	}
+	
+	public <T> Object getObjectFromJson(String json, String jsonElement, Class<T> clazz){
+	    Gson gson = MyGsonBuilder.create();
+		Object o = null;
+		JsonObject jso = gson.fromJson(json, JsonObject.class);
+		if (jso.get("error") == null) {
+			o = gson.fromJson(jso.get(jsonElement), clazz);
+		}
+		return o;
 	}
 
 	private Map<String, Object> beanToMap(Object o) {
@@ -79,24 +94,36 @@ public class WebGate {
 
 	public <T> List<T> getAll(Class<T> clazz) throws ClientProtocolException, IOException {
 		List<T> result = new ArrayList<T>();
-		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/all");
+		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/all/1");
 		Gson gson = MyGsonBuilder.create();
 		result = gson.fromJson(jsonUsers, new ListType<T>(clazz));
 		return result;
 	}
 
-	public <T> List<T> getAll(Class<T> clazz, int offset, int limit) throws ClientProtocolException, IOException {
+	public <T> List<T> getAll(Class<T> clazz, int offset, int limit, int cd) throws ClientProtocolException, IOException {
 		List<T> result = new ArrayList<T>();
-		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/limit/" + offset + "/" + limit);
+		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/limit/" + offset + "/" + limit+"/"+String.valueOf(cd));
 		Gson gson = MyGsonBuilder.create();
 		result = gson.fromJson(jsonUsers, new ListType<T>(clazz));
 		return result;
+	}
+	
+	public <T> List<T> getAll(Class<T> clazz, int offset, int limit) throws ClientProtocolException, IOException {
+		return getAll(clazz, offset, limit, 1);
 	}
 
 	public <T> T getOne(Class<T> clazz, Object id) throws ClientProtocolException, IOException {
 		String jsonO = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/" + id);
 		Gson gson = MyGsonBuilder.create();
 		T result = gson.fromJson(jsonO, clazz);
+		return result;
+	}
+	
+	public <T> List<T> getMembers(Class clazz, Object id, String member, Class<T> memberClass) throws ClientProtocolException, IOException {
+		List<T> result = new ArrayList<T>();
+		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/" + id + "/all/" + member);
+		Gson gson = MyGsonBuilder.create();
+		result = gson.fromJson(jsonUsers, new ListType<T>(memberClass));
 		return result;
 	}
 

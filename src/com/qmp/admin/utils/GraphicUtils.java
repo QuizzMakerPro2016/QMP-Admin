@@ -8,7 +8,6 @@ import com.qmp.admin.MainApp;
 import com.qmp.admin.controllers.Controller;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -16,7 +15,6 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
@@ -28,16 +26,8 @@ public class GraphicUtils {
 		this.mainApp = mainApp;
 	}
 	
-	public <T> void switchView(String viewName){
+	public <T> Controller switchView(String viewName){
 		try {
-			//Load center
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/" + viewName + ".fxml"));
-			AnchorPane domainOverview = (AnchorPane) loader.load();
-			mainApp.getRootLayout().setCenter(domainOverview);
-			
-			Controller controller = loader.getController();
-			controller.setMainApp(mainApp);
 			
 			//Load menu
 			FXMLLoader loaderMenu = new FXMLLoader();
@@ -47,14 +37,34 @@ public class GraphicUtils {
 			
 			Controller controllerMenu = loaderMenu.getController();
 			controllerMenu.setMainApp(mainApp);
+			
+			//Load center
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/" + viewName + ".fxml"));
+			AnchorPane domainOverview = (AnchorPane) loader.load();
+			mainApp.getRootLayout().setCenter(domainOverview);
+			
+			Controller controller = loader.getController();
+			controller.setMainApp(mainApp);
+			
+			return controller;
 		} catch (Exception e) {
 			showException(e);
 			//e.printStackTrace();
 		}
+		return null;
 	}	
 	
-	public static void showAlert(){
-		
+	
+	
+	public static void showAlert(String title, String header, String content, AlertType type){
+		Alert alert = new Alert(type);
+	    alert.setTitle(title);
+	    alert.setHeaderText(header);
+	    alert.setContentText(content);
+	    addStyle(alert);
+	    alert.showAndWait();
+	   
 	}
 	
 	public static void showException(Exception e){
@@ -105,7 +115,7 @@ public class GraphicUtils {
 	    return false;
 	}
 	
-	private void addStyle(Alert alert){
+	private static void addStyle(Alert alert){
 		DialogPane dialogPane = alert.getDialogPane();
 		dialogPane.getStylesheets().add(
 				MainApp.class.getResource("/com/qmp/admin/views/QMP-style.css").toExternalForm());

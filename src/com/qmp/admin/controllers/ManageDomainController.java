@@ -118,16 +118,18 @@ public class ManageDomainController extends Controller {
 			Domaine domain = new Domaine();
 			domain.setLibelle(tfLibelle.getText());
 			
-			mainApp.getWebGate().getList(Domaine.class).add(domain);
 			try {
-				mainApp.getWebGate().add(domain);
+				String res = mainApp.getWebGate().add(domain);
+				Domaine d = (Domaine) mainApp.getWebGate().getObjectFromJson(res, Domaine.class);
+				mainApp.getWebGate().getList(Domaine.class).add(d);
+				showDomain(d);
 			} catch (Exception e) {
 				GraphicUtils.showException(e);
 			}
 		}
     }
     
-    public void showDomain(Domaine domain){
+    private void showDomain(Domaine domain){
     	if(domain == null){
     		tfDomainID.setText("0");
     		tfLibelle.setText("");

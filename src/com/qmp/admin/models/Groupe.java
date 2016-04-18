@@ -1,7 +1,7 @@
 package com.qmp.admin.models;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -13,10 +13,14 @@ public class Groupe {
 	private String libelle;
 	private List<Groupe_questionnaire> groupe_questionnaires;
 	private List<Groupe_utilisateur> groupe_utilisateurs;
-
+	private List<Utilisateur> utilisateurs;
+	private List<Questionnaire> questionnaires;
+	
 	public Groupe() {
 		super();
 		groupe_utilisateurs=new ArrayList<>();groupe_questionnaires=new ArrayList<>();
+		utilisateurs=new ArrayList<>();
+		questionnaires=new ArrayList<>();
 	}
 	/**
 	 * return the value of code
@@ -53,7 +57,31 @@ public class Groupe {
 	public List<Groupe_utilisateur> getGroupe_utilisateurs(){
 		return this.groupe_utilisateurs;
 	}
-
+	
+	/**
+	 * @return the utilisateurs
+	 */
+	public List<Utilisateur> getUtilisateurs() {
+		return this.utilisateurs;
+	}
+	/**
+	 * @param utilisateurs the utilisateurs to set
+	 */
+	public void setUtilisateurs(List<Utilisateur> aUtilisateurs) {
+		this.utilisateurs = aUtilisateurs;
+	}
+	/**
+	 * @return the questionnaires
+	 */
+	public List<Questionnaire> getQuestionnaires() {
+		return this.questionnaires;
+	}
+	/**
+	 * @param questionnaires the questionnaires to set
+	 */
+	public void setQuestionnaires(List<Questionnaire> aQuestionnaires) {
+		this.questionnaires = aQuestionnaires;
+	}
 	/**
 	 * set the value of code
 	 * @param aCode
