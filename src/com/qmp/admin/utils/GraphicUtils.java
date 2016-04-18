@@ -1,5 +1,6 @@
 package com.qmp.admin.utils;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Optional;
@@ -29,15 +30,6 @@ public class GraphicUtils {
 	public <T> Controller switchView(String viewName){
 		try {
 			
-			//Load menu
-			FXMLLoader loaderMenu = new FXMLLoader();
-			loaderMenu.setLocation(MainApp.class.getResource("/com/qmp/admin/views/MainPage.fxml"));
-			AnchorPane menuOverview = (AnchorPane) loaderMenu.load();
-			mainApp.getRootLayout().setLeft(menuOverview);
-			
-			Controller controllerMenu = loaderMenu.getController();
-			controllerMenu.setMainApp(mainApp);
-			
 			//Load center
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/" + viewName + ".fxml"));
@@ -53,7 +45,25 @@ public class GraphicUtils {
 			//e.printStackTrace();
 		}
 		return null;
-	}	
+	}
+	
+	public void loadMenu(){
+		//Load menu
+		FXMLLoader loaderMenu = new FXMLLoader();
+		loaderMenu.setLocation(MainApp.class.getResource("/com/qmp/admin/views/MainPage.fxml"));
+		AnchorPane menuOverview;
+		try {
+			menuOverview = (AnchorPane) loaderMenu.load();
+			mainApp.getRootLayout().setLeft(menuOverview);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Controller controllerMenu = loaderMenu.getController();
+		controllerMenu.setMainApp(mainApp);
+	}
 	
 	
 	

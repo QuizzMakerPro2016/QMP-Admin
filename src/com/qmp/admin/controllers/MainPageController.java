@@ -18,7 +18,7 @@ public class MainPageController extends Controller {
     private Button domainButton;
     
     @FXML
-    private Text quizzButton;  
+    private Button quizzButton;  
     
     @FXML
     private Button rankButton;
