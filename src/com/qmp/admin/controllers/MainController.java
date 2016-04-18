@@ -51,7 +51,7 @@ public class MainController extends Controller {
 				errorText.setText("Connection réussie de "+ mainApp.getUser().getPrenom() +" "+ mainApp.getUser().getNom());
 
 				//new GraphicUtils(mainApp).switchView("MainPage");
-				new GraphicUtils(mainApp).homeLayout();
+				new GraphicUtils(mainApp).switchView("HomeLayout");
 
 			}else{
 				errorText.setText("Cet utilisateur ne dispose pas des droits nécessaires ("+result.getRang().getLibelle()+")");

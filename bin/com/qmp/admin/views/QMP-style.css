@@ -105,7 +105,23 @@ BorderPane{
   -fx-background-color: white;
   -fx-text-fill: #ef6c00;
 }
+
+#btmenu{
+    -fx-background-color: derive(#37474f, 20%);
+    -fx-text-base-color:#FFFFFF;
+    -fx-background-radius:0px;
+}
+
+#btmenu:hover{
+    -fx-background-color: #1976d2;
+}
  
+#btmenu:pressed, #btmenu:default:hover:pressed
+{
+  -fx-background-color: white;
+  -fx-text-fill: #ef6c00;
+}
+
 .button:disabled, .button:default:disabled
 {
     -fx-opacity: 0.4;
@@ -156,10 +172,6 @@ BorderPane{
 /*		|		TABLE VIEW		|	*/
 /*		+-----------------------+	*/
 
-.table-view{
-    -fx-background-color: #37474f;
-    -fx-text-fill:#ffffff;
-}
 .table-view .table-column:hover{
     -fx-background-color: derive(#37474f,30%);
 }
@@ -178,6 +190,21 @@ BorderPane{
 }
 .table-view:focused .table-row-cell:filled:focused:selected {
     -fx-background-color: -fx-focus-color;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: derive(#37474f, 90%);
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-alignment: center-left;
+}
+.table-view {
+    -fx-base: derive(#37474f, 10%);
+    -fx-control-inner-background: derive(#37474f, 10%);
+    -fx-background-color: #37474f;
+    -fx-text-fill:#ffffff;
 }
 
 /*		+-----------------------+	*/

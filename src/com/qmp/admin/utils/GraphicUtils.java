@@ -38,35 +38,20 @@ public class GraphicUtils {
 			
 			Controller controller = loader.getController();
 			controller.setMainApp(mainApp);
-		} catch (Exception e) {
-			showException(e);
-			//e.printStackTrace();
-		}
-	}
-	
-	public void homeLayout(){
-		try {
+			
 			//Load menu
 			FXMLLoader loaderMenu = new FXMLLoader();
 			loaderMenu.setLocation(MainApp.class.getResource("/com/qmp/admin/views/MainPage.fxml"));
 			AnchorPane menuOverview = (AnchorPane) loaderMenu.load();
 			mainApp.getRootLayout().setLeft(menuOverview);
 			
-			Controller controller = loaderMenu.getController();
-			controller.setMainApp(mainApp);
-			
-			//Load home
-			FXMLLoader loaderHome = new FXMLLoader();
-			loaderHome.setLocation(MainApp.class.getResource("/com/qmp/admin/views/homeLayout.fxml"));
-			AnchorPane homeOverview = (AnchorPane) loaderHome.load();
-			mainApp.getRootLayout().setCenter(homeOverview);
+			Controller controllerMenu = loaderMenu.getController();
+			controllerMenu.setMainApp(mainApp);
 		} catch (Exception e) {
 			showException(e);
 			//e.printStackTrace();
 		}
-	}
-	
-	
+	}	
 	
 	public static void showAlert(){
 		
