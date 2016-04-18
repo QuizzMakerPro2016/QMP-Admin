@@ -81,7 +81,10 @@ public class ManageUserController extends Controller {
     @Override
     public void setMainApp(MainApp mainApp) {
     	super.setMainApp(mainApp);
-    	ObservableList<Utilisateur> userObs = mainApp.getWebGate().getList(Utilisateur.class);
+    	ObservableList<Utilisateur> userObs = mainApp.getWebGate().getList(Utilisateur.class);	
+    	ObservableList<Rang> r = mainApp.getWebGate().getList(Rang.class);  		
+    	
+    	rankField.setItems(r);
     	userList.setItems(userObs);
     }
 
@@ -112,28 +115,6 @@ public class ManageUserController extends Controller {
 			Groupe group = feature.getValue();
 			return new SimpleObjectProperty<>(group.getLibelle());
 		});
-		  	
-    	
-    	rankField.getItems().clear();
-    	
-    	Rang e = new Rang();
-    	Rang t = new Rang();
-    	e.setId(1);
-    	t.setId(2);
-    	e.setLibelle("ga");
-    	t.setLibelle("ge");
-    	
-    	ObservableList<Rang> r = FXCollections.observableArrayList();
-    	r.add(e);
-    	r.add(t);
-    	
-    	
-    		
-    	for(Rang rang : mainApp.getWebGate().getList(Rang.class)){
-    		r.add(new Rang(rang.getId(), rang.getLibelle()));
-    	}
-		
-    	rankField.setItems(r);
     	
 		showUser(null);
 		userList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showUser(newValue));	
@@ -157,6 +138,7 @@ public class ManageUserController extends Controller {
     		mailField.setText(user.getMail());
     		quizzList.setItems(FXCollections.observableArrayList(user.getQuestionnaires()));
     		groupList.setItems(FXCollections.observableArrayList(user.getGroupes()));
+    		rankField.setValue(user.getRang());
     	}
     }
     
@@ -169,10 +151,12 @@ public class ManageUserController extends Controller {
 			selectedUser.setNom(surnameField.getText());
 			selectedUser.setPrenom(nameField.getText());
 			selectedUser.setMail(mailField.getText());
+			selectedUser.setIdRang(rankField.getValue().getId());
+			
 			if(passwordField.getText() != ""){
 				selectedUser.setPassword(JBCrypt.hashpw(passwordField.getText(), JBCrypt.gensalt()));
 			}
-			/* TODO GERER LES RANGS */
+			
 			try {
 				mainApp.getWebGate().update(selectedUser, selectedUser.getId());
 				mainApp.getTaskQueue().getAll(Utilisateur.class);
@@ -186,20 +170,20 @@ public class ManageUserController extends Controller {
 			user.setPrenom(nameField.getText());
 			user.setMail(mailField.getText());
 			user.setPassword(JBCrypt.hashpw(passwordField.getText(), JBCrypt.gensalt()));
-			
-			/* TODO GERER LES RANGS */
-			user.setIdRang(2);
-			Rang rang = mainApp.getWebGate().getOne(Rang.class, user.getIdRang());
-			user.setRang(rang);
+			user.setIdRang(rankField.getValue().getId());
+			user.setRang(rankField.getValue());
 		
 			try {
 				String res = mainApp.getWebGate().add(user);
 				Utilisateur u = (Utilisateur) mainApp.getWebGate().getObjectFromJson(res, Utilisateur.class);
+				u.setIdRang(rankField.getValue().getId());
+				u.setRang(rankField.getValue());
 				mainApp.getWebGate().getList(Utilisateur.class).add(u);
 				showUser(u);
 			} catch (Exception e) {
 				GraphicUtils.showException(e);
 			}
+			
 		}
     }
     
