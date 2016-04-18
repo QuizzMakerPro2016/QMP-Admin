@@ -1,13 +1,19 @@
 package com.qmp.admin.controllers;
 
+import java.io.IOException;
+import java.util.List;
+
 import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Question;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Reponse;
+import com.qmp.admin.utils.GraphicUtils;
+import com.qmp.admin.utils.WebGate;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
@@ -74,6 +80,28 @@ public class QuizzController extends Controller {
 		tableAnsListCol.setCellValueFactory((CellDataFeatures<Reponse, String> feature) -> {
 			Reponse ans = feature.getValue();
 			return new SimpleObjectProperty<>(ans.getLibelle());
+		});
+		
+		tableQuestionsList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showQuestion(newValue));
+		
+		cbMultiQuest.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				cbOpenQuest.setSelected(false);
+				cbMultiQuest.setSelected(true);
+				showAnswers(true);
+			}
+		});
+		
+		cbOpenQuest.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				cbOpenQuest.setSelected(true);
+				cbMultiQuest.setSelected(false);
+				showAnswers(false);
+			}
 		});
 		
 	}
@@ -147,12 +175,57 @@ public class QuizzController extends Controller {
 	}
 	
 	private void showQuizzGeneral(){
-		//TODO
+		//TODO - Nicolas
 	}
 	
 	private void showQuizzQuestions(){
 		tableQuestionsList.setItems(FXCollections.observableArrayList(this.quizz.getQuestions()));
-		System.out.println(this.quizz.getQuestions());
+		showQuestion(null);
+	}
+	
+	private void showQuestion(Question q){
+		if(q != null){
+			tfQuestLibelle.setText(q.getLibelle());
+			if(!q.isType()){
+				//Multiple
+				cbMultiQuest.setSelected(true);
+				cbOpenQuest.setSelected(false);
+				showAnswers(true);
+			}else{
+				//Open
+				cbMultiQuest.setSelected(false);
+				cbOpenQuest.setSelected(true);
+				showAnswers(false);
+			}
+			if(q.getReponses().isEmpty()){
+				List<Reponse> rep = null;
+				try {
+					 rep = (List<Reponse>) mainApp.getWebGate().getMembers(Question.class, q.getId(), "reponses", Reponse.class);
+					 q.setReponses(rep);
+				} catch (IOException e) {
+					GraphicUtils.showException(e);
+				}
+			}
+			tableAnsList.setItems(FXCollections.observableArrayList(q.getReponses()));
+
+		}else{
+			cbMultiQuest.setSelected(false);
+			cbOpenQuest.setSelected(false);
+			tfQuestLibelle.setText("");
+			tableAnsList.setVisible(false);
+			tfUniqueAns.setVisible(false);
+		}
+	}
+	
+	private void showAnswers(Boolean multiple){
+		if(multiple){
+			tfUniqueAns.setVisible(false);
+			tableAnsList.setVisible(true);
+		}else{
+			tfUniqueAns.setVisible(true);
+			tableAnsList.setVisible(false);
+		}
+		
 	}
 
 }

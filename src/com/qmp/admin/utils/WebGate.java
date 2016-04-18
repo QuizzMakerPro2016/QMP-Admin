@@ -94,7 +94,7 @@ public class WebGate {
 
 	public <T> List<T> getAll(Class<T> clazz) throws ClientProtocolException, IOException {
 		List<T> result = new ArrayList<T>();
-		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/all/2");
+		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/all/1");
 		Gson gson = MyGsonBuilder.create();
 		result = gson.fromJson(jsonUsers, new ListType<T>(clazz));
 		return result;
@@ -116,6 +116,14 @@ public class WebGate {
 		String jsonO = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/" + id);
 		Gson gson = MyGsonBuilder.create();
 		T result = gson.fromJson(jsonO, clazz);
+		return result;
+	}
+	
+	public <T> List<T> getMembers(Class clazz, Object id, String member, Class<T> memberClass) throws ClientProtocolException, IOException {
+		List<T> result = new ArrayList<T>();
+		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/" + id + "/all/" + member);
+		Gson gson = MyGsonBuilder.create();
+		result = gson.fromJson(jsonUsers, new ListType<T>(memberClass));
 		return result;
 	}
 
