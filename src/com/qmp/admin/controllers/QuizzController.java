@@ -88,9 +88,7 @@ public class QuizzController extends Controller {
 			
 			@Override
 			public void handle(ActionEvent event) {
-				cbOpenQuest.setSelected(false);
-				cbMultiQuest.setSelected(true);
-				showAnswers(true);
+				switchQuestionType(false);
 			}
 		});
 		
@@ -98,9 +96,7 @@ public class QuizzController extends Controller {
 			
 			@Override
 			public void handle(ActionEvent event) {
-				cbOpenQuest.setSelected(true);
-				cbMultiQuest.setSelected(false);
-				showAnswers(false);
+				switchQuestionType(true);
 			}
 		});
 		
@@ -185,18 +181,7 @@ public class QuizzController extends Controller {
 	
 	private void showQuestion(Question q){
 		if(q != null){
-			tfQuestLibelle.setText(q.getLibelle());
-			if(!q.isType()){
-				//Multiple
-				cbMultiQuest.setSelected(true);
-				cbOpenQuest.setSelected(false);
-				showAnswers(true);
-			}else{
-				//Open
-				cbMultiQuest.setSelected(false);
-				cbOpenQuest.setSelected(true);
-				showAnswers(false);
-			}
+			
 			if(q.getReponses().isEmpty()){
 				List<Reponse> rep = null;
 				try {
@@ -206,8 +191,10 @@ public class QuizzController extends Controller {
 					GraphicUtils.showException(e);
 				}
 			}
-			tableAnsList.setItems(FXCollections.observableArrayList(q.getReponses()));
-
+			
+			tfQuestLibelle.setText(q.getLibelle());
+			
+			showAnswers(q);
 		}else{
 			cbMultiQuest.setSelected(false);
 			cbOpenQuest.setSelected(false);
@@ -217,15 +204,36 @@ public class QuizzController extends Controller {
 		}
 	}
 	
-	private void showAnswers(Boolean multiple){
-		if(multiple){
-			tfUniqueAns.setVisible(false);
-			tableAnsList.setVisible(true);
-		}else{
+	private void showAnswers(Question q){
+		if(q.isType()){
+			//Open
 			tfUniqueAns.setVisible(true);
 			tableAnsList.setVisible(false);
+			if(q.getReponses().size() < 1 ){
+				tfUniqueAns.setId("0");
+				return;
+			}
+			tfUniqueAns.setText(q.getReponses().get(0).getLibelle());
+			tfUniqueAns.setId(String.valueOf(q.getReponses().get(0).getId()));
+			cbMultiQuest.setSelected(false);
+			cbOpenQuest.setSelected(true);
+		}else{
+			//Multiple
+			tfUniqueAns.setVisible(false);
+			tableAnsList.setVisible(true);
+			tableAnsList.setItems(FXCollections.observableArrayList(q.getReponses()));
+			cbMultiQuest.setSelected(true);
+			cbOpenQuest.setSelected(false);
 		}
 		
+	}
+	
+	private void switchQuestionType(Boolean isOpenNew){
+		cbOpenQuest.setSelected(isOpenNew);
+		cbMultiQuest.setSelected(!isOpenNew);
+		Question q = tableQuestionsList.getSelectionModel().getSelectedItem();
+		q.setType(isOpenNew);
+		showAnswers(q);
 	}
 
 }

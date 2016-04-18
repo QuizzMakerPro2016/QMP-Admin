@@ -59,7 +59,7 @@
                                           <Button fx:id="btnSave" mnemonicParsing="false" onAction="#handleSave" text="Enregsitrer" />
                                       </buttons>
                                     </ButtonBar>
-                                    <Label fx:id="tfDomainID" text="Libelle" textFill="WHITE" GridPane.columnIndex="1" />
+                                    <Label fx:id="tfDomainID" text="Libelle" textFill="WHITE" visible="false" GridPane.columnIndex="1" />
                                  </children>
                               </GridPane>
                            </children>

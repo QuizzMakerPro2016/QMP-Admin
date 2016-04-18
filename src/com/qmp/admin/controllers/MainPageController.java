@@ -61,10 +61,7 @@ public class MainPageController extends Controller {
     void handleQuizz(ActionEvent event) throws IOException{
     	QuizzController c = (QuizzController) gUtils.switchView("QuizzLayout");
     	c.setQuizz(mainApp.getWebGate().getList(Questionnaire.class).get(0));
-    	
-    	for (int i = 0; i < mainApp.getWebGate().getList(Questionnaire.class).size(); i++) {
-    		mainApp.getWebGate().getList(Questionnaire.class).get(i).getRealisations();
-		}
+
     }
     
 }

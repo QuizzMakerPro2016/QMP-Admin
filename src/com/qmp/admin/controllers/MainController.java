@@ -53,7 +53,6 @@ public class MainController extends Controller {
 				gUtils.loadMenu();
 				gUtils.switchView("HomeLayout");
 				
-
 			}else{
 				errorText.setText("Cet utilisateur ne dispose pas des droits n�cessaires ("+result.getRang().getLibelle()+")");
 			}
