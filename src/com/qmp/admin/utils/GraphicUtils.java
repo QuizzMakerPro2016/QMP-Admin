@@ -28,19 +28,32 @@ public class GraphicUtils {
 	
 	public <T> Controller switchView(String viewName){
 		try {
+			
+			//Load menu
+			FXMLLoader loaderMenu = new FXMLLoader();
+			loaderMenu.setLocation(MainApp.class.getResource("/com/qmp/admin/views/MainPage.fxml"));
+			AnchorPane menuOverview = (AnchorPane) loaderMenu.load();
+			mainApp.getRootLayout().setLeft(menuOverview);
+			
+			Controller controllerMenu = loaderMenu.getController();
+			controllerMenu.setMainApp(mainApp);
+			
+			//Load center
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/" + viewName + ".fxml"));
 			AnchorPane domainOverview = (AnchorPane) loader.load();
 			mainApp.getRootLayout().setCenter(domainOverview);
+			
 			Controller controller = loader.getController();
 			controller.setMainApp(mainApp);
+			
 			return controller;
 		} catch (Exception e) {
 			showException(e);
 			//e.printStackTrace();
 		}
 		return null;
-	}
+	}	
 	
 	
 	

@@ -2,29 +2,49 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.qmp.admin.controllers.MainPageController">
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="120.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.qmp.admin.controllers.MainPageController">
    <children>
-      <Label alignment="CENTER" layoutX="-2.0" layoutY="14.0" prefHeight="141.0" prefWidth="800.0" text="QMP - Admin" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="445.0" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="14.0">
-         <font>
-            <Font name="DejaVu Sans Bold" size="96.0" />
-         </font>
-      </Label>
-      <ButtonBar layoutX="175.0" layoutY="238.0" prefHeight="40.0" prefWidth="331.0">
-         <buttons>
-            <Button fx:id="groupButton" mnemonicParsing="false" onAction="#handleGroup" text="Group" />
-            <Button fx:id="domainButton" mnemonicParsing="false" onAction="#handleDomain" text="Domain" />
-            <Button mnemonicParsing="false" onAction="#handleRank" text="Rank" />
-            <Button fx:id="userButton" mnemonicParsing="false" onAction="#handleUser" text="User" />
-            <Button fx:id="userButton1" mnemonicParsing="false" onAction="#handleQuizz" text="Quizzes" />
-         </buttons>
-         <padding>
-            <Insets right="15.0" />
-         </padding>
-      </ButtonBar>
+      <GridPane style="-fx-background-color: derive(#37474f, 20%);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="100.0" minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="378.0" minHeight="29.0" prefHeight="354.0" valignment="TOP" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="351.0" minHeight="0.0" prefHeight="26.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button id="btmenu" fx:id="domainButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleDomain" prefHeight="50.0" prefWidth="120.0" text="Domaine" GridPane.rowIndex="1" />
+            <Button id="btmenu" fx:id="userButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleUser" prefHeight="50.0" prefWidth="120.0" text="User" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+              </Button>
+            <Button id="btmenu" maxHeight="50.0" maxWidth="100.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="120.0" text="Questionnaire" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></Button>
+            <Text fx:id="userText" strokeType="OUTSIDE" strokeWidth="0.0" text="Logged :" GridPane.rowIndex="4" />
+            <ImageView fitHeight="85.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../assets/img/logo-11.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </ImageView>
+         </children>
+      </GridPane>
    </children>
 </AnchorPane>
