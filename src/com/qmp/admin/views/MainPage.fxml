@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,9 +10,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="120.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.qmp.admin.controllers.MainPageController">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.qmp.admin.controllers.MainPageController">
    <children>
-      <GridPane style="-fx-background-color: derive(#37474f, 20%);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: derive(#37474f, 20%);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" />
         </columnConstraints>
@@ -25,9 +24,16 @@
             <RowConstraints maxHeight="351.0" minHeight="0.0" prefHeight="26.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-          	<Button id="btmenu" fx:id="quizzButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleQuizz" prefHeight="50.0" prefWidth="120.0" text="Questionnaires" GridPane.rowIndex="1" />
-            <Button id="btmenu" fx:id="domainButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleDomain" prefHeight="50.0" prefWidth="120.0" text="Domaines" GridPane.rowIndex="2" />
-            <Button id="btmenu" fx:id="userButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleUser" prefHeight="50.0" prefWidth="120.0" text="Utilisateurs" GridPane.rowIndex="3" />
+            <Button id="btmenu" fx:id="domainButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleDomain" prefHeight="50.0" prefWidth="120.0" text="Domaine" GridPane.rowIndex="1" />
+            <Button id="btmenu" fx:id="userButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleUser" prefHeight="50.0" prefWidth="120.0" text="User" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+              </Button>
+            <Button id="btmenu" maxHeight="50.0" maxWidth="100.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="120.0" text="Questionnaire" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></Button>
             <Text fx:id="userText" strokeType="OUTSIDE" strokeWidth="0.0" text="Logged :" GridPane.rowIndex="4" />
             <ImageView fitHeight="85.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
                <image>
