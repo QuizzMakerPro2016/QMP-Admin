@@ -153,9 +153,9 @@ public class MainApp extends Application implements Observer {
 
 	public void loadLists() {
 		taskQueue.getAll(Rang.class);
-		taskQueue.getAll(Utilisateur.class);
+		taskQueue.getAll(Utilisateur.class, 2);
 		taskQueue.getAll(Domaine.class);
-		taskQueue.getAll(Groupe.class);
+		taskQueue.getAll(Groupe.class, 2);
 		taskQueue.getAll(Questionnaire.class, 2);
 		
 		List<Questionnaire> test = webGate.getList(Questionnaire.class);
