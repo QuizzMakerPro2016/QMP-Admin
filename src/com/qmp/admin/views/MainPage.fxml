@@ -17,23 +17,16 @@
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="100.0" minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="120.0" minHeight="120.0" prefHeight="120.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="378.0" minHeight="29.0" prefHeight="354.0" valignment="TOP" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="351.0" minHeight="0.0" prefHeight="26.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button id="btmenu" fx:id="domainButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleDomain" prefHeight="50.0" prefWidth="120.0" text="Domaine" GridPane.rowIndex="1" />
-            <Button id="btmenu" fx:id="userButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleUser" prefHeight="50.0" prefWidth="120.0" text="User" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-              </Button>
-            <Button id="btmenu" maxHeight="50.0" maxWidth="100.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="120.0" text="Questionnaire" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin></Button>
+            <Button id="btmenu" fx:id="quizzButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleQuizz" prefHeight="50.0" prefWidth="120.0" text="Questionnaires" GridPane.rowIndex="1" />
+            <Button id="btmenu" fx:id="domainButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleDomain" prefHeight="50.0" prefWidth="120.0" text="Domaines" GridPane.rowIndex="2" />
+            <Button id="btmenu" fx:id="userButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleUser" prefHeight="50.0" prefWidth="120.0" text="Utilisateurs" GridPane.rowIndex="3" />
             <Text fx:id="userText" strokeType="OUTSIDE" strokeWidth="0.0" text="Logged :" GridPane.rowIndex="4" />
             <ImageView fitHeight="85.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
                <image>

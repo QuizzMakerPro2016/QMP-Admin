@@ -72,7 +72,7 @@ BorderPane{
 }
 
 .tab-pane > .tab-header-area > .tab-header-background {
-    -fx-background-color: derive(#37474f, 90%);
+    -fx-background-color: derive(#37474f, 30%);
 }
 
 .tab-pane:top > .tab-header-area {
@@ -91,19 +91,19 @@ BorderPane{
 
 /*button*/
 .button{
-	-fx-background-color: #2C98D4;
+	-fx-background-color: #1976d2;
 	-fx-text-base-color:#FFFFFF;
 	-fx-background-radius:0px;
 }
 
 .button:hover{
-    -fx-background-color: #1976d2;
+    -fx-background-color: derive(#1976d2, 20%);
 }
  
 .button:pressed, .button:default:hover:pressed
 {
-  -fx-background-color: white;
-  -fx-text-fill: #ef6c00;
+  -fx-background-color: derive(#1976d2, 40%);
+  -fx-text-fill: #FFFFFF;
 }
 
 #btmenu{
@@ -115,11 +115,15 @@ BorderPane{
 #btmenu:hover{
     -fx-background-color: #1976d2;
 }
- 
-#btmenu:pressed, #btmenu:default:hover:pressed
-{
-  -fx-background-color: white;
-  -fx-text-fill: #ef6c00;
+
+#btmenu:hover:pressed{
+    -fx-background-color: derive(#1976d2, 40%);
+    -fx-text-fill: #ffffff;
+}
+
+#btmenu:focused{
+    -fx-background-color: derive(#1976d2, 15%);
+    -fx-text-fill: #FFFFFF;
 }
 
 .button:disabled, .button:default:disabled
