@@ -15,6 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
@@ -66,6 +67,9 @@ public class QuizzController extends Controller {
     @FXML
     private Button btnAddAns;
     
+    @FXML
+    private Button btnSaveQuest;
+    
     private Questionnaire quizz;
     
 	@FXML
@@ -108,7 +112,7 @@ public class QuizzController extends Controller {
 	 */
     @FXML
     void handleAddAns(ActionEvent event) {
-
+    	//TODO Nicolas
     }
     
     /**
@@ -117,28 +121,10 @@ public class QuizzController extends Controller {
      */
     @FXML
     void handleAddQuest(ActionEvent event) {
-
+    	showQuestion(null);
+    	tableQuestionsList.getSelectionModel().clearSelection();
     }
 
-    /**
-     * Click on "Question Choix Multiple" option
-     * (hide tfUniqueAns + show answers table)
-     * @param event
-     */
-    @FXML
-    void handleQuestCM(ActionEvent event) {
-
-    }
-
-    /**
-     * Click on "Question Ouverte" option
-     * (show tfUniqueAns + hide answers table)
-     * @param event
-     */
-    @FXML
-    void handleQuestO(ActionEvent event) {
-
-    }
 
     /**
      * Remove Answer from quizz and from DB
@@ -146,7 +132,7 @@ public class QuizzController extends Controller {
      */
     @FXML
     void handleRemAns(ActionEvent event) {
-
+    	//TODO Nicolas
     }
 
     /**
@@ -156,7 +142,54 @@ public class QuizzController extends Controller {
      */
     @FXML
     void handleRemQuest(ActionEvent event) {
+    	//TODO Antoine
+    }
+    
+    /**
+     * Saves Current Question
+     * @param event
+     */
+    @FXML
+    void handleSaveQuest(ActionEvent event) {
+    	Question q = tableQuestionsList.getSelectionModel().getSelectedItem();
+    	
+    	//Empty Fields Check
+    	if(tfQuestLibelle.getText().isEmpty()){
+    		GraphicUtils.showAlert("Erreur", "Impossible d'enregitrer la question", "Veuillez renseigner le libellé de la question", AlertType.ERROR);
+    		return;
+    	}
+    	if(!cbOpenQuest.isSelected() && !cbMultiQuest.isSelected()){
+    		GraphicUtils.showAlert("Erreur", "Impossible d'enregitrer la question", "Veuillez renseigner le type de la question", AlertType.ERROR);
+    		return;
+    	}  
+    	if(cbOpenQuest.isSelected() && tfUniqueAns.getText().isEmpty()){
+    		GraphicUtils.showAlert("Erreur", "Impossible d'enregitrer la question", "Veuillez renseigner la réponse à la question", AlertType.ERROR);
+    		return;
+    	}
+    	
+    	if(q != null){
+    		//Update
+    		q.setLibelle(tfQuestLibelle.getText());
+    		
+    		try {
+				mainApp.getWebGate().update(q, q.getId());
+    			showQuizzQuestions(q);
 
+			} catch (Exception e) {
+				GraphicUtils.showException(e);
+			}
+    		
+    		if(q.isType()){
+    			//Save Ans.
+    		}
+    	}else{
+    		//Insert
+    		Question newQuest = new Question();
+    		newQuest.setIdUtilisateur(mainApp.getUser().getId());
+    		newQuest.setLibelle(tfQuestLibelle.getText());
+    		newQuest.setType(cbOpenQuest.isSelected());
+    		//newQuest.
+    	}
     }
     
 
@@ -167,18 +200,20 @@ public class QuizzController extends Controller {
 	public void setQuizz(Questionnaire quizz) {
 		this.quizz = quizz;
 		showQuizzGeneral();
-		showQuizzQuestions();
+		showQuizzQuestions(null);
 	}
 	
 	private void showQuizzGeneral(){
 		//TODO - Nicolas
 	}
 	
-	private void showQuizzQuestions(){
+	private void showQuizzQuestions(Question q){
+		tableQuestionsList.getItems().clear();
 		tableQuestionsList.setItems(FXCollections.observableArrayList(this.quizz.getQuestions()));
-		showQuestion(null);
+		tableQuestionsList.getSelectionModel().select(q);
+		showQuestion(q);
 	}
-	
+		
 	private void showQuestion(Question q){
 		if(q != null){
 			
@@ -232,8 +267,12 @@ public class QuizzController extends Controller {
 		cbOpenQuest.setSelected(isOpenNew);
 		cbMultiQuest.setSelected(!isOpenNew);
 		Question q = tableQuestionsList.getSelectionModel().getSelectedItem();
+		if(q == null){
+			q = new Question();
+		}
 		q.setType(isOpenNew);
 		showAnswers(q);
+
 	}
 
 }

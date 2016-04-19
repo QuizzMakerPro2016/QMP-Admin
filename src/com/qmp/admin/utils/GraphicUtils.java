@@ -55,7 +55,6 @@ public class GraphicUtils {
 		try {
 			menuOverview = (AnchorPane) loaderMenu.load();
 			mainApp.getRootLayout().setLeft(menuOverview);
-
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
