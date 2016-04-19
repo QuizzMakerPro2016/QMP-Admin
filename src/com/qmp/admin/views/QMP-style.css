@@ -91,18 +91,18 @@ BorderPane{
 
 /*button*/
 .button{
-	-fx-background-color: #1976d2;
+	-fx-background-color: #2C98D4;
 	-fx-text-base-color:#FFFFFF;
 	-fx-background-radius:0px;
 }
 
 .button:hover{
-    -fx-background-color: derive(#1976d2, 20%);
+    -fx-background-color: derive(#2C98D4, 20%);
 }
  
 .button:pressed, .button:default:hover:pressed
 {
-  -fx-background-color: derive(#1976d2, 40%);
+  -fx-background-color: derive(#2C98D4, 40%);
   -fx-text-fill: #FFFFFF;
 }
 
@@ -113,16 +113,16 @@ BorderPane{
 }
 
 #btmenu:hover{
-    -fx-background-color: #1976d2;
+    -fx-background-color: #2C98D4;
 }
 
 #btmenu:hover:pressed{
-    -fx-background-color: derive(#1976d2, 40%);
+    -fx-background-color: derive(#2C98D4, 40%);
     -fx-text-fill: #ffffff;
 }
 
 #btmenu:focused{
-    -fx-background-color: derive(#1976d2, 15%);
+    -fx-background-color: derive(#2C98D4, 15%);
     -fx-text-fill: #FFFFFF;
 }
 
@@ -135,12 +135,12 @@ BorderPane{
  
 .button:default
 {
-    -fx-background-color: #008287;
+    -fx-background-color: #2C98D4;
     -fx-text-fill: #ffffff;
 }
  
 .button:default:hover{
-    -fx-background-color: #219297;
+    -fx-background-color: #2C98D4;
 }
 
 /*		+-----------------------+	*/
