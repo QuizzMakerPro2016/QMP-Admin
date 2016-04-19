@@ -2,6 +2,7 @@ package com.qmp.admin.utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -44,12 +45,12 @@ public class HttpUtils {
 		} finally {
 			httpClient.close();
 		}
-		System.out.println(result);
+		Logger.log(result);
 		return result;
 	}
 
 	public static String getHTML(String urlToRead) throws ClientProtocolException, IOException {
-		System.out.println("GET:" + urlToRead);
+		Logger.log("GET:" + urlToRead);
 		String result = "";
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		try {
@@ -68,22 +69,22 @@ public class HttpUtils {
 		} finally {
 			httpClient.close();
 		}
-		System.out.println(result);
+		Logger.log(result);
 		return result;
 	}
 
 	public static String postHTML(String urlToRead, Map<String, Object> params) throws ClientProtocolException, IOException {
-		System.out.println("POST:" + urlToRead);
+		Logger.log("POST:" + urlToRead);
 		return sendHTML(new HttpPost(urlToRead), params);
 	}
 
 	public static String putHTML(String urlToRead, Map<String, Object> params) throws ClientProtocolException, IOException {
-		System.out.println("PUT:" + urlToRead);
+		Logger.log("PUT:" + urlToRead);
 		return sendHTML(new HttpPut(urlToRead), params);
 	}
 
 	public static String deleteHTML(String urlToRead) throws ClientProtocolException, IOException {
-		System.out.println("DELETE:" + urlToRead);
+		Logger.log("DELETE:" + urlToRead);
 		String result = "";
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		try {
@@ -93,7 +94,7 @@ public class HttpUtils {
 		} finally {
 			httpClient.close();
 		}
-		System.out.println(result);
+		Logger.log(result);
 		return result;
 	}
 }
