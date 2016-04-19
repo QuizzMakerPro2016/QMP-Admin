@@ -5,10 +5,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import com.qmp.admin.controllers.MainController;
-import com.qmp.admin.models.Domaine;
-import com.qmp.admin.models.Groupe;
-import com.qmp.admin.models.Questionnaire;
-import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
 import com.qmp.admin.utils.WebGate;
@@ -25,11 +21,11 @@ import javafx.stage.Stage;
 
 public class MainApp extends Application implements Observer {
 
-    private Stage primaryStage;
-    private BorderPane rootLayout;
-    private WebGate webGate;
+	private Stage primaryStage;
+	private BorderPane rootLayout;
+	private WebGate webGate;
 
-    /**
+	/**
 	 * @return the webGate
 	 */
 	public WebGate getWebGate() {
@@ -37,112 +33,112 @@ public class MainApp extends Application implements Observer {
 	}
 
 	private Utilisateur user;
-    
 
-    private TaskQueue taskQueue;
-    
-    private ObservableMap<String, Object> data;
+	private TaskQueue taskQueue;
+
+	private ObservableMap<String, Object> data;
 	private List<Utilisateur> list;
 
-    /**
-     * Constructor
-     */
-    public MainApp() {
-    	super();
+	/**
+	 * Constructor
+	 */
+	public MainApp() {
+		super();
 		webGate = new WebGate();
 		taskQueue = new TaskQueue("mainFx", webGate);
 		taskQueue.addObserver(this);
 
-
 		webGate.getList(Utilisateur.class);
-    }
-    
-    @Override
-    public void start(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("QuizzMakerPro 2016 Admin");
+	}
 
-        initRootLayout();
+	@Override
+	public void start(Stage primaryStage) {
+		this.primaryStage = primaryStage;
+		this.primaryStage.setTitle("QuizzMakerPro 2016 Admin");
 
-       //Load Main Page
-        try {
-            // Load person overview.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/ConnexionLayout.fxml"));
-            AnchorPane personOverview = (AnchorPane) loader.load();
-            
-            // Set person overview into the center of root layout.
-            rootLayout.setCenter(personOverview);
+		initRootLayout();
 
-            // Give the controller access to the main app.
-            MainController controller = loader.getController();
-            controller.setMainApp(this);
+		// Load Main Page
+		try {
+			// Load person overview.
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/ConnexionLayout.fxml"));
+			AnchorPane personOverview = (AnchorPane) loader.load();
 
-        } catch (Exception e) {
-            GraphicUtils.showException(e);
-        }
-        taskQueue.start();
-        
+			// Set person overview into the center of root layout.
+			rootLayout.setCenter(personOverview);
+
+			// Give the controller access to the main app.
+			MainController controller = loader.getController();
+			controller.setMainApp(this);
+
+		} catch (Exception e) {
+			GraphicUtils.showException(e);
+		}
+		taskQueue.start();
+
 		list = webGate.getList(Utilisateur.class);
 		loadLists();
 
-    }
+	}
 
-    /**
-     * Initializes the root layout.
-     */
-    public void initRootLayout() {
-        try {
-            // Load root layout from fxml file.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/RootLayout.fxml"));
-            rootLayout = (BorderPane) loader.load();
+	/**
+	 * Initializes the root layout.
+	 */
+	public void initRootLayout() {
+		try {
+			// Load root layout from fxml file.
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("/com/qmp/admin/views/RootLayout.fxml"));
+			rootLayout = (BorderPane) loader.load();
 
-            // Show the scene containing the root layout.
-            Scene scene = new Scene(rootLayout);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        } catch (Exception e) {
-        	GraphicUtils.showException(e);
-        }
-    }
+			// Show the scene containing the root layout.
+			Scene scene = new Scene(rootLayout);
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			GraphicUtils.showException(e);
+		}
+	}
 
-    /**
-     * Returns the main stage.
-     * @return
-     */
-    public Stage getPrimaryStage() {
-        return primaryStage;
-    }
+	/**
+	 * Returns the main stage.
+	 * 
+	 * @return
+	 */
+	public Stage getPrimaryStage() {
+		return primaryStage;
+	}
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+	public static void main(String[] args) {
+		launch(args);
+	}
 
-    public void setUser(Utilisateur user){
-    	this.user = user;
-    }
-    
-    public Utilisateur getUser(){
-    	return this.user;
-    }
-    public boolean isLogged(){
-    	if (this.getUser() != null){
-    		return true;
-    	}else{
-    		return false;
-    	}
-    }
-    
-    public boolean isAdmin(){
-    	if (this.getUser().getRang().getLibelle().equals("admin")){
-    		return true;
-    	}else{
-    		return false;
-    	}
-    }
-    
-    @SuppressWarnings("unchecked")
+	public void setUser(Utilisateur user) {
+		this.user = user;
+	}
+
+	public Utilisateur getUser() {
+		return this.user;
+	}
+
+	public boolean isLogged() {
+		if (this.getUser() != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean isAdmin() {
+		if (this.getUser().getRang().getLibelle().equals("admin")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public void update(Observable o, Object arg) {
 		Object[] args = (Object[]) arg;
@@ -152,17 +148,9 @@ public class MainApp extends Application implements Observer {
 	}
 
 	public void loadLists() {
-		taskQueue.getAll(Rang.class);
-		taskQueue.getAll(Utilisateur.class, 2);
-		taskQueue.getAll(Domaine.class);
-		taskQueue.getAll(Groupe.class, 2);
-		taskQueue.getAll(Questionnaire.class, 2);
-		
-		List<Questionnaire> test = webGate.getList(Questionnaire.class);
-		System.out.println(test);
 	}
-	
-	public BorderPane getRootLayout(){
+
+	public BorderPane getRootLayout() {
 		return this.rootLayout;
 	}
 
