@@ -135,12 +135,14 @@ BorderPane{
  
 .button:default
 {
+
     -fx-background-color: #2C98D4;
     -fx-text-fill: #ffffff;
 }
  
 .button:default:hover{
     -fx-background-color: #2C98D4;
+    -fx-text-fill: #ffffff;
 }
 
 /*		+-----------------------+	*/
