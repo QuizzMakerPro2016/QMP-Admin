@@ -179,7 +179,7 @@ BorderPane{
 /*		+-----------------------+	*/
 
 .table-view .table-column:hover{
-    -fx-background-color: derive(#37474f,30%);
+    -fx-background-color: derive(#2C98D4,30%);
 }
 .table-view .column-header{
 	-fx-background-color:derive(#37474f, 20%);
@@ -195,7 +195,7 @@ BorderPane{
     -fx-text-fill:#ffffff;
 }
 .table-view:focused .table-row-cell:filled:focused:selected {
-    -fx-background-color: -fx-focus-color;
+    -fx-background-color: #2C98D4;
 }
 
 .table-view .column-header-background {
