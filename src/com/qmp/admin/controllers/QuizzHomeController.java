@@ -11,11 +11,13 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 
 public class QuizzHomeController extends Controller{
@@ -44,7 +46,7 @@ public class QuizzHomeController extends Controller{
 	@FXML
 	public void initialize(){
 		btnRemQuizz.setVisible(false);
-		btnEditQuizz.setVisible(true);
+		btnEditQuizz.setVisible(false);
 		
 		nameColumn.setCellValueFactory((CellDataFeatures<Questionnaire, String> feature) -> {
 			Questionnaire quizz = feature.getValue();
@@ -57,11 +59,30 @@ public class QuizzHomeController extends Controller{
 		dateColumn.setCellValueFactory((CellDataFeatures<Questionnaire, String> feature) -> {
 			Questionnaire quizz = feature.getValue();
 			return new SimpleObjectProperty<>(quizz.getDate().toString());
-		});	
+		});
+		tableQuizzList.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent event) {
+			    if (event.getClickCount()>1) {
+			    	QuizzController c = (QuizzController) gUtils.switchView("QuizzLayout");
+			    	c.setQuizz(tableQuizzList.getSelectionModel().getSelectedItem());    
+			    }
+			}
+		});
 	}
+	
+	/**
+	 * Display buttons
+	 * @param event
+	 */
+    @FXML
+    void handleQuizzList(MouseEvent event) {
+    	btnRemQuizz.setVisible(true);
+		btnEditQuizz.setVisible(true);
+    }
 
     /**
-	 * Edit Quizz
+	 * Edit Quizz and pass data to quizzLayout
 	 * @param event
 	 */
     @FXML
