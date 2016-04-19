@@ -11,7 +11,7 @@
 
 <AnchorPane styleClass="background" stylesheets="@QMP-style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.qmp.admin.controllers.QuizzHomeController">
    <children>
-      <TableView layoutX="300.0" layoutY="200.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="100.0">
+      <TableView fx:id="tableQuizzList" layoutX="300.0" layoutY="200.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="100.0">
         <columns>
           <TableColumn fx:id="nameColumn" minWidth="-1.0" prefWidth="231.0" text="Nom" />
           <TableColumn fx:id="domainColumn" minWidth="-1.0" prefWidth="231.0" text="Domaine" />
