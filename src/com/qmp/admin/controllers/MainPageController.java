@@ -59,9 +59,9 @@ public class MainPageController extends Controller {
     
     @FXML
     void handleQuizz(ActionEvent event) throws IOException{
-    	QuizzController c = (QuizzController) gUtils.switchView("QuizzLayout");
-    	c.setQuizz(mainApp.getWebGate().getList(Questionnaire.class).get(0));
-
+    	gUtils.switchView("QuizzHomeLayout");
+    	//QuizzController c = (QuizzController) gUtils.switchView("QuizzLayout");
+    	//c.setQuizz(mainApp.getWebGate().getList(Questionnaire.class).get(0));
     }
     
 }
