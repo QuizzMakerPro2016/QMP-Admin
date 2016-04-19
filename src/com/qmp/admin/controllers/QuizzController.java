@@ -190,7 +190,14 @@ public class QuizzController extends Controller {
     		newQuest.setIdUtilisateur(mainApp.getUser().getId());
     		newQuest.setLibelle(tfQuestLibelle.getText());
     		newQuest.setType(cbOpenQuest.isSelected());
-    		//newQuest.
+    		quizz.getQuestions().add(newQuest);
+    		showQuizzQuestions(newQuest);
+    		
+    		//Save quizz - get ID
+    		//Save Question - get ID
+    		//Add to quizz in DB
+    		
+    		
     	}
     }
 
@@ -208,11 +215,11 @@ public class QuizzController extends Controller {
 		// TODO - Nicolas
 	}
 	
-	private void showQuizzQuestions(Question q){
+	private void showQuizzQuestions(Question selectedQuestion){
 		tableQuestionsList.getItems().clear();
 		tableQuestionsList.setItems(FXCollections.observableArrayList(this.quizz.getQuestions()));
-		tableQuestionsList.getSelectionModel().select(q);
-		showQuestion(q);
+		tableQuestionsList.getSelectionModel().select(selectedQuestion);
+		showQuestion(selectedQuestion);
 	}
 		
 	private void showQuestion(Question q){

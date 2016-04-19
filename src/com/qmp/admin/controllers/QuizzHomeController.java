@@ -64,7 +64,6 @@ public class QuizzHomeController extends Controller{
 	 */
     @FXML
     void handleEdit(ActionEvent event) {
-
     }
     
     /**
