@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.qmp.admin.models.Question;
+import com.qmp.admin.models.Question_questionnaire;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Reponse;
 import com.qmp.admin.utils.GraphicUtils;
@@ -181,9 +182,6 @@ public class QuizzController extends Controller {
 				GraphicUtils.showException(e);
 			}
     		
-    		if(q.isType()){
-    			//Save Ans.
-    		}
     	}else{
     		//Insert
     		Question newQuest = new Question();
@@ -193,12 +191,56 @@ public class QuizzController extends Controller {
     		quizz.getQuestions().add(newQuest);
     		showQuizzQuestions(newQuest);
     		
-    		//Save quizz - get ID
-    		//Save Question - get ID
-    		//Add to quizz in DB
+
+    		//SaveQuizz
+    		//handleSaveQuizz()
+    		
+    		try {
+				String resQuest = mainApp.getWebGate().add(newQuest);
+				q = (Question) mainApp.getWebGate().getObjectFromJson(resQuest, Question.class);				
+			} catch (IllegalArgumentException | IllegalAccessException | IOException e) {
+				GraphicUtils.showException(e);
+			}
     		
     		
     	}
+    	
+    	if(q.getId() < 1){
+    		GraphicUtils.showAlert("Erreur", "Impossible de lier la question au quizz", "Erreur lors de l'enregistrement de la question", AlertType.ERROR);
+    		return;
+    	}
+    	
+		Question_questionnaire link = new Question_questionnaire();
+		link.setIdQuestion(q.getId());
+		link.setIdQuestionnaire(quizz.getId());
+		
+		try {
+			//TESTER SI PAS DEJA EXISTANT
+			String resLink = mainApp.getWebGate().add(link);
+		} catch (Exception e) {
+			GraphicUtils.showException(e);
+		}
+		
+		if(q.isType()){
+
+			Reponse rep = new Reponse();
+			rep.setIdQuestion(q.getId());
+			rep.setGood(true);
+			rep.setLibelle(tfUniqueAns.getText());			
+			
+			try {
+				int id  = Integer.valueOf(tfUniqueAns.getId());
+				if( id > 0){
+					rep.setId(id);
+					mainApp.getWebGate().update(rep, rep.getId());
+				}else{
+					String resRep = mainApp.getWebGate().add(rep);
+					Reponse repRes = (Reponse) mainApp.getWebGate().getObjectFromJson(resRep, Reponse.class);
+				}
+			} catch (Exception e) {
+				GraphicUtils.showException(e);
+			}
+		}
     }
 
 	public Questionnaire getQuizz() {
@@ -225,11 +267,10 @@ public class QuizzController extends Controller {
 	private void showQuestion(Question q){
 		if(q != null){
 			
-			if(q.getReponses().isEmpty()){
+			if(q.getReponses().isEmpty() && q.getId() > 0){
 				List<Reponse> rep = null;
 				try {
-					rep = (List<Reponse>) mainApp.getWebGate().getMembers(Question.class, q.getId(), "reponses",
-							Reponse.class);
+					rep = (List<Reponse>) mainApp.getWebGate().getMembers(Question.class, q.getId(), "reponses", Reponse.class);
 					q.setReponses(rep);
 				} catch (IOException e) {
 					GraphicUtils.showException(e);
@@ -253,14 +294,14 @@ public class QuizzController extends Controller {
 			// Open
 			tfUniqueAns.setVisible(true);
 			tableAnsList.setVisible(false);
+			cbMultiQuest.setSelected(false);
+			cbOpenQuest.setSelected(true);
 			if (q.getReponses().size() < 1) {
 				tfUniqueAns.setId("0");
 				return;
 			}
 			tfUniqueAns.setText(q.getReponses().get(0).getLibelle());
 			tfUniqueAns.setId(String.valueOf(q.getReponses().get(0).getId()));
-			cbMultiQuest.setSelected(false);
-			cbOpenQuest.setSelected(true);
 		} else {
 			// Multiple
 			tfUniqueAns.setVisible(false);
