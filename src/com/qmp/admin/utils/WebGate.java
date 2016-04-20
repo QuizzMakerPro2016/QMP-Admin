@@ -131,6 +131,10 @@ public class WebGate {
 	public <T> String delete(T object, Object id) throws ClientProtocolException, IOException {
 		return HttpUtils.deleteHTML(baseUrl + getControllerUrl(object.getClass()) + "/" + String.valueOf(id));
 	}
+	
+	public String deleteRelation(Object object, Object id1, Object id2) throws ClientProtocolException, IOException {
+		return HttpUtils.deleteHTML(baseUrl + getControllerUrl(object.getClass()) + "/" + String.valueOf(id1) + "/" + String.valueOf(id2));
+	}
 
 	public <T> String add(T object) throws ClientProtocolException, IllegalArgumentException, IllegalAccessException, IOException {
 		return HttpUtils.putHTML(baseUrl + getControllerUrl(object.getClass()) + "/add", beanToMap(object));
@@ -154,6 +158,13 @@ public class WebGate {
 		if (wgList.getTimestamp() == null)
 			return true;
 		String jsonO = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/modif/" + wgList.getTimestamp());
+		Gson gson = MyGsonBuilder.create();
+		boolean result = gson.fromJson(jsonO, Boolean.class);
+		return result;
+	}
+	
+	public boolean doRelationExists(Class clazz, int idOne, int idTwo) throws ClientProtocolException, IOException {
+		String jsonO = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/exist/" + String.valueOf(idOne) + "/" + String.valueOf(idTwo));
 		Gson gson = MyGsonBuilder.create();
 		boolean result = gson.fromJson(jsonO, Boolean.class);
 		return result;

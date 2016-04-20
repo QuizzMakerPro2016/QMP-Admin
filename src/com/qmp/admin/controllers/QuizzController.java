@@ -188,9 +188,7 @@ public class QuizzController extends Controller {
     		newQuest.setIdUtilisateur(mainApp.getUser().getId());
     		newQuest.setLibelle(tfQuestLibelle.getText());
     		newQuest.setType(cbOpenQuest.isSelected());
-    		quizz.getQuestions().add(newQuest);
-    		showQuizzQuestions(newQuest);
-    		
+    		quizz.getQuestions().add(newQuest);    		
 
     		//SaveQuizz
     		//handleSaveQuizz()
@@ -210,17 +208,20 @@ public class QuizzController extends Controller {
     		return;
     	}
     	
+    	//Affecting Question to quizz (if necessary)
 		Question_questionnaire link = new Question_questionnaire();
 		link.setIdQuestion(q.getId());
 		link.setIdQuestionnaire(quizz.getId());
 		
 		try {
-			//TESTER SI PAS DEJA EXISTANT
-			String resLink = mainApp.getWebGate().add(link);
+			boolean isQuestionLinked = mainApp.getWebGate().doRelationExists(Question_questionnaire.class, link.getIdQuestion(), link.getIdQuestionnaire());
+			if(!isQuestionLinked)
+				mainApp.getWebGate().add(link);
 		} catch (Exception e) {
 			GraphicUtils.showException(e);
 		}
 		
+		//IF Open Question, auto save answer
 		if(q.isType()){
 
 			Reponse rep = new Reponse();
@@ -236,11 +237,13 @@ public class QuizzController extends Controller {
 				}else{
 					String resRep = mainApp.getWebGate().add(rep);
 					Reponse repRes = (Reponse) mainApp.getWebGate().getObjectFromJson(resRep, Reponse.class);
+					q.getReponses().add(repRes);
 				}
 			} catch (Exception e) {
 				GraphicUtils.showException(e);
 			}
 		}
+		showQuizzQuestions(q);
     }
 
 	public Questionnaire getQuizz() {
