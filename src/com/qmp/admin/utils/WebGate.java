@@ -3,6 +3,7 @@ package com.qmp.admin.utils;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.apache.http.client.ClientProtocolException;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Utilisateur;
 
 import javafx.collections.ObservableList;
@@ -121,8 +123,12 @@ public class WebGate {
 	}
 	
 	public <T> List<T> getMembers(Class clazz, Object id, String member, Class<T> memberClass) throws ClientProtocolException, IOException {
+		return getMembers(clazz, id, member, memberClass, 1);
+	}
+	
+	public <T> List<T> getMembers(Class clazz, Object id, String member, Class<T> memberClass, int cd) throws ClientProtocolException, IOException {
 		List<T> result = new ArrayList<T>();
-		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/" + id + "/all/" + member);
+		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/" + id + "/all/" + member+"/"+String.valueOf(cd));
 		Gson gson = MyGsonBuilder.create();
 		result = gson.fromJson(jsonUsers, new ListType<T>(memberClass));
 		return result;
@@ -132,8 +138,9 @@ public class WebGate {
 		return HttpUtils.deleteHTML(baseUrl + getControllerUrl(object.getClass()) + "/" + String.valueOf(id));
 	}
 	
-	public String deleteRelation(Object object, Object id1, Object id2) throws ClientProtocolException, IOException {
-		return HttpUtils.deleteHTML(baseUrl + getControllerUrl(object.getClass()) + "/" + String.valueOf(id1) + "/" + String.valueOf(id2));
+	@SuppressWarnings("unchecked")
+	public String deleteRelation(Class clazz, Object id1, Object id2) throws ClientProtocolException, IOException {
+		return HttpUtils.deleteHTML(baseUrl + getControllerUrl(clazz) + "/" + String.valueOf(id1) + "/" + String.valueOf(id2));
 	}
 
 	public <T> String add(T object) throws ClientProtocolException, IllegalArgumentException, IllegalAccessException, IOException {
@@ -194,5 +201,6 @@ public class WebGate {
 	public void clearList(Class<Object> clazz) {
 		getList(clazz).clear();
 	}
+
 
 }

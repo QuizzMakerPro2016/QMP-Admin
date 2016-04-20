@@ -1,10 +1,13 @@
 package com.qmp.admin.controllers;
 
+import java.io.IOException;
+
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
+import com.qmp.admin.utils.GraphicUtils;
 import com.sun.media.jfxmedia.logging.Logger;
 
 import javafx.beans.property.SimpleObjectProperty;
@@ -39,7 +42,12 @@ public class QuizzHomeController extends Controller{
     @Override
     public void setMainApp(MainApp mainApp) {
     	super.setMainApp(mainApp);
-    	ObservableList<Questionnaire> quizzObs = mainApp.getWebGate().getList(Questionnaire.class);
+    	ObservableList<Questionnaire> quizzObs = null;
+		try {
+			quizzObs = FXCollections.observableArrayList(mainApp.getWebGate().getMembers(Utilisateur.class, mainApp.getUser().getId(), "questionnaires", Questionnaire.class, 2));
+		} catch (Exception e) {
+			GraphicUtils.showException(e);
+		}
     	tableQuizzList.setItems(quizzObs);
     }
     

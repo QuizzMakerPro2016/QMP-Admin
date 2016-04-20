@@ -145,7 +145,19 @@ public class QuizzController extends Controller {
      */
     @FXML
     void handleRemQuest(ActionEvent event) {
-    	//TODO Antoine
+    	Question q = tableQuestionsList.getSelectionModel().getSelectedItem();
+    	if(q == null){
+    		GraphicUtils.showAlert("Erreur", "Aucune question sélectionnée", "...", AlertType.ERROR);
+    		return; 
+    	}
+    	
+    	try {
+			mainApp.getWebGate().deleteRelation(Question_questionnaire.class, this.quizz.getId(), q.getId());
+			this.quizz.getQuestions().remove(q);
+			showQuizzQuestions(null);
+		} catch (Exception e) {
+			GraphicUtils.showException(e);
+		}
     }
     
     /**
@@ -227,7 +239,8 @@ public class QuizzController extends Controller {
 			Reponse rep = new Reponse();
 			rep.setIdQuestion(q.getId());
 			rep.setGood(true);
-			rep.setLibelle(tfUniqueAns.getText());			
+			// Makes some weird things....
+			rep.setLibelle(tfUniqueAns.getText());
 			
 			try {
 				int id  = Integer.valueOf(tfUniqueAns.getId());

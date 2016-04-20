@@ -83,7 +83,7 @@ public class MainPageController extends Controller {
 
 	@FXML
 	void handleQuizz(ActionEvent event) throws IOException {
-		mainApp.getTaskQueue().getAll(Questionnaire.class, 2);
+		//mainApp.getTaskQueue().getAll(Questionnaire.class, 2);
 		gUtils.switchView("QuizzHomeLayout");
 
 	}
