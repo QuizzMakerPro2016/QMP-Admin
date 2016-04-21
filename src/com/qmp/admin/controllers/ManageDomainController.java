@@ -16,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 
 public class ManageDomainController extends Controller {
 
@@ -101,6 +102,12 @@ public class ManageDomainController extends Controller {
 
     @FXML
     void handleSave(ActionEvent event) {
+    	//Empty Fields Check
+    	if(tfLibelle.getText().isEmpty()){
+    		GraphicUtils.showAlert("Erreur", "Impossible d'enregitrer le domaine", "Veuillez renseigner le libellé du domaine", AlertType.ERROR);
+    		return;
+    	}
+    	
     	int selInxdex = tableDomainList.getSelectionModel().getSelectedIndex();
 		
 		if (selInxdex >= 0) {

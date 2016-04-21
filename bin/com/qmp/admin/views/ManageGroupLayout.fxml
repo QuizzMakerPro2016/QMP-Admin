@@ -83,11 +83,10 @@
                                        <children>
                                           <ButtonBar layoutX="70.0" layoutY="322.0" prefHeight="35.0" prefWidth="200.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.rightAnchor="8.0">
                                             <buttons>
-                                                <Button mnemonicParsing="false" text="Ajouter" />
-                                              <Button minWidth="46.0" mnemonicParsing="false" prefHeight="9.0" text="Supprimer" />
+                                                <Button fx:id="addUserButton" mnemonicParsing="false" onAction="#handleAddUser" text="Ajouter" />
+                                              <Button fx:id="deleteUserButton" minWidth="46.0" mnemonicParsing="false" onAction="#handleDeleteUser" prefHeight="9.0" text="Retirer" />
                                             </buttons>
                                           </ButtonBar>
-                                          <Button mnemonicParsing="false" onAction="#handleNew" text="Nouveau" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="196.0" AnchorPane.topAnchor="25.0" />
                                           <TableView fx:id="userList" layoutX="34.0" layoutY="36.0" prefHeight="324.0" prefWidth="266.0" AnchorPane.bottomAnchor="29.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <columns>
                                               <TableColumn fx:id="userColumn" prefWidth="267.0" text="Utilisateurs du groupe" />
@@ -110,8 +109,8 @@
                                           </TableView>
                                           <ButtonBar layoutX="66.0" layoutY="322.0" prefHeight="35.0" prefWidth="200.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.rightAnchor="8.0">
                                              <buttons>
-                                                <Button minWidth="46.0" mnemonicParsing="false" prefHeight="9.0" text="Ajouter" />
-                                                <Button mnemonicParsing="false" text="Supprimer" />
+                                                <Button fx:id="addQuizzButton" minWidth="46.0" mnemonicParsing="false" onAction="#handleAddQuizz" prefHeight="9.0" text="Ajouter" />
+                                                <Button fx:id="deleteQuizzButton" mnemonicParsing="false" onAction="#handleDeleteQuizz" text="Retirer" />
                                              </buttons>
                                           </ButtonBar>
                                        </children>
