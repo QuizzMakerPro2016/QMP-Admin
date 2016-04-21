@@ -44,6 +44,12 @@ public class ManageGroupController extends Controller {
 	private TableColumn<Utilisateur, String> userColumn;
 
 	@FXML
+	private TableColumn<Utilisateur, String> userIncludedColumn;
+
+	@FXML
+	private TableColumn<Questionnaire, String> quizzIncludedColumn;
+
+	@FXML
 	private TableView<Questionnaire> quizzList;
 
 	@FXML
