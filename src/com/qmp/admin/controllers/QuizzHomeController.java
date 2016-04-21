@@ -71,6 +71,8 @@ public class QuizzHomeController extends Controller{
 		tableQuizzList.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
+				btnRemQuizz.setVisible(true);
+				btnEditQuizz.setVisible(true);
 			    if (event.getClickCount()>1) {
 			    	QuizzController c = (QuizzController) gUtils.switchView("QuizzLayout");
 			    	c.setQuizz(tableQuizzList.getSelectionModel().getSelectedItem());    
@@ -78,16 +80,12 @@ public class QuizzHomeController extends Controller{
 			}
 		});
 	}
-	
 	/**
-	 * Display buttons
-	 * @param event
+	 * Add Quizz
 	 */
-    @FXML
-    void handleQuizzList(MouseEvent event) {
-    	btnRemQuizz.setVisible(true);
-		btnEditQuizz.setVisible(true);
-    }
+	public void addQuizz(){
+		
+	}
 
     /**
 	 * Edit Quizz and pass data to quizzLayout
