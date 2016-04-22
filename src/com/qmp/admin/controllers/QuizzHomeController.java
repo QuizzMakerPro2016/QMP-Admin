@@ -1,14 +1,9 @@
 package com.qmp.admin.controllers;
 
-import java.io.IOException;
-
 import com.qmp.admin.MainApp;
-import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Questionnaire;
-import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
-import com.sun.media.jfxmedia.logging.Logger;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -17,11 +12,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 
 public class QuizzHomeController extends Controller{
 	@FXML

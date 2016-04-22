@@ -3,7 +3,6 @@ package com.qmp.admin.utils;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +11,6 @@ import org.apache.http.client.ClientProtocolException;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Utilisateur;
 
 import javafx.collections.ObservableList;
