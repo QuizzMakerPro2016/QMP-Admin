@@ -2,7 +2,6 @@ package com.qmp.admin.controllers;
 
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Groupe;
-import com.qmp.admin.models.Groupe_utilisateur;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
@@ -13,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
@@ -51,21 +51,33 @@ public class ManageGroupController extends Controller {
 	private TableColumn<Questionnaire, String> quizzColumn;
 
 	@FXML
-	private Button addUserButton;
+	private Button editUserButton;
+	
+	@FXML
+	private Button editQuizzButton;
 
 	@FXML
-	private Button deleteUserButton;
-
+	private TableView<Questionnaire> quizzIncludedList;
+	 
 	@FXML
-	private Button addQuizzButton;
-
+	private TableColumn<Questionnaire, String> quizzIncludedColumn;
+	
 	@FXML
-	private Button deleteQuizzButton;
-
+	private TableView<Questionnaire> quizzActualIncludedList;
+	 
+	@FXML
+	private TableColumn<Questionnaire, String> quizzActualIncludedColumn;
+	
+	@FXML
+	private TabPane tabPane;
+	
+	private ObservableList<Questionnaire> allQuizz;
+	
 	@Override
 	public void setMainApp(MainApp mainApp) {
 		super.setMainApp(mainApp);
 		ObservableList<Groupe> groupObs = mainApp.getWebGate().getList(Groupe.class);
+		this.allQuizz = mainApp.getWebGate().getList(Questionnaire.class);
 		groupList.setItems(groupObs);
 	}
 
@@ -170,23 +182,45 @@ public class ManageGroupController extends Controller {
 	}
 
 	@FXML
-	void handleAddUser(ActionEvent event) {
-
+	void handleEditUser(ActionEvent event){
+		tabPane.getSelectionModel().select(1);
 	}
-
+	
 	@FXML
-	void handleAddQuizz(ActionEvent event) {
-
+	void handleEditQuizz(ActionEvent event){
+		tabPane.getSelectionModel().select(1);
+		//Liste des Quizz dans le groupe
+		ObservableList<Questionnaire> actualQuizz = FXCollections.observableArrayList(groupList.getSelectionModel().getSelectedItem().getQuestionnaires());
+		quizzActualIncludedList.setItems(actualQuizz);
+		
+		//Liste de tous les autres Quizz
+		this.allQuizz.removeAll(actualQuizz);
+		quizzIncludedList.setItems(allQuizz);
+		
+		quizzIncludedColumn.setCellValueFactory((CellDataFeatures<Questionnaire, String> feature) -> {
+			Questionnaire quizz = feature.getValue();
+			return new SimpleObjectProperty<>(quizz.getLibelle());
+		});
+		
+		quizzActualIncludedColumn.setCellValueFactory((CellDataFeatures<Questionnaire, String> feature) -> {
+			Questionnaire quizz = feature.getValue();
+			return new SimpleObjectProperty<>(quizz.getLibelle());
+		});
 	}
-
+	
 	@FXML
-	void handleDeleteQuizz(ActionEvent event) {
-
+	void handleQuizzAdd(ActionEvent event){
+		
 	}
-
+	
 	@FXML
-	void handleDeleteUser(ActionEvent event) {
-
+	void handleQuizzDelete(ActionEvent event){
+		
 	}
-
+	
+	@FXML
+	void handleCancel(ActionEvent event){
+		tabPane.getSelectionModel().select(0);
+	}
+	
 }
