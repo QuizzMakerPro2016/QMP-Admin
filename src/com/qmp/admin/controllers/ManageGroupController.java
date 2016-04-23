@@ -45,12 +45,6 @@ public class ManageGroupController extends Controller {
 	private TableColumn<Utilisateur, String> userColumn;
 
 	@FXML
-	private TableColumn<Utilisateur, Boolean> userIncludedColumn;
-
-	@FXML
-	private TableColumn<Questionnaire, String> quizzIncludedColumn;
-
-	@FXML
 	private TableView<Questionnaire> quizzList;
 
 	@FXML
@@ -72,7 +66,6 @@ public class ManageGroupController extends Controller {
 	public void setMainApp(MainApp mainApp) {
 		super.setMainApp(mainApp);
 		ObservableList<Groupe> groupObs = mainApp.getWebGate().getList(Groupe.class);
-		ObservableList<Groupe_utilisateur> groupuserObs = mainApp.getWebGate().getList(Groupe_utilisateur.class);
 		groupList.setItems(groupObs);
 	}
 
@@ -98,28 +91,6 @@ public class ManageGroupController extends Controller {
 			Questionnaire quizz = feature.getValue();
 			return new SimpleObjectProperty<>(quizz.getLibelle());
 		});
-
-		/*
-		 * userList.setEditable(true); userIncludedColumn.setEditable(true);
-		 * userIncludedColumn .setCellFactory(new
-		 * Callback<TableColumn<Utilisateur, Boolean>, TableCell<Utilisateur,
-		 * Boolean>>() {
-		 * 
-		 * @Override public TableCell<Utilisateur, Boolean>
-		 * call(TableColumn<Utilisateur, Boolean> p) { return new
-		 * CheckBoxTableCell<>(); } });
-		 */
-		/*
-		 * userIncludedColumn .setCellValueFactory(new
-		 * Callback<CellDataFeatures<Utilisateur, Boolean>,
-		 * ObservableValue<Boolean>>() {
-		 * 
-		 * @Override public ObservableValue<Boolean>
-		 * call(CellDataFeatures<Utilisateur, Boolean> feature) { return
-		 * feature.getValue().getId(); }
-		 * 
-		 * });
-		 */
 
 		showGroup(null);
 		groupList.getSelectionModel().selectedItemProperty()
