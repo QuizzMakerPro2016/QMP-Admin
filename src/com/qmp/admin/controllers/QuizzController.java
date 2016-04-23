@@ -1,27 +1,35 @@
 package com.qmp.admin.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Question;
 import com.qmp.admin.models.Question_questionnaire;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Reponse;
 import com.qmp.admin.utils.GraphicUtils;
+import com.qmp.admin.utils.Logger;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 public class QuizzController extends Controller {
 
@@ -70,8 +78,19 @@ public class QuizzController extends Controller {
     @FXML
     private Button btnSaveQuest;
     
+    @FXML
+    private MenuButton btnSearchQuest;
+    
+    private boolean isQuestionModified;
+    
     private Questionnaire quizz;
     
+    
+
+	@Override
+	public void setMainApp(MainApp mainApp) {
+		super.setMainApp(mainApp);
+	}
 
 	@FXML
 	private void initialize() {
@@ -103,6 +122,14 @@ public class QuizzController extends Controller {
 			@Override
 			public void handle(ActionEvent event) {
 				switchQuestionType(true);
+			}
+		});
+		
+		tfQuestLibelle.setOnKeyTyped(new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event event) {
+				isQuestionModified = true;				
 			}
 		});
 
@@ -258,6 +285,18 @@ public class QuizzController extends Controller {
 		}
 		showQuizzQuestions(q);
     }
+    
+    @FXML
+    void handleSearchQuest(Event event) {
+		if(!isQuestionModified)
+			return;
+		final MenuItem wizPopup = new MenuItem();
+	    wizPopup.setGraphic(createPopupContent());
+	    btnSearchQuest.getItems().clear();
+	    btnSearchQuest.getItems().add(wizPopup);
+	    isQuestionModified = false;
+	    Logger.log(String.valueOf(isQuestionModified));
+    }
 
 	public Questionnaire getQuizz() {
 		return quizz;
@@ -281,6 +320,7 @@ public class QuizzController extends Controller {
 	}
 		
 	private void showQuestion(Question q){
+		isQuestionModified = true;
 		if(q != null){
 			
 			if(q.getReponses().isEmpty() && q.getId() > 0){
@@ -340,5 +380,34 @@ public class QuizzController extends Controller {
 		showAnswers(q);
 
 	}
+	
+	 private VBox createPopupContent() {
+		final TableView<Question> table = new TableView<>();
+		
+		List<Question> questions = new ArrayList<>();
+		String text = tfQuestLibelle.getText().toLowerCase();
+		for (Question q : mainApp.getWebGate().getList(Question.class)) {
+			if(q.getLibelle().toLowerCase().contains(text))
+				questions.add(q);
+		}
+		TableColumn<Question, String> tableCol = new TableColumn<>("Questions");
+		tableCol.setCellValueFactory((CellDataFeatures<Question, String> feature) -> {
+			Question quest = feature.getValue();
+			return new SimpleObjectProperty<>(quest.getLibelle());
+		});
+		table.getColumns().add(tableCol);
+		table.setItems(FXCollections.observableArrayList(questions));
 
+		final Button add = new Button("Ajouter");
+		final VBox popup = new VBox(5);
+		popup.setAlignment(Pos.CENTER);
+		popup.getChildren().setAll(table, add);
+		add.setOnAction(new EventHandler<ActionEvent>() {
+			@Override public void handle(ActionEvent t) {
+				//Add Question to Quizz
+			}
+	});
+
+		return popup;
+	 }
 }
