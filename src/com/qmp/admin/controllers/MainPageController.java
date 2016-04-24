@@ -6,6 +6,7 @@ import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Groupe;
 import com.qmp.admin.models.Groupe_questionnaire;
+import com.qmp.admin.models.Question;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
@@ -86,7 +87,7 @@ public class MainPageController extends Controller {
 
 	@FXML
 	void handleQuizz(ActionEvent event) throws IOException {
-		//mainApp.getTaskQueue().getAll(Questionnaire.class, 2);
+		mainApp.getTaskQueue().getAll(Question.class);
 		gUtils.switchView("QuizzHomeLayout");
 
 	}
