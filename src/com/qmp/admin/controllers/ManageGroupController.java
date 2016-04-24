@@ -3,6 +3,7 @@ package com.qmp.admin.controllers;
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Groupe;
 import com.qmp.admin.models.Groupe_questionnaire;
+import com.qmp.admin.models.Groupe_utilisateur;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
@@ -70,15 +71,30 @@ public class ManageGroupController extends Controller {
 	private TableColumn<Questionnaire, String> quizzActualIncludedColumn;
 	
 	@FXML
+	private TableView<Utilisateur> userIncludedList;
+	 
+	@FXML
+	private TableColumn<Utilisateur, String> userIncludedColumn;
+	
+	@FXML
+	private TableView<Utilisateur> userActualIncludedList;
+	 
+	@FXML
+	private TableColumn<Utilisateur, String> userActualIncludedColumn;
+	
+	
+	@FXML
 	private TabPane tabPane;
 	
 	private ObservableList<Questionnaire> allQuizz;
+	private ObservableList<Utilisateur> allUsers;
 	
 	@Override
 	public void setMainApp(MainApp mainApp) {
 		super.setMainApp(mainApp);
 		ObservableList<Groupe> groupObs = mainApp.getWebGate().getList(Groupe.class);
 		this.allQuizz = mainApp.getWebGate().getList(Questionnaire.class);
+		this.allUsers = mainApp.getWebGate().getList(Utilisateur.class);
 		groupList.setItems(groupObs);
 	}
 
@@ -238,13 +254,13 @@ public class ManageGroupController extends Controller {
 		//Créer la relation
 		Groupe_questionnaire relation = new Groupe_questionnaire();
 		relation.setIdGroupe(group.getId());
-		relation.setIdGroupe(quizz.getId());
+		relation.setIdQuestionnaire(quizz.getId());
 		//Met à jour les listes
 		quizzActualIncludedList.getItems().remove(quizz);
 		quizzIncludedList.getItems().add(quizz);
 		quizzList.getItems().remove(quizz);
 		groupList.getSelectionModel().getSelectedItem().removeQuestionnaire(quizz);
-		//Ajoute la relation
+		//Supprime la relation
 		try {
 			mainApp.getTaskQueue().deleteRelation(relation, group.getId(), quizz.getId());
 		} catch (Exception e) {
@@ -258,45 +274,44 @@ public class ManageGroupController extends Controller {
 	@FXML
 	void handleEditUser(ActionEvent event){
 		tabPane.getSelectionModel().select(2);
-		/*//Liste des Quizz dans le groupe
-		ObservableList<Questionnaire> actualQuizz = FXCollections.observableArrayList(groupList.getSelectionModel().getSelectedItem().getQuestionnaires());
+		//Liste des Quizz dans le groupe
+		ObservableList<Utilisateur> actualUsers = FXCollections.observableArrayList(groupList.getSelectionModel().getSelectedItem().getUtilisateurs());
 		
 		//Liste de tous les autres Quizz
-		ObservableList<Questionnaire> otherQuizz = this.allQuizz;
-		
-		quizzActualIncludedList.setItems(actualQuizz);
-		quizzIncludedList.setItems(otherQuizz);
+		ObservableList<Utilisateur> otherUsers = this.allUsers;
+		userActualIncludedList.setItems(actualUsers);
+		userIncludedList.setItems(otherUsers);
 		Questionnaire q;
 		
-		quizzIncludedColumn.setCellValueFactory((CellDataFeatures<Questionnaire, String> feature) -> {
-			Questionnaire quizz = feature.getValue();
-			return new SimpleObjectProperty<>(quizz.getLibelle());
+		userIncludedColumn.setCellValueFactory((CellDataFeatures<Utilisateur, String> feature) -> {
+			Utilisateur user = feature.getValue();
+			return new SimpleObjectProperty<>(user.getNom()+" "+user.getPrenom());
 		});
 		
-		quizzActualIncludedColumn.setCellValueFactory((CellDataFeatures<Questionnaire, String> feature) -> {
-			Questionnaire quizz = feature.getValue();
-			return new SimpleObjectProperty<>(quizz.getLibelle());
-		});*/
+		userActualIncludedColumn.setCellValueFactory((CellDataFeatures<Utilisateur, String> feature) -> {
+			Utilisateur user = feature.getValue();
+			return new SimpleObjectProperty<>(user.getNom()+" "+user.getPrenom());
+		});
 	}
 	
 	@FXML
 	void handleUserAdd(ActionEvent event){
 		//Créer un quizz et un groupe pour les insérer dans Groupe_questionnaire...
-		Questionnaire quizz = quizzIncludedList.getSelectionModel().getSelectedItem();
+		Utilisateur user = userIncludedList.getSelectionModel().getSelectedItem();
 		Groupe group = groupList.getSelectionModel().getSelectedItem();
-		Groupe_questionnaire gq = new Groupe_questionnaire();
-		gq.setIdGroupe(group.getId());
-		gq.setIdQuestionnaire(quizz.getId());
+		Groupe_utilisateur gu = new Groupe_utilisateur();
+		gu.setIdGroupe(group.getId());
+		gu.setIdUtilisateur(user.getId());
 		
 		//Puis l'envoie sur la base de donnée en mettant à jour les trois listes sur le layout plus la liste des groupes.
 		try {
-			String res = mainApp.getWebGate().add(gq);
-			Groupe_questionnaire g = (Groupe_questionnaire) mainApp.getWebGate().getObjectFromJson(res, Groupe_questionnaire.class);
-			mainApp.getWebGate().getList(Groupe_questionnaire.class).add(g);
-			quizzActualIncludedList.getItems().add(quizz);
-			quizzList.getItems().add(quizz);
-			quizzIncludedList.getItems().remove(quizz);
-			groupList.getSelectionModel().getSelectedItem().addQuestionnaire(quizz);
+			String res = mainApp.getWebGate().add(gu);
+			Groupe_utilisateur g = (Groupe_utilisateur) mainApp.getWebGate().getObjectFromJson(res, Groupe_utilisateur.class);
+			mainApp.getWebGate().getList(Groupe_utilisateur.class).add(g);
+			userActualIncludedList.getItems().add(user);
+			userList.getItems().add(user);
+			userIncludedList.getItems().remove(user);
+			groupList.getSelectionModel().getSelectedItem().addUtilisateur(user);
 		} catch (Exception e) {
 			GraphicUtils.showException(e);
 		}
@@ -305,20 +320,20 @@ public class ManageGroupController extends Controller {
 	@FXML
 	void handleUserDelete(ActionEvent event){
 		Groupe group = groupList.getSelectionModel().getSelectedItem();
-		Questionnaire quizz = quizzActualIncludedList.getSelectionModel().getSelectedItem();
+		Utilisateur user = userActualIncludedList.getSelectionModel().getSelectedItem();
 		
 		//Créer la relation
-		Groupe_questionnaire relation = new Groupe_questionnaire();
+		Groupe_utilisateur relation = new Groupe_utilisateur();
 		relation.setIdGroupe(group.getId());
-		relation.setIdGroupe(quizz.getId());
+		relation.setIdUtilisateur(user.getId());
 		//Met à jour les listes
-		quizzActualIncludedList.getItems().remove(quizz);
-		quizzIncludedList.getItems().add(quizz);
-		quizzList.getItems().remove(quizz);
-		groupList.getSelectionModel().getSelectedItem().removeQuestionnaire(quizz);
-		//Ajoute la relation
+		userActualIncludedList.getItems().remove(user);
+		userIncludedList.getItems().add(user);
+		userList.getItems().remove(user);
+		groupList.getSelectionModel().getSelectedItem().removeUtilisateur(user);
+		//Supprime la relation
 		try {
-			mainApp.getTaskQueue().deleteRelation(relation, group.getId(), quizz.getId());
+			mainApp.getTaskQueue().deleteRelation(relation, user.getId(), group.getId() );
 		} catch (Exception e) {
 			GraphicUtils.showException(e);
 		}
