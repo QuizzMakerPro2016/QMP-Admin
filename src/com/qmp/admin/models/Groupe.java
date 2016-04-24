@@ -22,6 +22,7 @@ public class Groupe {
 		utilisateurs=new ArrayList<>();
 		questionnaires=new ArrayList<>();
 	}
+
 	/**
 	 * return the value of code
 	 * @return code
@@ -81,8 +82,16 @@ public class Groupe {
 		this.questionnaires.add(q);
 	}
 	
+	public void removeQuestionnaire(Questionnaire q){
+		this.questionnaires.remove(q);
+	}
+	
 	public void addUtilisateur(Utilisateur u){
 		this.utilisateurs.add(u);
+	}
+	
+	public void removeUtilisateur(Utilisateur u){
+		this.utilisateurs.remove(u);
 	}
 	/**
 	 * @param questionnaires the questionnaires to set

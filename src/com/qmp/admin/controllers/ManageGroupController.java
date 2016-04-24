@@ -197,6 +197,8 @@ public class ManageGroupController extends Controller {
 		
 		quizzActualIncludedList.setItems(actualQuizz);
 		quizzIncludedList.setItems(otherQuizz);
+		Questionnaire q;
+
 		
 		quizzIncludedColumn.setCellValueFactory((CellDataFeatures<Questionnaire, String> feature) -> {
 			Questionnaire quizz = feature.getValue();
@@ -227,8 +229,6 @@ public class ManageGroupController extends Controller {
 			quizzList.getItems().add(quizz);
 			quizzIncludedList.getItems().remove(quizz);
 			groupList.getSelectionModel().getSelectedItem().addQuestionnaire(quizz);
-			
-			
 		} catch (Exception e) {
 			GraphicUtils.showException(e);
 		}
@@ -236,6 +236,25 @@ public class ManageGroupController extends Controller {
 	
 	@FXML
 	void handleQuizzDelete(ActionEvent event){
+		Groupe group = groupList.getSelectionModel().getSelectedItem();
+		Questionnaire quizz = quizzActualIncludedList.getSelectionModel().getSelectedItem();
+		
+		//Créer la relation
+		Groupe_questionnaire relation = new Groupe_questionnaire();
+		relation.setIdGroupe(group.getId());
+		relation.setIdGroupe(quizz.getId());
+		//Met à jour les listes
+		quizzActualIncludedList.getItems().remove(quizz);
+		quizzIncludedList.getItems().add(quizz);
+		quizzList.getItems().remove(quizz);
+		groupList.getSelectionModel().getSelectedItem().removeQuestionnaire(quizz);
+		//Ajoute la relation
+		try {
+			mainApp.getTaskQueue().deleteRelation(relation, group.getId(), quizz.getId());
+		} catch (Exception e) {
+			GraphicUtils.showException(e);
+		}
+		
 		
 	}
 	
