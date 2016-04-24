@@ -247,18 +247,7 @@ public class QuizzController extends Controller {
     		return;
     	}
     	
-    	//Affecting Question to quizz (if necessary)
-		Question_questionnaire link = new Question_questionnaire();
-		link.setIdQuestion(q.getId());
-		link.setIdQuestionnaire(quizz.getId());
-		
-		try {
-			boolean isQuestionLinked = mainApp.getWebGate().doRelationExists(Question_questionnaire.class, link.getIdQuestion(), link.getIdQuestionnaire());
-			if(!isQuestionLinked)
-				mainApp.getWebGate().add(link);
-		} catch (Exception e) {
-			GraphicUtils.showException(e);
-		}
+    	affectQuestToQuizz(q);
 		
 		//IF Open Question, auto save answer
 		if(q.isType()){
@@ -381,6 +370,21 @@ public class QuizzController extends Controller {
 
 	}
 	
+	private void affectQuestToQuizz(Question q){
+		//Affecting Question to quizz (if necessary)
+		Question_questionnaire link = new Question_questionnaire();
+		link.setIdQuestion(q.getId());
+		link.setIdQuestionnaire(quizz.getId());
+		
+		try {
+			boolean isQuestionLinked = mainApp.getWebGate().doRelationExists(Question_questionnaire.class, link.getIdQuestion(), link.getIdQuestionnaire());
+			if(!isQuestionLinked)
+				mainApp.getWebGate().add(link);
+		} catch (Exception e) {
+			GraphicUtils.showException(e);
+		}
+	}
+	
 	 private VBox createPopupContent() {
 		final TableView<Question> table = new TableView<>();
 		
@@ -404,7 +408,12 @@ public class QuizzController extends Controller {
 		popup.getChildren().setAll(table, add);
 		add.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent t) {
-				//Add Question to Quizz
+				Question q = table.getSelectionModel().getSelectedItem();
+				if(q == null)
+					return;
+				affectQuestToQuizz(q);
+				quizz.getQuestions().add(q); 
+				showQuizzQuestions(q);
 			}
 	});
 
