@@ -6,6 +6,7 @@ import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Groupe;
 import com.qmp.admin.models.Groupe_questionnaire;
+import com.qmp.admin.models.Groupe_utilisateur;
 import com.qmp.admin.models.Question;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Rang;
@@ -77,6 +78,8 @@ public class MainPageController extends Controller {
 		mainApp.getTaskQueue().getAll(Groupe.class, 2);
 		mainApp.getTaskQueue().getAll(Questionnaire.class);
 		mainApp.getTaskQueue().getAll(Groupe_questionnaire.class);
+		mainApp.getTaskQueue().getAll(Utilisateur.class);
+		mainApp.getTaskQueue().getAll(Groupe_utilisateur.class);
 		gUtils.switchView("ManageGroupLayout");
 	}
 

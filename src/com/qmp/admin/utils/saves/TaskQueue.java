@@ -56,6 +56,16 @@ public class TaskQueue extends Observable {
 		};
 		put(new DelayedTask(deleteOperation, 5000));
 	}
+	
+	public void deleteRelation(Object o, Object id, Object id2) {
+		SaveOperation deleteOperation = new SaveOperation(SaveOperationTypes.DELETE, o.getClass(), o, id, id2) {
+			@Override
+			public Object call() throws Exception {
+				return webGate.deleteRelation(o.getClass(), id, id2);
+			}
+		};
+		put(new DelayedTask(deleteOperation, 5000));
+	}
 
 	public void get(Class<? extends Object> clazz, int offset, int limit, int cd) {
 		SaveOperation getOperation = new SaveOperation(SaveOperationTypes.GET, clazz) {

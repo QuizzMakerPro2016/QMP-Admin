@@ -1,5 +1,6 @@
 package com.qmp.admin.models;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,23 @@ public class Questionnaire {
 		groupe_questionnaires=new ArrayList<>();
 		questions = new ArrayList<>();
 		domaine=new Domaine();
+	}
+	
+	public Questionnaire(Date date, int id, int idDomaine, int idUtilisateur, String libelle) {
+		super();
+		utilisateur=new Utilisateur();
+		realisations=new ArrayList<>();
+		question_questionnaires=new ArrayList<>();
+		groupe_questionnaires=new ArrayList<>();
+		questions = new ArrayList<>();
+		domaine=new Domaine();
+		
+		this.date = date;
+		this.id = id;
+		this.idDomaine = idDomaine;
+		this.idUtilisateur= idUtilisateur;
+		this.libelle = libelle;
+
 	}
 	/**
 	 * return the value of date
