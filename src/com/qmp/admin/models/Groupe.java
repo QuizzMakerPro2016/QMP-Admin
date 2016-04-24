@@ -76,6 +76,14 @@ public class Groupe {
 	public List<Questionnaire> getQuestionnaires() {
 		return this.questionnaires;
 	}
+	
+	public void addQuestionnaire(Questionnaire q){
+		this.questionnaires.add(q);
+	}
+	
+	public void addUtilisateur(Utilisateur u){
+		this.utilisateurs.add(u);
+	}
 	/**
 	 * @param questionnaires the questionnaires to set
 	 */
@@ -117,6 +125,9 @@ public class Groupe {
 	public void setGroupe_utilisateurs(List<Groupe_utilisateur> aGroupe_utilisateurs){
 		this.groupe_utilisateurs=aGroupe_utilisateurs;
 	}
+	
+
+	
 	@Override
 	public String toString() {
 		return " [code] = " + code+" [libelle] = " + libelle+" [id] = " + id;

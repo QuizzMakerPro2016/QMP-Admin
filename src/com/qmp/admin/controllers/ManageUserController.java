@@ -83,7 +83,7 @@ public class ManageUserController extends Controller {
     	super.setMainApp(mainApp);
     	ObservableList<Utilisateur> userObs = mainApp.getWebGate().getList(Utilisateur.class);	
     	ObservableList<Rang> r = mainApp.getWebGate().getList(Rang.class);  		
-    	
+    
     	rankField.setItems(r);
     	userList.setItems(userObs);
     }

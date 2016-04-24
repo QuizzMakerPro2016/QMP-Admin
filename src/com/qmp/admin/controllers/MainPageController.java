@@ -5,6 +5,8 @@ import java.io.IOException;
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Groupe;
+import com.qmp.admin.models.Groupe_questionnaire;
+import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
 
@@ -72,6 +74,8 @@ public class MainPageController extends Controller {
 	@FXML
 	void handleGroup(ActionEvent event) throws IOException {
 		mainApp.getTaskQueue().getAll(Groupe.class, 2);
+		mainApp.getTaskQueue().getAll(Questionnaire.class);
+		mainApp.getTaskQueue().getAll(Groupe_questionnaire.class);
 		gUtils.switchView("ManageGroupLayout");
 	}
 

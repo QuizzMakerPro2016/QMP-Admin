@@ -2,6 +2,7 @@ package com.qmp.admin.controllers;
 
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Groupe;
+import com.qmp.admin.models.Groupe_questionnaire;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
@@ -107,7 +108,6 @@ public class ManageGroupController extends Controller {
 		showGroup(null);
 		groupList.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> showGroup(newValue));
-
 	}
 
 	public void showGroup(Groupe group) {
@@ -191,11 +191,12 @@ public class ManageGroupController extends Controller {
 		tabPane.getSelectionModel().select(1);
 		//Liste des Quizz dans le groupe
 		ObservableList<Questionnaire> actualQuizz = FXCollections.observableArrayList(groupList.getSelectionModel().getSelectedItem().getQuestionnaires());
-		quizzActualIncludedList.setItems(actualQuizz);
 		
 		//Liste de tous les autres Quizz
-		this.allQuizz.removeAll(actualQuizz);
-		quizzIncludedList.setItems(allQuizz);
+		ObservableList<Questionnaire> otherQuizz = this.allQuizz;
+		
+		quizzActualIncludedList.setItems(actualQuizz);
+		quizzIncludedList.setItems(otherQuizz);
 		
 		quizzIncludedColumn.setCellValueFactory((CellDataFeatures<Questionnaire, String> feature) -> {
 			Questionnaire quizz = feature.getValue();
@@ -210,7 +211,27 @@ public class ManageGroupController extends Controller {
 	
 	@FXML
 	void handleQuizzAdd(ActionEvent event){
+		//Créer un quizz et un groupe pour les insérer dans Groupe_questionnaire...
+		Questionnaire quizz = quizzIncludedList.getSelectionModel().getSelectedItem();
+		Groupe group = groupList.getSelectionModel().getSelectedItem();
+		Groupe_questionnaire gq = new Groupe_questionnaire();
+		gq.setIdGroupe(group.getId());
+		gq.setIdQuestionnaire(quizz.getId());
 		
+		//Puis l'envoie sur la base de donnée en mettant à jour les trois listes sur le layout plus la liste des groupes.
+		try {
+			String res = mainApp.getWebGate().add(gq);
+			Groupe_questionnaire g = (Groupe_questionnaire) mainApp.getWebGate().getObjectFromJson(res, Groupe_questionnaire.class);
+			mainApp.getWebGate().getList(Groupe_questionnaire.class).add(g);
+			quizzActualIncludedList.getItems().add(quizz);
+			quizzList.getItems().add(quizz);
+			quizzIncludedList.getItems().remove(quizz);
+			groupList.getSelectionModel().getSelectedItem().addQuestionnaire(quizz);
+			
+			
+		} catch (Exception e) {
+			GraphicUtils.showException(e);
+		}
 	}
 	
 	@FXML
