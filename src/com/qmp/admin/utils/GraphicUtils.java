@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Optional;
 
+import org.controlsfx.control.NotificationPane;
+
 import com.qmp.admin.MainApp;
 import com.qmp.admin.controllers.Controller;
 
@@ -15,9 +17,14 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.util.Duration;
+import tray.animations.AnimationType;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 public class GraphicUtils {
 	
@@ -38,7 +45,7 @@ public class GraphicUtils {
 			
 			Controller controller = loader.getController();
 			controller.setMainApp(mainApp);
-			
+				
 			return controller;
 		} catch (Exception e) {
 			showException(e);
@@ -129,6 +136,31 @@ public class GraphicUtils {
 		dialogPane.getStylesheets().add(
 				MainApp.class.getResource("/com/qmp/admin/views/QMP-style.css").toExternalForm());
 		dialogPane.getStyleClass().add("myDialog");
+	}
+	
+	private static void showNotification(String title, String message, NotificationType nType) {
+        TrayNotification tray = new TrayNotification();
+        tray.setTitle(title);
+        tray.setMessage(message);
+        tray.setNotificationType(nType);
+        tray.setAnimationType(AnimationType.SLIDE);
+        tray.showAndDismiss(Duration.seconds(3));
+	}
+	
+	public static void notifySuccess(String title, String message){
+		showNotification(title, message, NotificationType.SUCCESS);
+	}
+	
+	public static void notifyInfo(String title, String message){
+		showNotification(title, message, NotificationType.INFORMATION);
+	}
+	
+	public static void notifyError(String title, String message){
+		showNotification(title, message, NotificationType.ERROR);
+	}
+	
+	public static void notifyWarning(String title, String message){
+		showNotification(title, message, NotificationType.WARNING);
 	}
 
 }
