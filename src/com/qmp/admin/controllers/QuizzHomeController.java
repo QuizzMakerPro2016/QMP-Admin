@@ -97,7 +97,9 @@ public class QuizzHomeController extends Controller{
 	 */
     @FXML
     void handleAdd(ActionEvent event) {
-
+    	tableQuizzList.setVisible(false);
+		btnRemQuizz.setVisible(false);
+		btnEditQuizz.setVisible(false);
     }
     
     /**
