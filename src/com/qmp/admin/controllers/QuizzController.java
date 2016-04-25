@@ -174,7 +174,7 @@ public class QuizzController extends Controller {
     void handleRemQuest(ActionEvent event) {
     	Question q = tableQuestionsList.getSelectionModel().getSelectedItem();
     	if(q == null){
-    		GraphicUtils.showAlert("Erreur", "Aucune question sélectionnée", "...", AlertType.ERROR);
+    		GraphicUtils.notifyError("Erreur", "Aucune question sélectionnée");
     		return; 
     	}
     	
@@ -197,15 +197,15 @@ public class QuizzController extends Controller {
     	
     	//Empty Fields Check
     	if(tfQuestLibelle.getText().isEmpty()){
-    		GraphicUtils.showAlert("Erreur", "Impossible d'enregitrer la question", "Veuillez renseigner le libellé de la question", AlertType.ERROR);
+    		GraphicUtils.notifyError("Impossible d'enregitrer la question", "Veuillez renseigner le libellé de la question");
     		return;
     	}
     	if(!cbOpenQuest.isSelected() && !cbMultiQuest.isSelected()){
-    		GraphicUtils.showAlert("Erreur", "Impossible d'enregitrer la question", "Veuillez renseigner le type de la question", AlertType.ERROR);
+    		GraphicUtils.notifyError("Impossible d'enregitrer la question", "Veuillez renseigner le type de la question");
     		return;
     	}  
     	if(cbOpenQuest.isSelected() && tfUniqueAns.getText().isEmpty()){
-    		GraphicUtils.showAlert("Erreur", "Impossible d'enregitrer la question", "Veuillez renseigner la réponse à la question", AlertType.ERROR);
+    		GraphicUtils.notifyError("Impossible d'enregitrer la question", "Veuillez renseigner la réponse à la question");
     		return;
     	}
     	
@@ -243,7 +243,7 @@ public class QuizzController extends Controller {
     	}
     	
     	if(q.getId() < 1){
-    		GraphicUtils.showAlert("Erreur", "Impossible de lier la question au quizz", "Erreur lors de l'enregistrement de la question", AlertType.ERROR);
+    		GraphicUtils.notifyError("Impossible de lier la question au quizz", "Erreur lors de l'enregistrement de la question");
     		return;
     	}
     	

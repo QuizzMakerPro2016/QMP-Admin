@@ -12,10 +12,10 @@ import com.qmp.admin.utils.saves.SaveOperationTypes;
 import com.qmp.admin.utils.saves.TaskQueue;
 
 import javafx.application.Application;
-
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -56,6 +56,8 @@ public class MainApp extends Application implements Observer {
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("QuizzMakerPro 2016 Admin");
+		this.primaryStage.getIcons().add(new Image("/com/qmp/admin/views/logo-11.png"));
+
 
 		initRootLayout();
 
