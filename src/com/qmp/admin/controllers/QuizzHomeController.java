@@ -97,7 +97,7 @@ public class QuizzHomeController extends Controller{
 	 */
     @FXML
     void handleAdd(ActionEvent event) {
-
+    	gUtils.switchView("QuizzLayout");
     }
     
     /**

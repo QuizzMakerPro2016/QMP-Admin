@@ -22,7 +22,7 @@
         <items>
           <AnchorPane>
                <children>
-                  <TableView fx:id="userList" layoutY="4.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="userList" layoutY="31.0" prefHeight="533.0" prefWidth="236.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="31.0">
                     <columns>
                       <TableColumn fx:id="surnameColumn" prefWidth="75.0" text="Nom" />
                       <TableColumn fx:id="nameColumn" prefWidth="75.0" text="Prenom" />
@@ -38,6 +38,7 @@
                       <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#handleDelete" text="Supprimer" />
                     </buttons>
                   </ButtonBar>
+                  <TextField fx:id="userSearch" layoutX="3.0" layoutY="2.0" minWidth="173.0" prefHeight="25.0" prefWidth="230.0" promptText="Filtrer les Utilisateurs" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0" />
                </children>
             </AnchorPane>
           <AnchorPane>
