@@ -95,7 +95,6 @@ public class ManageUserController extends Controller {
 		userList.setItems(userObs);
 
 		setFilter();
-
 	}
 
 	private void setFilter() {

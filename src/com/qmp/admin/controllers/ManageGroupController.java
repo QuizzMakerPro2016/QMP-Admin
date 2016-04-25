@@ -11,6 +11,8 @@ import com.qmp.admin.utils.GraphicUtils;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -85,16 +87,56 @@ public class ManageGroupController extends Controller {
 	@FXML
 	private TabPane tabPane;
 
+	@FXML
+	private TextField groupSearch;
+
+	private ObservableList<Groupe> groupObs;
 	private ObservableList<Questionnaire> allQuizz;
 	private ObservableList<Utilisateur> allUsers;
 
 	@Override
 	public void setMainApp(MainApp mainApp) {
 		super.setMainApp(mainApp);
-		ObservableList<Groupe> groupObs = mainApp.getWebGate().getList(Groupe.class);
+		this.groupObs = mainApp.getWebGate().getList(Groupe.class);
 		this.allQuizz = mainApp.getWebGate().getList(Questionnaire.class);
 		this.allUsers = mainApp.getWebGate().getList(Utilisateur.class);
 		groupList.setItems(groupObs);
+		setFilterGroup();
+	}
+
+	private void setFilterGroup() {
+		// Permet de faire en sorte que la liste soit filtrable
+		FilteredList<Groupe> filteredData = new FilteredList<>(this.groupObs, p -> true);
+
+		// Ajoute un listener pour vérifier tout changement sur le champs texte
+		groupSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+			filteredData.setPredicate(groupe -> {
+				// If filter text is empty, display all persons.
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+
+				// Compare first name and last name of every person with filter
+				// text.
+				String lowerCaseFilter = newValue.toLowerCase();
+
+				if (groupe.getLibelle().toLowerCase().contains(lowerCaseFilter)) {
+					return true; // Filter matches first name.
+				} else if (groupe.getCode().toLowerCase().contains(lowerCaseFilter)) {
+					return true; // Filter matches last name.
+				}
+				return false; // Does not match.
+			});
+		});
+
+		// La sorted list permet de trier les résultats obtenus
+		SortedList<Groupe> sortedData = new SortedList<>(filteredData);
+
+		// Bind la recherche et les données.
+		sortedData.comparatorProperty().bind(groupList.comparatorProperty());
+
+		// 5. Add sorted (and filtered) data to the table.
+		groupList.setItems(sortedData);
 	}
 
 	@FXML
@@ -199,13 +241,18 @@ public class ManageGroupController extends Controller {
 	/// Quizz Related Stuff///
 	@FXML
 	void handleEditQuizz(ActionEvent event) {
+		quizzActualIncludedList.getItems().clear();
+		quizzIncludedList.getItems().clear();
+
 		tabPane.getSelectionModel().select(1);
 		// Liste des Quizz dans le groupe
 		ObservableList<Questionnaire> actualQuizz = FXCollections
 				.observableArrayList(groupList.getSelectionModel().getSelectedItem().getQuestionnaires());
 
-		// Liste de tous les autres Quizz
-		ObservableList<Questionnaire> otherQuizz = this.allQuizz;
+		// Instancie une liste contenant la liste de tous les autres Quizz
+		ObservableList<Questionnaire> otherQuizz = FXCollections.observableArrayList(this.allQuizz);
+
+		otherQuizz.removeAll(actualQuizz);
 
 		quizzActualIncludedList.setItems(actualQuizz);
 		quizzIncludedList.setItems(otherQuizz);
@@ -274,14 +321,20 @@ public class ManageGroupController extends Controller {
 	@FXML
 	void handleEditUser(ActionEvent event) {
 		tabPane.getSelectionModel().select(2);
+
 		// Liste des Quizz dans le groupe
 		ObservableList<Utilisateur> actualUsers = FXCollections
 				.observableArrayList(groupList.getSelectionModel().getSelectedItem().getUtilisateurs());
 
-		// Liste de tous les autres Quizz
-		ObservableList<Utilisateur> otherUsers = this.allUsers;
 		userActualIncludedList.setItems(actualUsers);
+
+		// Liste de tous les autres Quizz
+		ObservableList<Utilisateur> otherUsers = FXCollections.observableArrayList(this.allUsers);
+
+		// Exclu les utilisateurs du groupe de la liste de tous les groupes et
+		// remplis la liste.
 		userIncludedList.setItems(otherUsers);
+		userIncludedList.getItems().removeAll(actualUsers);
 
 		userIncludedColumn.setCellValueFactory((CellDataFeatures<Utilisateur, String> feature) -> {
 			Utilisateur user = feature.getValue();
