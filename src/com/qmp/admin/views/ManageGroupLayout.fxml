@@ -26,7 +26,7 @@
                      <children>
                         <SplitPane dividerPositions="0.3007518796992481" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <items>
-                            <AnchorPane maxWidth="400.0" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                            <AnchorPane maxWidth="400.0" minHeight="0.0" minWidth="200.0" prefHeight="160.0" prefWidth="100.0">
                                  <children>
                                     <TableView fx:id="groupList" layoutX="-60.0" layoutY="30.0" prefHeight="534.0" prefWidth="236.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
                                       <columns>
@@ -46,7 +46,7 @@
                                     <TextField fx:id="groupSearch" layoutX="84.0" layoutY="14.0" promptText="Filtrer les groupes" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0" />
                                  </children>
                               </AnchorPane>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="602.0" prefWidth="566.0">
+                            <AnchorPane minHeight="0.0" minWidth="400.0" prefHeight="602.0" prefWidth="566.0">
                                  <children>
                                     <SplitPane dividerPositions="0.3976510067114094" layoutX="152.0" layoutY="299.0" orientation="VERTICAL" prefHeight="598.0" prefWidth="555.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="0.0">
                                       <items>
