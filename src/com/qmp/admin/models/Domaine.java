@@ -61,6 +61,6 @@ public class Domaine {
 	}
 	@Override
 	public String toString() {
-		return " [libelle] = " + libelle+" [id] = " + id;
+		return this.libelle;
 	}
 }

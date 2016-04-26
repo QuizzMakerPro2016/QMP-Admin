@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
 * Classe Questionnaire
 */
@@ -14,6 +13,7 @@ public class Questionnaire {
 	private int idDomaine;
 	private int idUtilisateur;
 	private String libelle;
+	private String description;
 	private Domaine domaine;
 	private List<Question> questions;
 	private List<Groupe_questionnaire> groupe_questionnaires;
@@ -82,6 +82,15 @@ public class Questionnaire {
 	public String getLibelle(){
 		return this.libelle;
 	}
+	
+	/**
+	 * return the value of description
+	 * @return description
+	 */
+	public String getDescription(){
+		return this.description;
+	}
+	
 	/**
 	 * return the value of domaine
 	 * @return domaine
@@ -161,6 +170,15 @@ public class Questionnaire {
 	public void setLibelle(String aLibelle){
 		this.libelle=aLibelle;
 	}
+	
+	/**
+	 * set the value of description
+	 * @return aDescription
+	 */
+	public void setDescription(String aDescription){
+		this.description=aDescription;
+	}
+	
 	/**
 	 * set the value of domaine
 	 * @param aDomaine

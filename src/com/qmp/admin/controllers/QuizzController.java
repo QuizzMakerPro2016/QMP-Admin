@@ -1,10 +1,16 @@
 package com.qmp.admin.controllers;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.qmp.admin.MainApp;
+import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Question;
 import com.qmp.admin.models.Question_questionnaire;
 import com.qmp.admin.models.Questionnaire;
@@ -21,6 +27,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
@@ -28,6 +36,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
@@ -35,54 +44,49 @@ public class QuizzController extends Controller {
 
 	@FXML
 	private Tab tabGeneral;
-
 	@FXML
 	private Tab tabQuestions;
-
 	@FXML
 	private TableView<Question> tableQuestionsList;
-
 	@FXML
 	private TableColumn<Question, String> tableQuestionsCol;
-
 	@FXML
 	private Button btnRemQuest;
-
 	@FXML
 	private Button btnAddQuest;
-
 	@FXML
 	private TextField tfQuestLibelle;
-
 	@FXML
 	private RadioButton cbOpenQuest;
-
 	@FXML
 	private RadioButton cbMultiQuest;
-
 	@FXML
 	private TextField tfUniqueAns;
-
 	@FXML
 	private TableView<Reponse> tableAnsList;
-
 	@FXML
 	private TableColumn<Reponse, String> tableAnsListCol;
-
 	@FXML
 	private Button btnRemAns;
-
     @FXML
-    private Button btnAddAns;
-    
+    private Button btnAddAns;   
     @FXML
     private Button btnSaveQuest;
-    
     @FXML
     private MenuButton btnSearchQuest;
+    @FXML
+    private TextField libelleQuizz;
+    @FXML
+    private DatePicker dateQuizz;
+    @FXML
+    private ComboBox<Domaine> cbDomain;
+    @FXML
+    private TextArea descQuizz;
+    
+    @FXML
+    private Button btnSaveQuizz;   
     
     private boolean isQuestionModified;
-    
     private Questionnaire quizz;
     
     
@@ -90,6 +94,7 @@ public class QuizzController extends Controller {
 	@Override
 	public void setMainApp(MainApp mainApp) {
 		super.setMainApp(mainApp);
+		cbDomain.setItems(FXCollections.observableArrayList(mainApp.getWebGate().getList(Domaine.class)));
 	}
 
 	@FXML
@@ -134,6 +139,35 @@ public class QuizzController extends Controller {
 		});
 
 	}
+	
+	  /**
+     * Save Quizz
+     * @param event
+     */
+    @FXML
+    void handleSaveQuizz(ActionEvent event) {
+    	this.quizz.setDescription(descQuizz.getText());
+    	this.quizz.setLibelle(libelleQuizz.getText());
+    	this.quizz.setIdDomaine(cbDomain.getSelectionModel().getSelectedItem().getId());
+    	
+    	LocalDate t = dateQuizz.getValue();
+    	Instant instant = dateQuizz.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+    	java.sql.Date date = new java.sql.Date(Date.from(instant).getTime());
+		this.quizz.setDate(date);
+		
+		
+		try {
+			if(this.quizz.getId() > 0){
+				mainApp.getWebGate().update(quizz, quizz.getId());
+			}else{
+				mainApp.getTaskQueue().add(quizz);
+			}
+		} catch (IllegalArgumentException | IllegalAccessException | IOException e) {
+				GraphicUtils.showException(e);
+		}
+		
+		
+    }
 
 	/**
 	 * Add answer to question
@@ -298,7 +332,15 @@ public class QuizzController extends Controller {
 	}
 
 	private void showQuizzGeneral() {
-		// TODO - Nicolas
+		libelleQuizz.setText(quizz.getLibelle());
+		
+		Date date = quizz.getDate();
+		Instant instant = Instant.ofEpochMilli(date.getTime());
+		LocalDate resDateQuizz = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
+		dateQuizz.setValue(resDateQuizz);
+		
+		cbDomain.getSelectionModel().select(quizz.getDomaine());
+		descQuizz.setText(quizz.getDescription());
 	}
 	
 	private void showQuizzQuestions(Question selectedQuestion){
