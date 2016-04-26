@@ -100,6 +100,10 @@ public class ManageGroupController extends Controller {
 	private ObservableList<Groupe> groupObs;
 	private ObservableList<Questionnaire> allQuizz;
 	private ObservableList<Utilisateur> allUsers;
+	private ObservableList<Questionnaire> otherQuizz;
+	private ObservableList<Questionnaire> actualQuizz;
+	private ObservableList<Utilisateur> otherUsers;
+	private ObservableList<Utilisateur> actualUsers;
 
 	@Override
 	public void setMainApp(MainApp mainApp) {
@@ -207,7 +211,7 @@ public class ManageGroupController extends Controller {
 			boolean response = gUtils.showDialog("Suppression", "Supprimer un groupe ?",
 					"Voulez-vous vraiment supprimer le groupe '" + selectedGroup.getLibelle() + "' ?");
 			if (response) {
-				groupList.getItems().remove(selInxdex);
+				groupObs.remove(selInxdex);
 				try {
 					mainApp.getTaskQueue().delete(selectedGroup, selectedGroup.getId());
 				} catch (Exception e) {
@@ -225,11 +229,11 @@ public class ManageGroupController extends Controller {
 
 		tabPane.getSelectionModel().select(1);
 		// Liste des Quizz dans le groupe
-		ObservableList<Questionnaire> actualQuizz = FXCollections
+		this.actualQuizz = FXCollections
 				.observableArrayList(groupList.getSelectionModel().getSelectedItem().getQuestionnaires());
 
 		// Instancie une liste contenant la liste de tous les autres Quizz
-		ObservableList<Questionnaire> otherQuizz = FXCollections.observableArrayList(this.allQuizz);
+		this.otherQuizz = FXCollections.observableArrayList(this.allQuizz);
 
 		otherQuizz.removeAll(actualQuizz);
 
@@ -274,9 +278,9 @@ public class ManageGroupController extends Controller {
 			Groupe_questionnaire g = (Groupe_questionnaire) mainApp.getWebGate().getObjectFromJson(res,
 					Groupe_questionnaire.class);
 			mainApp.getWebGate().getList(Groupe_questionnaire.class).add(g);
-			quizzActualIncludedList.getItems().add(quizz);
+			this.actualQuizz.add(quizz);
 			quizzList.getItems().add(quizz);
-			quizzIncludedList.getItems().remove(quizz);
+			this.otherQuizz.remove(quizz);
 			groupList.getSelectionModel().getSelectedItem().addQuestionnaire(quizz);
 		} catch (Exception e) {
 			GraphicUtils.showException(e);
@@ -293,8 +297,8 @@ public class ManageGroupController extends Controller {
 		relation.setIdGroupe(group.getId());
 		relation.setIdQuestionnaire(quizz.getId());
 		// Met à jour les listes
-		quizzActualIncludedList.getItems().remove(quizz);
-		quizzIncludedList.getItems().add(quizz);
+		this.actualQuizz.remove(quizz);
+		this.otherQuizz.add(quizz);
 		quizzList.getItems().remove(quizz);
 		groupList.getSelectionModel().getSelectedItem().removeQuestionnaire(quizz);
 		// Supprime la relation
@@ -313,13 +317,13 @@ public class ManageGroupController extends Controller {
 		tabPane.getSelectionModel().select(2);
 
 		// Liste des Quizz dans le groupe
-		ObservableList<Utilisateur> actualUsers = FXCollections
+		this.actualUsers = FXCollections
 				.observableArrayList(groupList.getSelectionModel().getSelectedItem().getUtilisateurs());
 
 		userActualIncludedList.setItems(actualUsers);
 
 		// Liste de tous les autres Quizz
-		ObservableList<Utilisateur> otherUsers = FXCollections.observableArrayList(this.allUsers);
+		this.otherUsers = FXCollections.observableArrayList(this.allUsers);
 
 		// Exclu les utilisateurs du groupe de la liste de tous les groupes et
 		// remplis la liste.
@@ -364,9 +368,9 @@ public class ManageGroupController extends Controller {
 			Groupe_utilisateur g = (Groupe_utilisateur) mainApp.getWebGate().getObjectFromJson(res,
 					Groupe_utilisateur.class);
 			mainApp.getWebGate().getList(Groupe_utilisateur.class).add(g);
-			userActualIncludedList.getItems().add(user);
+			this.actualUsers.add(user);
 			userList.getItems().add(user);
-			userIncludedList.getItems().remove(user);
+			this.otherUsers.remove(user);
 			groupList.getSelectionModel().getSelectedItem().addUtilisateur(user);
 		} catch (Exception e) {
 			GraphicUtils.showException(e);
@@ -383,8 +387,8 @@ public class ManageGroupController extends Controller {
 		relation.setIdGroupe(group.getId());
 		relation.setIdUtilisateur(user.getId());
 		// Met à jour les listes
-		userActualIncludedList.getItems().remove(user);
-		userIncludedList.getItems().add(user);
+		this.actualUsers.remove(user);
+		this.otherUsers.add(user);
 		userList.getItems().remove(user);
 		groupList.getSelectionModel().getSelectedItem().removeUtilisateur(user);
 		// Supprime la relation
