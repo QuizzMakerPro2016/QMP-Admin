@@ -218,4 +218,20 @@ public class Questionnaire {
 	public String toString() {
 		return " [date] = " + date+" [idDomaine] = " + idDomaine+" [libelle] = " + libelle+" [idUtilisateur] = " + idUtilisateur+" [id] = " + id;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o == null)
+			return false;
+		if (!(o instanceof Questionnaire))
+			return false;
+		else {
+			return this.id == ((Questionnaire) o).getId();
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return Integer.valueOf(id).hashCode();
+	}
 }

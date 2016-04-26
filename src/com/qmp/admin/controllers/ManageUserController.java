@@ -1,6 +1,8 @@
 package com.qmp.admin.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.apache.http.client.ClientProtocolException;
 
@@ -15,8 +17,6 @@ import com.qmp.admin.utils.JBCrypt;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -94,43 +94,13 @@ public class ManageUserController extends Controller {
 		rankField.setItems(r);
 		userList.setItems(userObs);
 
-		setFilter();
+		// Set fields in an ArrayList to search in fields.
+		ArrayList<String> fields = new ArrayList<String>();
+		fields.addAll(Arrays.asList("nom", "prenom"));
 
-	}
+		// Set filter for the groupList
+		setFilterTableView(this.userSearch, this.userList, this.userObs, fields);
 
-	private void setFilter() {
-		// Permet de faire en sorte que la liste soit filtrable
-		FilteredList<Utilisateur> filteredData = new FilteredList<>(this.userObs, p -> true);
-
-		// Ajoute un listener pour vérifier tout changement sur le champs texte
-		userSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-			filteredData.setPredicate(person -> {
-				// If filter text is empty, display all persons.
-				if (newValue == null || newValue.isEmpty()) {
-					return true;
-				}
-
-				// Compare first name and last name of every person with filter
-				// text.
-				String lowerCaseFilter = newValue.toLowerCase();
-
-				if (person.getNom().toLowerCase().contains(lowerCaseFilter)) {
-					return true; // Filter matches first name.
-				} else if (person.getPrenom().toLowerCase().contains(lowerCaseFilter)) {
-					return true; // Filter matches last name.
-				}
-				return false; // Does not match.
-			});
-		});
-
-		// La sorted list permet de trier les résultats obtenus
-		SortedList<Utilisateur> sortedData = new SortedList<>(filteredData);
-
-		// Bind la recherche et les données.
-		sortedData.comparatorProperty().bind(userList.comparatorProperty());
-
-		// 5. Add sorted (and filtered) data to the table.
-		userList.setItems(sortedData);
 	}
 
 	@FXML

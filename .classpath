@@ -15,5 +15,7 @@
 	<classpathentry kind="lib" path="lib/jna-4.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/jna-platform-4.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/koLibrary-1.0.0.27-beta1.jar"/>
+	<classpathentry kind="lib" path="lib/TrayNotification.jar"/>
+	<classpathentry kind="lib" path="lib/controlsfx-8.40.10.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

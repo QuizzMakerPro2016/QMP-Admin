@@ -1,5 +1,8 @@
 package com.qmp.admin.controllers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Groupe;
 import com.qmp.admin.models.Groupe_questionnaire;
@@ -85,16 +88,35 @@ public class ManageGroupController extends Controller {
 	@FXML
 	private TabPane tabPane;
 
+	@FXML
+	private TextField groupSearch;
+
+	@FXML
+	private TextField quizzSearch;
+
+	@FXML
+	private TextField userSearch;
+
+	private ObservableList<Groupe> groupObs;
 	private ObservableList<Questionnaire> allQuizz;
 	private ObservableList<Utilisateur> allUsers;
 
 	@Override
 	public void setMainApp(MainApp mainApp) {
 		super.setMainApp(mainApp);
-		ObservableList<Groupe> groupObs = mainApp.getWebGate().getList(Groupe.class);
+		this.groupObs = mainApp.getWebGate().getList(Groupe.class);
 		this.allQuizz = mainApp.getWebGate().getList(Questionnaire.class);
 		this.allUsers = mainApp.getWebGate().getList(Utilisateur.class);
 		groupList.setItems(groupObs);
+
+		// GroupList
+		// Set fields in an ArrayList to search in fields.
+		ArrayList<String> fields = new ArrayList<String>();
+		fields.addAll(Arrays.asList("libelle", "code"));
+
+		// Set filter for the groupList
+		setFilterTableView(this.groupSearch, this.groupList, this.groupObs, fields);
+
 	}
 
 	@FXML
@@ -123,6 +145,7 @@ public class ManageGroupController extends Controller {
 		showGroup(null);
 		groupList.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> showGroup(newValue));
+
 	}
 
 	public void showGroup(Groupe group) {
@@ -199,16 +222,16 @@ public class ManageGroupController extends Controller {
 	/// Quizz Related Stuff///
 	@FXML
 	void handleEditQuizz(ActionEvent event) {
+
 		tabPane.getSelectionModel().select(1);
 		// Liste des Quizz dans le groupe
 		ObservableList<Questionnaire> actualQuizz = FXCollections
 				.observableArrayList(groupList.getSelectionModel().getSelectedItem().getQuestionnaires());
 
-		// Liste de tous les autres Quizz
-		ObservableList<Questionnaire> otherQuizz = this.allQuizz;
+		// Instancie une liste contenant la liste de tous les autres Quizz
+		ObservableList<Questionnaire> otherQuizz = FXCollections.observableArrayList(this.allQuizz);
 
-		quizzActualIncludedList.setItems(actualQuizz);
-		quizzIncludedList.setItems(otherQuizz);
+		otherQuizz.removeAll(actualQuizz);
 
 		quizzIncludedColumn.setCellValueFactory((CellDataFeatures<Questionnaire, String> feature) -> {
 			Questionnaire quizz = feature.getValue();
@@ -219,6 +242,19 @@ public class ManageGroupController extends Controller {
 			Questionnaire quizz = feature.getValue();
 			return new SimpleObjectProperty<>(quizz.getLibelle());
 		});
+
+		quizzActualIncludedList.setItems(actualQuizz);
+		quizzIncludedList.setItems(otherQuizz);
+
+		// GroupList // Set fields in an ArrayList to search in fields.
+		ArrayList<String> fields2 = new ArrayList<String>();
+		fields2.addAll(Arrays.asList("libelle"));
+
+		// Set filter for the quizzList
+		setFilterTableView(this.quizzSearch, this.quizzIncludedList, otherQuizz, fields2);
+		// Set filter for the actualQuizzList
+		setFilterTableView(this.quizzSearch, this.quizzActualIncludedList, actualQuizz, fields2);
+
 	}
 
 	@FXML
@@ -273,15 +309,22 @@ public class ManageGroupController extends Controller {
 	/// User Related Stuff///
 	@FXML
 	void handleEditUser(ActionEvent event) {
+
 		tabPane.getSelectionModel().select(2);
+
 		// Liste des Quizz dans le groupe
 		ObservableList<Utilisateur> actualUsers = FXCollections
 				.observableArrayList(groupList.getSelectionModel().getSelectedItem().getUtilisateurs());
 
-		// Liste de tous les autres Quizz
-		ObservableList<Utilisateur> otherUsers = this.allUsers;
 		userActualIncludedList.setItems(actualUsers);
+
+		// Liste de tous les autres Quizz
+		ObservableList<Utilisateur> otherUsers = FXCollections.observableArrayList(this.allUsers);
+
+		// Exclu les utilisateurs du groupe de la liste de tous les groupes et
+		// remplis la liste.
 		userIncludedList.setItems(otherUsers);
+		userIncludedList.getItems().removeAll(actualUsers);
 
 		userIncludedColumn.setCellValueFactory((CellDataFeatures<Utilisateur, String> feature) -> {
 			Utilisateur user = feature.getValue();
@@ -292,6 +335,16 @@ public class ManageGroupController extends Controller {
 			Utilisateur user = feature.getValue();
 			return new SimpleObjectProperty<>(user.getNom() + " " + user.getPrenom());
 		});
+
+		// GroupList // Set fields in an ArrayList to search in fields.
+		ArrayList<String> fields2 = new ArrayList<String>();
+		fields2.addAll(Arrays.asList("nom", "prenom"));
+
+		// Set filter for the quizzList
+		setFilterTableView(this.userSearch, this.userIncludedList, otherUsers, fields2);
+		// Set filter for the actualQuizzList
+		setFilterTableView(this.userSearch, this.userActualIncludedList, actualUsers, fields2);
+
 	}
 
 	@FXML
