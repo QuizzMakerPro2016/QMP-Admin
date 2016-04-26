@@ -1,9 +1,12 @@
 package com.qmp.admin.controllers;
 
+import java.io.IOException;
+
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
+import com.qmp.admin.utils.Notifier;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -107,6 +110,20 @@ public class QuizzHomeController extends Controller{
 	 */
     @FXML
     void handleRem(ActionEvent event) {
-
+    	Questionnaire selectedQuizz=tableQuizzList.getSelectionModel().getSelectedItem();
+    	if(selectedQuizz != null){
+    		boolean res = gUtils.showDialog("Supprimer ?", "Supprimer le quizz ?", "Voulez-vous vraiment supprimer le quizz "+selectedQuizz.getLibelle());
+    		if(res){
+    			try {
+					mainApp.getWebGate().delete(selectedQuizz, selectedQuizz.getId());
+					tableQuizzList.getItems().remove(selectedQuizz);
+					Notifier.notifySuccess("Suppression réussie", "Le questionnaire '" + selectedQuizz.getLibelle() + "' a bien été supprimé.");
+				} catch (IOException e) {
+					GraphicUtils.showException(e);
+				}
+    		}
+    	}else{
+        	Notifier.notifyError("Erreur", "Aucun questionnaire sélectionné.");
+    	}
     }
 }
