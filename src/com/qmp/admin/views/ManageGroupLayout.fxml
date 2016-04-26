@@ -146,7 +146,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="quizzIncludedList" layoutX="14.0" layoutY="7.0" prefHeight="263.0" prefWidth="695.0">
+                        <TableView fx:id="quizzIncludedList" layoutX="14.0" layoutY="38.0" prefHeight="231.0" prefWidth="695.0">
                           <columns>
                             <TableColumn fx:id="quizzIncludedColumn" prefWidth="692.0" text="Questionnaires hors du groupe" />
                           </columns>
@@ -154,11 +154,12 @@
                       <Button layoutX="729.0" layoutY="46.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleQuizzAdd" prefHeight="25.0" text="+" />
                         <Button layoutX="729.0" layoutY="327.0" minWidth="25.0" mnemonicParsing="false" onAction="#handleQuizzDelete" prefHeight="25.0" prefWidth="25.0" text="-" />
                         <Button layoutX="742.0" layoutY="7.0" mnemonicParsing="false" onAction="#handleCancel" text="Retour" />
-                        <TableView fx:id="quizzActualIncludedList" layoutX="21.0" layoutY="300.0" prefHeight="263.0" prefWidth="695.0">
+                        <TableView fx:id="quizzActualIncludedList" layoutX="21.0" layoutY="334.0" prefHeight="229.0" prefWidth="695.0">
                            <columns>
                               <TableColumn fx:id="quizzActualIncludedColumn" prefWidth="692.0" text="Questionnaires dans le groupe" />
                            </columns>
                         </TableView>
+                        <TextField fx:id="quizzSearch" layoutX="21.0" layoutY="7.0" prefHeight="25.0" prefWidth="685.0" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="94.0" AnchorPane.topAnchor="7.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -167,7 +168,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="userIncludedList" layoutX="14.0" layoutY="7.0" prefHeight="263.0" prefWidth="695.0">
+                        <TableView fx:id="userIncludedList" layoutX="14.0" layoutY="40.0" prefHeight="230.0" prefWidth="695.0">
                            <columns>
                               <TableColumn fx:id="userIncludedColumn" prefWidth="692.0" text="Utilisateurs hors du groupe" />
                            </columns>
@@ -175,11 +176,12 @@
                         <Button layoutX="729.0" layoutY="46.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleUserAdd" prefHeight="25.0" text="+" />
                         <Button layoutX="729.0" layoutY="327.0" minWidth="25.0" mnemonicParsing="false" onAction="#handleUserDelete" prefHeight="25.0" prefWidth="25.0" text="-" />
                         <Button layoutX="742.0" layoutY="7.0" mnemonicParsing="false" onAction="#handleCancel" text="Retour" />
-                        <TableView fx:id="userActualIncludedList" layoutX="21.0" layoutY="300.0" prefHeight="263.0" prefWidth="695.0">
+                        <TableView fx:id="userActualIncludedList" layoutX="21.0" layoutY="316.0" prefHeight="247.0" prefWidth="695.0">
                            <columns>
                               <TableColumn fx:id="userActualIncludedColumn" prefWidth="692.0" text="Utilisateurs dans le groupe" />
                            </columns>
                         </TableView>
+                        <TextField fx:id="userSearch" layoutX="15.0" layoutY="7.0" prefHeight="25.0" prefWidth="692.0" />
                      </children>
                   </AnchorPane>
                </content>
