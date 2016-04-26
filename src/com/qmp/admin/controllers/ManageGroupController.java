@@ -1,5 +1,8 @@
 package com.qmp.admin.controllers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Groupe;
 import com.qmp.admin.models.Groupe_questionnaire;
@@ -11,8 +14,6 @@ import com.qmp.admin.utils.GraphicUtils;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -101,42 +102,14 @@ public class ManageGroupController extends Controller {
 		this.allQuizz = mainApp.getWebGate().getList(Questionnaire.class);
 		this.allUsers = mainApp.getWebGate().getList(Utilisateur.class);
 		groupList.setItems(groupObs);
-		setFilterGroup();
-	}
 
-	private void setFilterGroup() {
-		// Permet de faire en sorte que la liste soit filtrable
-		FilteredList<Groupe> filteredData = new FilteredList<>(this.groupObs, p -> true);
+		// Set fields in an ArrayList to search in fields.
+		ArrayList<String> fields = new ArrayList<String>();
+		fields.addAll(Arrays.asList("libelle", "code"));
 
-		// Ajoute un listener pour vérifier tout changement sur le champs texte
-		groupSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-			filteredData.setPredicate(groupe -> {
-				// If filter text is empty, display all persons.
-				if (newValue == null || newValue.isEmpty()) {
-					return true;
-				}
+		// Set filter for the groupList
+		setFilterTableView(this.groupSearch, this.groupList, this.groupObs, fields);
 
-				// Compare first name and last name of every person with filter
-				// text.
-				String lowerCaseFilter = newValue.toLowerCase();
-
-				if (groupe.getLibelle().toLowerCase().contains(lowerCaseFilter)) {
-					return true; // Filter matches first name.
-				} else if (groupe.getCode().toLowerCase().contains(lowerCaseFilter)) {
-					return true; // Filter matches last name.
-				}
-				return false; // Does not match.
-			});
-		});
-
-		// La sorted list permet de trier les résultats obtenus
-		SortedList<Groupe> sortedData = new SortedList<>(filteredData);
-
-		// Bind la recherche et les données.
-		sortedData.comparatorProperty().bind(groupList.comparatorProperty());
-
-		// 5. Add sorted (and filtered) data to the table.
-		groupList.setItems(sortedData);
 	}
 
 	@FXML
@@ -165,6 +138,7 @@ public class ManageGroupController extends Controller {
 		showGroup(null);
 		groupList.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> showGroup(newValue));
+
 	}
 
 	public void showGroup(Groupe group) {
