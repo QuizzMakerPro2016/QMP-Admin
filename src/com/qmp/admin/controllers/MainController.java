@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
+import com.qmp.admin.utils.Notifier;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -55,7 +56,7 @@ public class MainController extends Controller {
 			if (mainApp.isAdmin()) {
 				errorText.setText(
 						"Connection réussie de " + mainApp.getUser().getPrenom() + " " + mainApp.getUser().getNom());
-				GraphicUtils.notifySuccess("Connexion réussie", "Connecté en tant que : "+ mainApp.getUser().getPrenom() + " " + mainApp.getUser().getNom());
+				Notifier.notifySuccess("Connexion réussie", "Connecté en tant que : "+ mainApp.getUser().getPrenom() + " " + mainApp.getUser().getNom());
 				gUtils.loadMenu();
 				gUtils.switchView("HomeLayout");
 
@@ -65,7 +66,7 @@ public class MainController extends Controller {
 			}
 		} else {
 			errorText.setText("Connexion échouée");
-			GraphicUtils.notifyError("Connexion échouée", "Identifaint ou mot de passe incorrect");
+			Notifier.notifyError("Connexion échouée", "Identifaint ou mot de passe incorrect");
 		}
 		
 	}
