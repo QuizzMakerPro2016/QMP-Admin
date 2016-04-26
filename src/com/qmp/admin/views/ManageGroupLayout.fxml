@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #37474f;" styleClass="background" stylesheets="@QMP-style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.qmp.admin.controllers.ManageGroupController">
+<AnchorPane minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #37474f;" styleClass="background" stylesheets="@QMP-style.css" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.qmp.admin.controllers.ManageGroupController">
    <children>
       <TabPane fx:id="tabPane" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-30.0">
         <tabs>
@@ -24,9 +24,9 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="800.0">
                      <children>
-                        <SplitPane dividerPositions="0.3005050505050505" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <SplitPane dividerPositions="0.3007518796992481" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <items>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                            <AnchorPane maxWidth="400.0" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                  <children>
                                     <TableView fx:id="groupList" layoutX="-60.0" layoutY="30.0" prefHeight="534.0" prefWidth="236.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
                                       <columns>
@@ -94,7 +94,7 @@
                                              <children>
                                                 <SplitPane dividerPositions="0.46045694200351495" layoutX="172.0" layoutY="73.0" prefHeight="355.0" prefWidth="554.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="0.0">
                                                   <items>
-                                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="353.0" prefWidth="306.0">
+                                                    <AnchorPane minHeight="200.0" minWidth="0.0" prefHeight="353.0" prefWidth="306.0">
                                                          <children>
                                                             <TableView fx:id="userList" layoutX="34.0" layoutY="36.0" prefHeight="324.0" prefWidth="304.0" AnchorPane.bottomAnchor="29.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-24.0" AnchorPane.topAnchor="0.0">
                                                               <columns>
@@ -111,7 +111,7 @@
                                                             </ButtonBar>
                                                          </children>
                                                       </AnchorPane>
-                                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="353.0" prefWidth="306.0">
+                                                    <AnchorPane minHeight="200.0" minWidth="0.0" prefHeight="353.0" prefWidth="306.0">
                                                          <children>
                                                             <TableView fx:id="quizzList" layoutX="34.0" layoutY="36.0" prefHeight="324.0" prefWidth="304.0" AnchorPane.bottomAnchor="29.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-24.0" AnchorPane.topAnchor="0.0">
                                                               <columns>
@@ -143,45 +143,69 @@
             </content>
           </Tab>
           <Tab text="Untitled Tab 2">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="quizzIncludedList" layoutX="14.0" layoutY="38.0" prefHeight="231.0" prefWidth="695.0">
-                          <columns>
-                            <TableColumn fx:id="quizzIncludedColumn" prefWidth="692.0" text="Questionnaires hors du groupe" />
-                          </columns>
-                        </TableView>
-                      <Button layoutX="729.0" layoutY="46.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleQuizzAdd" prefHeight="25.0" text="+" />
-                        <Button layoutX="729.0" layoutY="327.0" minWidth="25.0" mnemonicParsing="false" onAction="#handleQuizzDelete" prefHeight="25.0" prefWidth="25.0" text="-" />
-                        <Button layoutX="742.0" layoutY="7.0" mnemonicParsing="false" onAction="#handleCancel" text="Retour" />
-                        <TableView fx:id="quizzActualIncludedList" layoutX="21.0" layoutY="334.0" prefHeight="229.0" prefWidth="695.0">
-                           <columns>
-                              <TableColumn fx:id="quizzActualIncludedColumn" prefWidth="692.0" text="Questionnaires dans le groupe" />
-                           </columns>
-                        </TableView>
-                        <TextField fx:id="quizzSearch" layoutX="21.0" layoutY="7.0" prefHeight="25.0" prefWidth="685.0" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="94.0" AnchorPane.topAnchor="7.0" />
+                        <SplitPane dividerPositions="0.5100250626566416" layoutX="402.0" layoutY="39.0" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                           <items>
+                              <AnchorPane minHeight="500.0" minWidth="370.0" prefHeight="160.0" prefWidth="100.0">
+                                 <children>
+                                    <TableView fx:id="quizzIncludedList" layoutY="34.0" prefHeight="525.0" prefWidth="403.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="34.0">
+                                       <columns>
+                                          <TableColumn fx:id="quizzIncludedColumn" minWidth="400.0" prefWidth="-1.0" text="Questionnaires hors du groupe" />
+                                       </columns>
+                                    </TableView>
+                                    <Button layoutX="374.0" layoutY="2.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleQuizzAdd" prefHeight="25.0" text="-&gt;" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="2.0" />
+                                    <TextField fx:id="quizzSearch" layoutX="6.0" layoutY="2.0" prefHeight="25.0" prefWidth="212.0" promptText="Filter les Questionnaires" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="2.0" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="500.0" minWidth="370.0" prefHeight="160.0" prefWidth="100.0">
+                                 <children>
+                                    <TableView fx:id="quizzActualIncludedList" layoutY="34.0" prefHeight="525.0" prefWidth="387.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="34.0">
+                                       <columns>
+                                          <TableColumn fx:id="quizzActualIncludedColumn" minWidth="400.0" prefWidth="-1.0" text="Questionnaires dans le groupe" />
+                                       </columns>
+                                    </TableView>
+                                    <Button layoutX="-1.0" layoutY="2.0" minWidth="25.0" mnemonicParsing="false" onAction="#handleQuizzDelete" prefHeight="25.0" text="&lt;-" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0" />
+                                    <Button layoutX="335.0" layoutY="2.0" mnemonicParsing="false" onAction="#handleCancel" text="Retour" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0" />
+                                 </children>
+                              </AnchorPane>
+                           </items>
+                        </SplitPane>
                      </children>
                   </AnchorPane>
-            </content>
+               </content>
           </Tab>
             <Tab text="Untitled Tab 2">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="userIncludedList" layoutX="14.0" layoutY="40.0" prefHeight="230.0" prefWidth="695.0">
-                           <columns>
-                              <TableColumn fx:id="userIncludedColumn" prefWidth="692.0" text="Utilisateurs hors du groupe" />
-                           </columns>
-                        </TableView>
-                        <Button layoutX="729.0" layoutY="46.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleUserAdd" prefHeight="25.0" text="+" />
-                        <Button layoutX="729.0" layoutY="327.0" minWidth="25.0" mnemonicParsing="false" onAction="#handleUserDelete" prefHeight="25.0" prefWidth="25.0" text="-" />
-                        <Button layoutX="742.0" layoutY="7.0" mnemonicParsing="false" onAction="#handleCancel" text="Retour" />
-                        <TableView fx:id="userActualIncludedList" layoutX="21.0" layoutY="316.0" prefHeight="247.0" prefWidth="695.0">
-                           <columns>
-                              <TableColumn fx:id="userActualIncludedColumn" prefWidth="692.0" text="Utilisateurs dans le groupe" />
-                           </columns>
-                        </TableView>
-                        <TextField fx:id="userSearch" layoutX="15.0" layoutY="7.0" prefHeight="25.0" prefWidth="692.0" />
+                        <SplitPane dividerPositions="0.5100250626566416" layoutX="402.0" layoutY="39.0" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                          <items>
+                            <AnchorPane minHeight="500.0" minWidth="370.0" prefHeight="160.0" prefWidth="100.0">
+                                 <children>
+                                    <TableView fx:id="userIncludedList" layoutY="34.0" prefHeight="525.0" prefWidth="403.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="34.0">
+                                       <columns>
+                                          <TableColumn fx:id="userIncludedColumn" minWidth="400.0" prefWidth="-1.0" text="Utilisateurs hors du groupe" />
+                                       </columns>
+                                    </TableView>
+                                    <Button layoutX="374.0" layoutY="2.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleUserAdd" prefHeight="25.0" text="-&gt;" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="2.0" />
+                                    <TextField fx:id="userSearch" layoutX="6.0" layoutY="2.0" prefHeight="25.0" prefWidth="212.0" promptText="Filter les Utilisateurs" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="2.0" />
+                                 </children>
+                              </AnchorPane>
+                            <AnchorPane minHeight="500.0" minWidth="370.0" prefHeight="160.0" prefWidth="100.0">
+                                 <children>
+                                    <TableView fx:id="userActualIncludedList" layoutY="34.0" prefHeight="525.0" prefWidth="387.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="34.0">
+                                       <columns>
+                                          <TableColumn fx:id="userActualIncludedColumn" minWidth="400.0" prefWidth="-1.0" text="Utilisateurs dans le groupe" />
+                                       </columns>
+                                    </TableView>
+                                    <Button layoutX="-1.0" layoutY="2.0" minWidth="25.0" mnemonicParsing="false" onAction="#handleUserDelete" prefHeight="25.0" text="&lt;-" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0" />
+                                    <Button layoutX="335.0" layoutY="2.0" mnemonicParsing="false" onAction="#handleCancel" text="Retour" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0" />
+                                 </children>
+                              </AnchorPane>
+                          </items>
+                        </SplitPane>
                      </children>
                   </AnchorPane>
                </content>
