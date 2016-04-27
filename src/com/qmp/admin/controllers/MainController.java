@@ -12,6 +12,7 @@ import com.qmp.admin.utils.Notifier;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
@@ -20,7 +21,7 @@ public class MainController extends Controller {
 	@FXML
 	private TextField loginField;
 	@FXML
-	private TextField passwordField;
+	private PasswordField passwordField;
 	@FXML
 	private Button connectButton;
 
