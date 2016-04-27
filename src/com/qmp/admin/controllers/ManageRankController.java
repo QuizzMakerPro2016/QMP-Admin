@@ -4,6 +4,7 @@ import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
+import com.qmp.admin.utils.Notifier;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -60,6 +61,7 @@ public class ManageRankController extends Controller{
 		showRank(null);
 		rankList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showRank(newValue));	
 	
+		addFieldsToCheck(libelleField);
 	}
     
     public void showRank(Rang rank){
@@ -75,13 +77,17 @@ public class ManageRankController extends Controller{
     
     @FXML
     void handleSave(ActionEvent event) {
+    	if(!checkFields())
+    		return;
+    	
     	int selInxdex = rankList.getSelectionModel().getSelectedIndex();
 		if (selInxdex >= 0) {
 			//Update
 			Rang selectedRank = rankList.getSelectionModel().getSelectedItem();
 			selectedRank.setLibelle(libelleField.getText());
 			try {
-				mainApp.getWebGate().update(selectedRank, selectedRank.getId());
+				String res = mainApp.getWebGate().update(selectedRank, selectedRank.getId());
+				checkResult(Rang.class, res, "Rang '{{object}}' mis à jour.");
 				mainApp.getTaskQueue().getAll(Rang.class);
 			} catch (Exception e) {
 				GraphicUtils.showException(e);
@@ -92,9 +98,11 @@ public class ManageRankController extends Controller{
 			rank.setLibelle(libelleField.getText());
 			try {
 				String res = mainApp.getWebGate().add(rank);
-				Rang r = (Rang) mainApp.getWebGate().getObjectFromJson(res, Rang.class);
-				mainApp.getWebGate().getList(Rang.class).add(r);
-				showRank(r);
+				Rang r = (Rang) checkResult(Rang.class, res, "Rang '{{object}}' ajouté.");
+				if(r != null){
+					mainApp.getWebGate().getList(Rang.class).add(r);
+					showRank(r);
+				}
 			} catch (Exception e) {
 				GraphicUtils.showException(e);
 			}
@@ -117,13 +125,14 @@ public class ManageRankController extends Controller{
 			if(response){
 				rankList.getItems().remove(selInxdex);
 				try {
-					mainApp.getTaskQueue().delete(selectedRank, selectedRank.getId());
+					String res  = mainApp.getWebGate().delete(selectedRank, selectedRank.getId());
+					checkResult(Rang.class, res, "Rang '{{object}}' supprimé.");
 				} catch (Exception e) {
 					GraphicUtils.showException(e);
 				}
 			}
 		} else {
-			new GraphicUtils(this.mainApp).showDialog("Erreur","","Veuillez selectionner un rang");
+			Notifier.notifyWarning("Attention", "Aucun rang sélectionné.");
 		}
     }
 }

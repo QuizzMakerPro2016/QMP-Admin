@@ -184,7 +184,7 @@ public class ManageGroupController extends Controller {
 			selectedGroup.setCode(codeField.getText());
 			try {
 				String res = mainApp.getWebGate().update(selectedGroup, selectedGroup.getId());
-				checkResult(Groupe.class, res, "Groupe {{object}} mis à jour.");
+				checkResult(Groupe.class, res, "Groupe '{{object}}' mis à jour.");
 				mainApp.getTaskQueue().getAll(Groupe.class);
 			} catch (Exception e) {
 				GraphicUtils.showException(e);
@@ -196,7 +196,7 @@ public class ManageGroupController extends Controller {
 			group.setCode(codeField.getText());
 			try {
 				String res = mainApp.getWebGate().add(group);
-				Groupe g = (Groupe) checkResult(Groupe.class, res, "Groupe {{object}} ajouté.");
+				Groupe g = (Groupe) checkResult(Groupe.class, res, "Groupe '{{object}}' ajouté.");
 				
 				if(g == null) return;
 				
@@ -226,7 +226,7 @@ public class ManageGroupController extends Controller {
 				groupObs.remove(selInxdex);
 				try {
 					String res = mainApp.getWebGate().delete(selectedGroup, selectedGroup.getId());
-					checkResult(Groupe.class, res, "Groupe {{object}} supprimé");
+					checkResult(Groupe.class, res, "Groupe '{{object}}' supprimé");
 				} catch (Exception e) {
 					GraphicUtils.showException(e);
 				}

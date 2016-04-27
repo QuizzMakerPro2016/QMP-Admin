@@ -85,7 +85,7 @@ public class ManageDomainController extends Controller {
 				tableDomainList.getItems().remove(selInxdex);
 				try {
 					String res = mainApp.getWebGate().delete(selectedDomain, selectedDomain.getId());
-					checkResult(Domaine.class, res, "Domaine {{object}} supprimé.");
+					checkResult(Domaine.class, res, "Domaine '{{object}}' supprimé.");
 				} catch (Exception e) {
 					GraphicUtils.showException(e);
 				}
@@ -118,7 +118,7 @@ public class ManageDomainController extends Controller {
 			try {
 				String res = mainApp.getWebGate().update(selectedDomain, selectedDomain.getId());
 				mainApp.getTaskQueue().getAll(Domaine.class);
-				checkResult(Domaine.class, res, "Domaine {{object}} mis à jour.");
+				checkResult(Domaine.class, res, "Domaine '{{object}}' mis à jour.");
 			} catch (Exception e) {
 				GraphicUtils.showException(e);
 			}
@@ -129,7 +129,7 @@ public class ManageDomainController extends Controller {
 			
 			try {
 				String res = mainApp.getWebGate().add(domain);
-				Domaine d = (Domaine) checkResult(Domaine.class, res, "Domaine {{object}} ajouté.");
+				Domaine d = (Domaine) checkResult(Domaine.class, res, "Domaine '{{object}}' ajouté.");
 				if(d != null)
 					showDomain(d);
 			} catch (Exception e) {
