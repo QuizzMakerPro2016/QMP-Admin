@@ -57,15 +57,12 @@ public class MainController extends Controller {
 		mainApp.setUser(result);
 		if (mainApp.isLogged() == true) {
 			if (mainApp.isAdmin()) {
-				errorText.setText(
-						"Connection réussie de " + mainApp.getUser().getPrenom() + " " + mainApp.getUser().getNom());
 				Notifier.notifySuccess("Connexion réussie", "Connecté en tant que : "+ mainApp.getUser().getPrenom() + " " + mainApp.getUser().getNom());
 				gUtils.loadMenu();
 				gUtils.switchView("HomeLayout");
 
 			} else {
-				errorText.setText("Cet utilisateur ne dispose pas des droits nécessaires ("
-						+ result.getRang().getLibelle() + ")");
+				Notifier.notifyError("Connexion échouée", "Cet utilisateur ne dispose pas des droits nécessaires");
 			}
 		} else {
 			errorText.setText("Connexion échouée");
