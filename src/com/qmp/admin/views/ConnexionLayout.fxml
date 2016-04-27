@@ -60,11 +60,6 @@
             </Button>
          </children>
       </GridPane>
-      <Text fx:id="errorText" fill="WHITE" layoutX="10.0" layoutY="549.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="780.999992609024">
-         <font>
-            <Font name="DejaVu Sans Mono Bold" size="21.0" />
-         </font>
-      </Text>
    </children>
    <cursor>
       <Cursor fx:constant="DEFAULT" />
