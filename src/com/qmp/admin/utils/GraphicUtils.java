@@ -45,7 +45,6 @@ public class GraphicUtils {
 			
 			Controller controller = loader.getController();
 			controller.setMainApp(mainApp);
-				
 			return controller;
 		} catch (Exception e) {
 			showException(e);

@@ -8,11 +8,13 @@ import org.apache.http.client.ClientProtocolException;
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Groupe;
 import com.qmp.admin.models.Questionnaire;
+import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
@@ -20,6 +22,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 
 public class HomeController extends Controller{
 
@@ -90,5 +93,23 @@ public class HomeController extends Controller{
 			return new SimpleObjectProperty<>(quizz.getLibelle());
 		});
 
+		userList.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent event) {
+					mainApp.getTaskQueue().getAll(Rang.class);
+					mainApp.getTaskQueue().getAllRefresh(Utilisateur.class, 2);
+					gUtils.switchView("ManageUserLayout");
+			    }
+		});
+		
+		quizzList.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent event) {
+					mainApp.getTaskQueue().getAll(Rang.class);
+					mainApp.getTaskQueue().getAllRefresh(Utilisateur.class, 2);
+					gUtils.switchView("QuizzHomeLayout");
+			    }
+		});
+		
 	}
 }
