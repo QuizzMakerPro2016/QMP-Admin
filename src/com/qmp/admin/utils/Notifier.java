@@ -11,7 +11,7 @@ public class Notifier {
         tray.setTitle(title);
         tray.setMessage(message);
         tray.setNotificationType(nType);
-        tray.setAnimationType(AnimationType.SLIDE);
+        tray.setAnimationType(AnimationType.POPUP);
         tray.showAndDismiss(Duration.seconds(3));
 	}
 	

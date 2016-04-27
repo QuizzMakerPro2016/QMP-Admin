@@ -2,9 +2,11 @@ package com.qmp.admin.controllers;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.qmp.admin.MainApp;
 import com.qmp.admin.utils.GraphicUtils;
+import com.qmp.admin.utils.Notifier;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -16,10 +18,20 @@ public class Controller {
 
 	protected MainApp mainApp;
 	protected GraphicUtils gUtils;
+	
+	private List<TextField> fieldsToCheck;
 
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
-		gUtils = new GraphicUtils(mainApp);
+		this.gUtils = new GraphicUtils(mainApp);
+	}
+	
+	protected void addFieldsToCheck(TextField... fields){
+		if(this.fieldsToCheck == null)
+			this.fieldsToCheck = new ArrayList<>();
+		for(TextField field : fields){
+			this.fieldsToCheck.add(field);
+		}
 	}
 
 	/**
@@ -79,6 +91,17 @@ public class Controller {
 
 		// Add sorted (and filtered) data to the table.
 		liste.setItems(sortedData);
+	}
+	
+	protected boolean checkFields(){
+		
+		for(TextField tf : this.fieldsToCheck){
+			if(tf.getText().isEmpty()){
+				Notifier.notifyWarning("Champ vide !", "Veuillez renseigner le champ '" + tf.getPromptText() + "'.");
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

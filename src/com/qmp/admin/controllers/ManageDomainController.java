@@ -70,6 +70,8 @@ public class ManageDomainController extends Controller {
 		
 		showDomain(null);
 		tableDomainList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showDomain(newValue));
+		
+		addFieldsToCheck(tfLibelle);
 	}
 
     @FXML
@@ -92,6 +94,7 @@ public class ManageDomainController extends Controller {
 			//error no selected
 			//TODO create Bootstrap Like Alerts
 		}
+		
     }
 
     @FXML
@@ -102,11 +105,9 @@ public class ManageDomainController extends Controller {
 
     @FXML
     void handleSave(ActionEvent event) {
-    	//Empty Fields Check
-    	if(tfLibelle.getText().isEmpty()){
-    		GraphicUtils.showAlert("Erreur", "Impossible d'enregitrer le domaine", "Veuillez renseigner le libellé du domaine", AlertType.ERROR);
+    	
+    	if(!checkFields())
     		return;
-    	}
     	
     	int selInxdex = tableDomainList.getSelectionModel().getSelectedIndex();
 		
