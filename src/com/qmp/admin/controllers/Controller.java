@@ -10,6 +10,7 @@ import org.apache.http.client.ClientProtocolException;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.qmp.admin.MainApp;
+import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Reponse;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
@@ -124,6 +125,41 @@ public class Controller {
 			Notifier.notifyError("Erreur", ((JsonObject) jso.get("error")).get("message").toString());
 		}
 		return null;
+	}
+	
+	protected Object addObject(Object object){
+		Object o = null;
+		try {
+			String res = mainApp.getWebGate().add(object);
+			o = checkResult(object.getClass(), res, object.getClass().getSimpleName() + " '{{object}}' ajouté.");
+		} catch (Exception e) {
+			GraphicUtils.showException(e);
+		}
+		return o;
+	}
+	
+	protected Object updateObject(Object object, int objId){
+		Object o = null;
+		try {
+			String res = mainApp.getWebGate().update(object, objId);
+			o = checkResult(object.getClass(), res, object.getClass().getSimpleName() + " '{{object}}' mis à jour.");
+		} catch (Exception e) {
+			GraphicUtils.showException(e);
+		}
+		return o;
+	}
+	
+	protected boolean deleteObject(Object object, int objectId){
+		Object o = null;
+		try {
+			String res = mainApp.getWebGate().delete(object, objectId);
+			o = checkResult(object.getClass(), res, object.getClass().getSimpleName() + " '{{object}}' supprimé.");
+		} catch (Exception e) {
+			GraphicUtils.showException(e);
+		}
+		if(o == null)
+			return false;
+		return true;
 	}
 
 }

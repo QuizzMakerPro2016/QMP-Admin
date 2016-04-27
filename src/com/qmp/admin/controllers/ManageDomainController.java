@@ -7,7 +7,6 @@ import org.apache.http.client.ClientProtocolException;
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Questionnaire;
-import com.qmp.admin.utils.GraphicUtils;
 import com.qmp.admin.utils.Notifier;
 
 import javafx.beans.property.SimpleObjectProperty;
@@ -15,7 +14,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -86,15 +84,9 @@ public class ManageDomainController extends Controller {
 		if (selInxdex >= 0) {
 			boolean response = gUtils.showDialog("Suppression", "Supprimer un domaine ?", "Voulez-vous vraiment supprimer le domaine '" + selectedDomain.getLibelle() + "' ?");
 			if(response){
+				deleteObject(selectedDomain, selectedDomain.getId());
 				tableDomainList.getItems().remove(selInxdex);
-				try {
-					String res = mainApp.getWebGate().delete(selectedDomain, selectedDomain.getId());
-					checkResult(Domaine.class, res, "Domaine '{{object}}' supprimé.");
-				} catch (Exception e) {
-					GraphicUtils.showException(e);
-				}
 			}
-			
 		} else {
 			Notifier.notifyWarning("Attention", "Aucun domaine selectionné.");
 		}
@@ -113,32 +105,25 @@ public class ManageDomainController extends Controller {
     	if(!checkFields())
     		return;
     	
-    	int selInxdex = tableDomainList.getSelectionModel().getSelectedIndex();
+    	Domaine domain = tableDomainList.getSelectionModel().getSelectedItem();
+    	if(domain == null)
+    		domain = new Domaine();
+    	
+    	if(Integer.valueOf(tfDomainID.getText()) > 0)
+    		domain.setId(Integer.valueOf(tfDomainID.getText()));
+    	
+    	domain.setLibelle(tfLibelle.getText());
 		
-		if (selInxdex >= 0) {
+		if (domain.getId() > 0) {
 			//Update
-			Domaine selectedDomain = tableDomainList.getSelectionModel().getSelectedItem();
-			selectedDomain.setLibelle(tfLibelle.getText());
-			try {
-				String res = mainApp.getWebGate().update(selectedDomain, selectedDomain.getId());
-				mainApp.getTaskQueue().getAll(Domaine.class);
-				checkResult(Domaine.class, res, "Domaine '{{object}}' mis à jour.");
-			} catch (Exception e) {
-				GraphicUtils.showException(e);
-			}
+			domain = (Domaine) updateObject(domain, domain.getId());
 		} else {
-			//Insertion
-			Domaine domain = new Domaine();
-			domain.setLibelle(tfLibelle.getText());
-			
-			try {
-				String res = mainApp.getWebGate().add(domain);
-				Domaine d = (Domaine) checkResult(Domaine.class, res, "Domaine '{{object}}' ajouté.");
-				if(d != null)
-					showDomain(d);
-			} catch (Exception e) {
-				GraphicUtils.showException(e);
-			}
+			//Add
+			domain = (Domaine) addObject(domain);
+		}
+		if(domain != null){
+			mainApp.getTaskQueue().getAll(Domaine.class);
+			showDomain(domain);
 		}
     }
     
