@@ -58,6 +58,8 @@ public class MainApp extends Application implements Observer {
 		this.primaryStage.setTitle("QuizzMakerPro 2016 Admin");
 		this.primaryStage.getIcons().add(new Image("/com/qmp/admin/views/logo-11.png"));
 
+		this.primaryStage.setHeight(698);
+		this.primaryStage.setWidth(1240);
 
 		initRootLayout();
 
