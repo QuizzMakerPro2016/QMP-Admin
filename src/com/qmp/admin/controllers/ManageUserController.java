@@ -217,7 +217,8 @@ public class ManageUserController extends Controller {
 			boolean response = gUtils.showDialog("Suppression", "Supprimer un utilisateur ?",
 					"Voulez-vous vraiment supprimer l'utilisateur '" + selectedUser.getMail() + "' ?");
 			if (response) {
-				userList.getItems().remove(selInxdex);
+				userObs.remove(selInxdex);
+				
 				try {
 					mainApp.getTaskQueue().delete(selectedUser, selectedUser.getId());
 				} catch (Exception e) {
