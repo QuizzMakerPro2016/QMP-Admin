@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane minHeight="500.0" style="-fx-background-color: derive(#37474f, 20%);" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.qmp.admin.controllers.MainPageController">
+<AnchorPane minHeight="500.0" style="-fx-background-color: derive(#37474f, 20%);" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.qmp.admin.controllers.MainPageController">
    <children>
       <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="483.0" prefWidth="120.0" style="-fx-background-color: derive(#37474f, 20%);" AnchorPane.bottomAnchor="37.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -29,9 +29,6 @@
             <RowConstraints maxHeight="57.0" minHeight="11.0" prefHeight="11.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button id="btmenu" fx:id="quizzButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleQuizz" prefHeight="50.0" prefWidth="120.0" text="Questionnaires" GridPane.rowIndex="2" />
-            <Button id="btmenu" fx:id="domainButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleDomain" prefHeight="50.0" prefWidth="120.0" text="Domaines" GridPane.rowIndex="5" />
-            <Button id="btmenu" fx:id="userButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleUser" prefHeight="50.0" prefWidth="120.0" text="Utilisateurs" GridPane.rowIndex="3" />
             <ImageView fitHeight="85.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../../assets/img/logo-11.png" />
@@ -40,8 +37,11 @@
                   <Insets />
                </GridPane.margin>
             </ImageView>
-            <Button id="btmenu" fx:id="groupButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleGroup" prefHeight="50.0" prefWidth="120.0" text="Groupes" GridPane.rowIndex="4" />
             <Button id="btmenu" fx:id="homeButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleHome" prefHeight="50.0" prefWidth="120.0" text="Accueil" GridPane.rowIndex="1" />
+            <Button id="btmenu" fx:id="quizzButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleQuizz" prefHeight="50.0" prefWidth="120.0" text="Questionnaires" GridPane.rowIndex="2" />
+            <Button id="btmenu" fx:id="userButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleUser" prefHeight="50.0" prefWidth="120.0" text="Utilisateurs" GridPane.rowIndex="3" />
+            <Button id="btmenu" fx:id="groupButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleGroup" prefHeight="50.0" prefWidth="120.0" text="Groupes" GridPane.rowIndex="4" />
+            <Button id="btmenu" fx:id="domainButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleDomain" prefHeight="50.0" prefWidth="120.0" text="Domaines" GridPane.rowIndex="5" />
             <Button id="btmenu" fx:id="rankButton" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleRank" prefHeight="50.0" prefWidth="120.0" text="Rangs" GridPane.rowIndex="6" />
             <Button id="btmenu" fx:id="dcButton" maxHeight="50.0" maxWidth="120.0" minHeight="31.0" minWidth="120.0" mnemonicParsing="false" onAction="#handleDisconnect" prefHeight="31.0" prefWidth="122.0" text="Déconnexion" GridPane.rowIndex="7" />
          </children>
