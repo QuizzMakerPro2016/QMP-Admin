@@ -226,12 +226,14 @@ public class ManageGroupController extends Controller {
 			boolean response = gUtils.showDialog("Suppression", "Supprimer un groupe ?",
 					"Voulez-vous vraiment supprimer le groupe '" + selectedGroup.getLibelle() + "' ?");
 			if (response) {
-				groupObs.remove(selInxdex);
+				
 				try {
+					
 					String res = mainApp.getWebGate().delete(selectedGroup, selectedGroup.getId());
 					checkResult(Groupe.class, res, "Groupe '{{object}}' supprimé");
+					groupObs.remove(selInxdex);
 				} catch (Exception e) {
-					GraphicUtils.showException(e);
+					Notifier.notifyWarning("Impossible de supprimer le groupe", "Le groupe est-il lié à un utilisateur ou un questionnaire ?");
 				}
 			}
 		} else {

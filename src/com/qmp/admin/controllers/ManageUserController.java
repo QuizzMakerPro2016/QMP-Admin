@@ -194,7 +194,7 @@ public class ManageUserController extends Controller {
 				checkResult(Utilisateur.class, res, "Utilisateur '{{object}}' mis à jour.");
 				mainApp.getTaskQueue().getAll(Utilisateur.class);
 			} catch (Exception e) {
-				GraphicUtils.showException(e);
+				Notifier.notifyError("Erreur", "Une erreur est survenue lors de la modification de l'utilisateur");
 			}
 		} else {
 			// Insertion
@@ -216,7 +216,7 @@ public class ManageUserController extends Controller {
 					showUser(u);
 				}
 			} catch (Exception e) {
-				GraphicUtils.showException(e);
+				Notifier.notifyError("Erreur", "Une erreur est survenue lors de l'ajout de l'utilisateur");
 			}
 
 		}
@@ -237,13 +237,15 @@ public class ManageUserController extends Controller {
 			boolean response = gUtils.showDialog("Suppression", "Supprimer un utilisateur ?",
 					"Voulez-vous vraiment supprimer l'utilisateur '" + selectedUser.getMail() + "' ?");
 			if (response) {
-				userObs.remove(selInxdex);
+				
 				
 				try {
+					
 					String res = mainApp.getWebGate().delete(selectedUser, selectedUser.getId());
 					checkResult(Utilisateur.class, res, "Utilisateur '{{object}}' supprimé.");
+					userObs.remove(selInxdex);
 				} catch (Exception e) {
-					GraphicUtils.showException(e);
+					Notifier.notifyError("Impossible de supprimer l'utilisateur","L'utilisateur est-il lié à un groupe ou un questionnaire ?");
 				}
 			}
 		} else {

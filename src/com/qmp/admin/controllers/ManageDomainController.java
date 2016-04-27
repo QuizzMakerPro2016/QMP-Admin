@@ -84,8 +84,12 @@ public class ManageDomainController extends Controller {
 		if (selInxdex >= 0) {
 			boolean response = gUtils.showDialog("Suppression", "Supprimer un domaine ?", "Voulez-vous vraiment supprimer le domaine '" + selectedDomain.getLibelle() + "' ?");
 			if(response){
-				deleteObject(selectedDomain, selectedDomain.getId());
-				tableDomainList.getItems().remove(selInxdex);
+				Boolean o = deleteObject(selectedDomain, selectedDomain.getId());
+				if(o){
+					tableDomainList.getItems().remove(selInxdex);
+				}else{
+					Notifier.notifyWarning("Impossible de supprimer le domaine", "Le domaine est-il lié à un quizz ?");
+				}
 			}
 		} else {
 			Notifier.notifyWarning("Attention", "Aucun domaine selectionné.");
