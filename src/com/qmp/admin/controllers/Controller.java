@@ -4,8 +4,13 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.qmp.admin.MainApp;
+import com.qmp.admin.models.Reponse;
+import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
+import com.qmp.admin.utils.MyGsonBuilder;
 import com.qmp.admin.utils.Notifier;
 
 import javafx.collections.ObservableList;
@@ -102,6 +107,20 @@ public class Controller {
 			}
 		}
 		return true;
+	}
+	
+	protected  <T> Object checkResult(Class<T> clazz, String json, String successMsg){
+		T obj = (T) mainApp.getWebGate().getObjectFromJson(json, clazz);
+		if(obj != null){
+			Notifier.notifySuccess("Succès", successMsg.replace("{{object}}", obj.toString()));
+			return obj;
+		}
+		Gson gson = MyGsonBuilder.create();
+		JsonObject jso = gson.fromJson(json, JsonObject.class);
+		if (jso.get("error") != null) {
+			Notifier.notifyError("Erreur", ((JsonObject) jso.get("error")).get("message").toString());
+		}
+		return null;
 	}
 
 }

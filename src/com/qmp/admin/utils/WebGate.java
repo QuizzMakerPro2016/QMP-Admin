@@ -64,7 +64,7 @@ public class WebGate {
 			if (field.getType().isPrimitive() || PrimitiveTypes.isWrapperType(field.getType())) {
 				field.setAccessible(true);
 				try {
-					Logger.log(field.getName() + " => " + field.get(o).toString());
+					Logger.log(field.getName());
 					result.put(field.getName(), field.get(o));
 				} catch (IllegalArgumentException | IllegalAccessException e) {
 					// TODO Auto-generated catch block

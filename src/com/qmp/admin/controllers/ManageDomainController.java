@@ -116,8 +116,9 @@ public class ManageDomainController extends Controller {
 			Domaine selectedDomain = tableDomainList.getSelectionModel().getSelectedItem();
 			selectedDomain.setLibelle(tfLibelle.getText());
 			try {
-				mainApp.getWebGate().update(selectedDomain, selectedDomain.getId());
+				String res = mainApp.getWebGate().update(selectedDomain, selectedDomain.getId());
 				mainApp.getTaskQueue().getAll(Domaine.class);
+				checkResult(Domaine.class, res, "Domaine {{object}} mis à jour.");
 			} catch (Exception e) {
 				GraphicUtils.showException(e);
 			}
@@ -128,9 +129,9 @@ public class ManageDomainController extends Controller {
 			
 			try {
 				String res = mainApp.getWebGate().add(domain);
-				Domaine d = (Domaine) mainApp.getWebGate().getObjectFromJson(res, Domaine.class);
-				mainApp.getWebGate().getList(Domaine.class).add(d);
-				showDomain(d);
+				Domaine d = (Domaine) checkResult(Domaine.class, res, "Domaine {{object}} ajouté.");
+				if(d != null)
+					showDomain(d);
 			} catch (Exception e) {
 				GraphicUtils.showException(e);
 			}

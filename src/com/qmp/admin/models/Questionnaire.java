@@ -216,7 +216,7 @@ public class Questionnaire {
 	}
 	@Override
 	public String toString() {
-		return " [date] = " + date+" [idDomaine] = " + idDomaine+" [libelle] = " + libelle+" [idUtilisateur] = " + idUtilisateur+" [id] = " + id;
+		return libelle;
 	}
 	
 	@Override

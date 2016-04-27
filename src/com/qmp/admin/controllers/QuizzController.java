@@ -452,25 +452,18 @@ public class QuizzController extends Controller {
 	    	this.quizz.setIdDomaine(cbDomain.getSelectionModel().getSelectedItem().getId());
 	    	this.quizz.setIdUtilisateur(mainApp.getUser().getId());
 	    	
-	    	LocalDate t = dateQuizz.getValue();
 	    	Instant instant = dateQuizz.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
 	    	java.sql.Date date = new java.sql.Date(Date.from(instant).getTime());
 			this.quizz.setDate(date);
-			
 			
 			try {
 				String res = null;
 				if(this.quizz.getId() > 0){
 					res = mainApp.getWebGate().update(quizz, quizz.getId());
+					checkResult(Questionnaire.class, res, "Questionnaire '{{object}}' mis à jour.");		
 				}else{
 					res = mainApp.getWebGate().add(quizz);
-				}
-				Questionnaire questionnaire = (Questionnaire) mainApp.getWebGate().getObjectFromJson(res, Questionnaire.class);
-				if( questionnaire != null){
-					this.quizz = questionnaire;
-					Notifier.notifySuccess("Enregistrement réussi", "Questionnaire '" + this.quizz.getLibelle() + "' enregistré.");
-				}else{
-					Notifier.notifyError("Erreur d'enregistrement", "Impossible d'enregistrer le questionnaire");
+					checkResult(Questionnaire.class, res, "Questionnaire '{{object}}' ajouté.");
 				}
 			} catch (IllegalArgumentException | IllegalAccessException | IOException e) {
 					GraphicUtils.showException(e);
