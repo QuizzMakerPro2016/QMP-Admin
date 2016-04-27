@@ -147,39 +147,7 @@ public class QuizzController extends Controller {
      */
     @FXML
     void handleSaveQuizz(ActionEvent event) {
-    	if(this.quizz==null){
-    		this.quizz=new Questionnaire();
-    	}
-    	this.quizz.setDescription(descQuizz.getText());
-    	this.quizz.setLibelle(libelleQuizz.getText());
-    	this.quizz.setIdDomaine(cbDomain.getSelectionModel().getSelectedItem().getId());
-    	this.quizz.setIdUtilisateur(mainApp.getUser().getId());
-    	
-    	LocalDate t = dateQuizz.getValue();
-    	Instant instant = dateQuizz.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
-    	java.sql.Date date = new java.sql.Date(Date.from(instant).getTime());
-		this.quizz.setDate(date);
-		
-		
-		try {
-			String res = null;
-			if(this.quizz.getId() > 0){
-				res = mainApp.getWebGate().update(quizz, quizz.getId());
-			}else{
-				res = mainApp.getWebGate().add(quizz);
-			}
-			Questionnaire questionnaire = (Questionnaire) mainApp.getWebGate().getObjectFromJson(res, Questionnaire.class);
-			if( questionnaire != null){
-				this.quizz = questionnaire;
-				Notifier.notifySuccess("Enregistrement réussi", "Questionnaire '" + this.quizz.getLibelle() + "' enregistré.");
-			}else{
-				Notifier.notifyError("Erreur d'enregistrement", "Impossible d'enregistrer le questionnaire");
-			}
-		} catch (IllegalArgumentException | IllegalAccessException | IOException e) {
-				GraphicUtils.showException(e);
-		}
-		
-		
+    	saveQuizz();
     }
 
 	/**
@@ -276,8 +244,8 @@ public class QuizzController extends Controller {
     		newQuest.setType(cbOpenQuest.isSelected());
     		quizz.getQuestions().add(newQuest);    		
 
-    		//SaveQuizz
-    		//handleSaveQuizz()
+    		
+    		saveQuizz();
     		
     		try {
 				String resQuest = mainApp.getWebGate().add(newQuest);
@@ -473,5 +441,39 @@ public class QuizzController extends Controller {
 	});
 
 		return popup;
+	 }
+	 
+	 private void saveQuizz(){
+		 if(this.quizz==null){
+	    		this.quizz=new Questionnaire();
+	    	}
+	    	this.quizz.setDescription(descQuizz.getText());
+	    	this.quizz.setLibelle(libelleQuizz.getText());
+	    	this.quizz.setIdDomaine(cbDomain.getSelectionModel().getSelectedItem().getId());
+	    	this.quizz.setIdUtilisateur(mainApp.getUser().getId());
+	    	
+	    	LocalDate t = dateQuizz.getValue();
+	    	Instant instant = dateQuizz.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+	    	java.sql.Date date = new java.sql.Date(Date.from(instant).getTime());
+			this.quizz.setDate(date);
+			
+			
+			try {
+				String res = null;
+				if(this.quizz.getId() > 0){
+					res = mainApp.getWebGate().update(quizz, quizz.getId());
+				}else{
+					res = mainApp.getWebGate().add(quizz);
+				}
+				Questionnaire questionnaire = (Questionnaire) mainApp.getWebGate().getObjectFromJson(res, Questionnaire.class);
+				if( questionnaire != null){
+					this.quizz = questionnaire;
+					Notifier.notifySuccess("Enregistrement réussi", "Questionnaire '" + this.quizz.getLibelle() + "' enregistré.");
+				}else{
+					Notifier.notifyError("Erreur d'enregistrement", "Impossible d'enregistrer le questionnaire");
+				}
+			} catch (IllegalArgumentException | IllegalAccessException | IOException e) {
+					GraphicUtils.showException(e);
+			}
 	 }
 }
