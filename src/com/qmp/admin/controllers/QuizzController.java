@@ -358,12 +358,13 @@ public class QuizzController extends Controller {
 	}
 
 	private void showAnswers(Question q) {
+		tfUniqueAns.setVisible(q.isType());
+		tableAnsList.setVisible(!q.isType());
+		cbMultiQuest.setSelected(!q.isType());
+		cbOpenQuest.setSelected(q.isType());
+		
 		if (q.isType()) {
 			// Open
-			tfUniqueAns.setVisible(true);
-			tableAnsList.setVisible(false);
-			cbMultiQuest.setSelected(false);
-			cbOpenQuest.setSelected(true);
 			if (q.getReponses().size() < 1) {
 				tfUniqueAns.setId("0");
 				return;
@@ -372,11 +373,7 @@ public class QuizzController extends Controller {
 			tfUniqueAns.setId(String.valueOf(q.getReponses().get(0).getId()));
 		} else {
 			// Multiple
-			tfUniqueAns.setVisible(false);
-			tableAnsList.setVisible(true);
 			tableAnsList.setItems(FXCollections.observableArrayList(q.getReponses()));
-			cbMultiQuest.setSelected(true);
-			cbOpenQuest.setSelected(false);
 		}
 
 	}
