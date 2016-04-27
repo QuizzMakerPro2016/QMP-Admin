@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -14,7 +21,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@QMP-style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.qmp.admin.controllers.MainController">
+<AnchorPane minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@QMP-style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.qmp.admin.controllers.MainController">
    <children>
       <ImageView disable="true" fitHeight="128.0" fitWidth="765.0" layoutX="77.0" layoutY="14.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="77.0" AnchorPane.rightAnchor="77.0" AnchorPane.topAnchor="14.0">
          <image>
@@ -45,11 +52,7 @@
                   <Insets />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="passwordField" prefHeight="50.0" prefWidth="248.0" text="123456" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </TextField>
+            <PasswordField fx:id="passwordField" prefHeight="50.0" text="123456" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Button fx:id="connectButton" mnemonicParsing="false" onAction="#handleConnect" prefHeight="50.0" prefWidth="253.0" text="Connexion" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <font>
                   <Font size="18.0" />
@@ -57,11 +60,6 @@
             </Button>
          </children>
       </GridPane>
-      <Text fx:id="errorText" fill="WHITE" layoutX="10.0" layoutY="549.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="780.999992609024">
-         <font>
-            <Font name="DejaVu Sans Mono Bold" size="21.0" />
-         </font>
-      </Text>
    </children>
    <cursor>
       <Cursor fx:constant="DEFAULT" />

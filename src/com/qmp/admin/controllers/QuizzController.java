@@ -20,6 +20,7 @@ import com.qmp.admin.models.Reponse;
 import com.qmp.admin.utils.GraphicUtils;
 import com.qmp.admin.utils.Logger;
 import com.qmp.admin.utils.Notifier;
+import com.qmp.admin.utils.fieldchecker.TextFieldChecker;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -102,6 +103,11 @@ public class QuizzController extends Controller {
     @FXML
     private Label lblUniqueAns;
     
+    private TextFieldChecker quizzChecker;
+    private TextFieldChecker questChecker;
+    private TextFieldChecker uniqueAnsChecker;
+    private TextFieldChecker multiAnsChecker;
+    
     private boolean isQuestionModified;
     private Questionnaire quizz;
     
@@ -162,8 +168,10 @@ public class QuizzController extends Controller {
 		btnAnsAction.setVisible(false);
 		lblUniqueAns.setVisible(false);
 		
-		
-		addFieldsToCheck(libelleQuizz);
+		quizzChecker = new TextFieldChecker(libelleQuizz, descQuizz);
+		questChecker = new TextFieldChecker(tfQuestLibelle);
+		uniqueAnsChecker = new TextFieldChecker(tfUniqueAns);
+		multiAnsChecker = new TextFieldChecker(tfAnsLibelle);
 
 	}
 	
@@ -189,6 +197,8 @@ public class QuizzController extends Controller {
 
     @FXML
     void handleSaveAns(Event event){
+    	
+    	if(!multiAnsChecker.run()) return;
     	
     	Question q = saveQuestion();
     	if(q == null)
@@ -452,7 +462,7 @@ public class QuizzController extends Controller {
 	 
 	 private Questionnaire saveQuizz(){
 		 
-		 if(!checkFields()) return null;
+		 if(!quizzChecker.run()) return null;
 		 
 		 if(this.quizz==null) 
 			 this.quizz=new Questionnaire();
@@ -479,7 +489,7 @@ public class QuizzController extends Controller {
 	 private Question saveQuestion(){
  		if(saveQuizz() == null) return null;
  		
- 		if(!checkFields()) return null;
+ 		if(questChecker.run()) return null;
     	
  		Question q = tableQuestionsList.getSelectionModel().getSelectedItem();
     	if(q == null)
@@ -512,6 +522,8 @@ public class QuizzController extends Controller {
 			
 			//IF Open Question, auto save answer
 		if(q.isType()){
+			if(!uniqueAnsChecker.run()) return null;
+			
 			Reponse rep = new Reponse();
 			rep.setIdQuestion(q.getId());
 			rep.setGood(true);
