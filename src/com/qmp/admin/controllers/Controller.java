@@ -155,7 +155,7 @@ public class Controller {
 			String res = mainApp.getWebGate().delete(object, objectId);
 			o = checkResult(object.getClass(), res, object.getClass().getSimpleName() + " '{{object}}' supprimé.");
 		} catch (Exception e) {
-			GraphicUtils.showException(e);
+			//GraphicUtils.showException(e);
 		}
 		if(o == null)
 			return false;
