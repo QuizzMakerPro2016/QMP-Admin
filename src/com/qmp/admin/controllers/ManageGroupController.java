@@ -1,7 +1,10 @@
 package com.qmp.admin.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import org.apache.http.client.ClientProtocolException;
 
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Groupe;
@@ -108,7 +111,7 @@ public class ManageGroupController extends Controller {
 	private ObservableList<Utilisateur> actualUsers;
 
 	@Override
-	public void setMainApp(MainApp mainApp) {
+	public void setMainApp(MainApp mainApp) throws ClientProtocolException, IOException {
 		super.setMainApp(mainApp);
 		this.groupObs = mainApp.getWebGate().getList(Groupe.class);
 		this.allQuizz = mainApp.getWebGate().getList(Questionnaire.class);

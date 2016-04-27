@@ -135,7 +135,6 @@ public class Groupe {
 		this.groupe_utilisateurs=aGroupe_utilisateurs;
 	}
 	
-
 	
 	@Override
 	public String toString() {

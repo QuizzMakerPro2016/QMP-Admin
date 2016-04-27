@@ -1,5 +1,9 @@
 package com.qmp.admin.controllers;
 
+import java.io.IOException;
+
+import org.apache.http.client.ClientProtocolException;
+
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Questionnaire;
@@ -49,7 +53,7 @@ public class ManageDomainController extends Controller {
     private TableColumn<Questionnaire, String> tableQuizzesListCol;
     
     @Override
-    public void setMainApp(MainApp mainApp) {
+    public void setMainApp(MainApp mainApp) throws ClientProtocolException, IOException {
     	super.setMainApp(mainApp);
     	ObservableList<Domaine> lstDo = mainApp.getWebGate().getList(Domaine.class);
 		tableDomainList.setItems(lstDo);

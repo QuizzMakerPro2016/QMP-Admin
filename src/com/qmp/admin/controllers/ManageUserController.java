@@ -87,7 +87,7 @@ public class ManageUserController extends Controller {
 	private ObservableList<Utilisateur> userObs;
 
 	@Override
-	public void setMainApp(MainApp mainApp) {
+	public void setMainApp(MainApp mainApp) throws ClientProtocolException, IOException {
 		super.setMainApp(mainApp);
 
 		ObservableList<Rang> r = mainApp.getWebGate().getList(Rang.class);

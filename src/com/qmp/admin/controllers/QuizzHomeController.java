@@ -2,6 +2,8 @@ package com.qmp.admin.controllers;
 
 import java.io.IOException;
 
+import org.apache.http.client.ClientProtocolException;
+
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Utilisateur;
@@ -38,7 +40,7 @@ public class QuizzHomeController extends Controller{
     private Button btnEditQuizz;
     
     @Override
-    public void setMainApp(MainApp mainApp) {
+    public void setMainApp(MainApp mainApp) throws ClientProtocolException, IOException {
     	super.setMainApp(mainApp);
     	ObservableList<Questionnaire> quizzObs = null;
 		try {

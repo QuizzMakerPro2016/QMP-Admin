@@ -3,6 +3,8 @@ package com.qmp.admin.controllers;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.http.client.ClientProtocolException;
+
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Groupe;
@@ -52,7 +54,7 @@ public class MainPageController extends Controller {
 	}
 
 	@Override
-	public void setMainApp(MainApp mainApp) {
+	public void setMainApp(MainApp mainApp) throws ClientProtocolException, IOException {
 		super.setMainApp(mainApp);
 		userText.setText(mainApp.getUser().getNom().toUpperCase() + " " + mainApp.getUser().getPrenom());
 	}

@@ -1,8 +1,11 @@
 package com.qmp.admin.controllers;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.http.client.ClientProtocolException;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -26,7 +29,7 @@ public class Controller {
 	
 	private List<TextField> fieldsToCheck;
 
-	public void setMainApp(MainApp mainApp) {
+	public void setMainApp(MainApp mainApp) throws ClientProtocolException, IOException {
 		this.mainApp = mainApp;
 		this.gUtils = new GraphicUtils(mainApp);
 	}

@@ -2,6 +2,8 @@ package com.qmp.admin.controllers;
 
 import java.io.IOException;
 
+import org.apache.http.client.ClientProtocolException;
+
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
@@ -32,7 +34,7 @@ public class MainController extends Controller {
 	}
 
 	@Override
-	public void setMainApp(MainApp mainApp) {
+	public void setMainApp(MainApp mainApp) throws ClientProtocolException, IOException {
 		super.setMainApp(mainApp);
 		gUtils = new GraphicUtils(mainApp);
 		connectButton.setDefaultButton(true);
