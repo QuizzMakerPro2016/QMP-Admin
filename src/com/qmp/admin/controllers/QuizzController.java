@@ -463,6 +463,10 @@ public class QuizzController extends Controller {
 	 private Questionnaire saveQuizz(){
 		 
 		 if(!quizzChecker.run()) return null;
+		 if(cbDomain.getSelectionModel().getSelectedItem() == null){
+				Notifier.notifyWarning("Champ vide !", "Veuillez renseigner le Domaine du questionnaire.");
+				return null;
+		 }
 		 
 		 if(this.quizz==null) 
 			 this.quizz=new Questionnaire();
@@ -488,6 +492,10 @@ public class QuizzController extends Controller {
 	 
 	 private Question saveQuestion(){
  		if(saveQuizz() == null) return null;
+ 		if(!cbOpenQuest.isSelected() && !cbMultiQuest.isSelected()){	
+			Notifier.notifyWarning("Champ vide !", "Veuillez renseigner le type de la question.");
+    		return null;
+    	}
  		
  		if(questChecker.run()) return null;
     	
