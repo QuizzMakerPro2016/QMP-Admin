@@ -79,14 +79,13 @@ public class ManageDomainController extends Controller {
     @FXML
     void handleDelete(ActionEvent event) {
 
-    	int selInxdex = tableDomainList.getSelectionModel().getSelectedIndex();
 		Domaine selectedDomain = tableDomainList.getSelectionModel().getSelectedItem();
-		if (selInxdex >= 0) {
+		if (selectedDomain != null) {
 			boolean response = gUtils.showDialog("Suppression", "Supprimer un domaine ?", "Voulez-vous vraiment supprimer le domaine '" + selectedDomain.getLibelle() + "' ?");
 			if(response){
 				Boolean o = deleteObject(selectedDomain, selectedDomain.getId());
 				if(o){
-					tableDomainList.getItems().remove(selInxdex);
+					tableDomainList.getItems().remove(selectedDomain);
 				}else{
 					Notifier.notifyWarning("Impossible de supprimer le domaine", "Le domaine est-il lié à un quizz ?");
 				}

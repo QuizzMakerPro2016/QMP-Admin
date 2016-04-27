@@ -7,7 +7,6 @@ import org.apache.http.client.ClientProtocolException;
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
-import com.qmp.admin.utils.GraphicUtils;
 import com.qmp.admin.utils.Notifier;
 
 import javafx.beans.property.SimpleObjectProperty;
@@ -82,35 +81,31 @@ public class ManageRankController extends Controller{
     @FXML
     void handleSave(ActionEvent event) {
     	if(!checkFields())
-    		return;
-    	
-    	int selInxdex = rankList.getSelectionModel().getSelectedIndex();
-		if (selInxdex >= 0) {
-			//Update
-			Rang selectedRank = rankList.getSelectionModel().getSelectedItem();
-			selectedRank.setLibelle(libelleField.getText());
-			try {
-				String res = mainApp.getWebGate().update(selectedRank, selectedRank.getId());
-				checkResult(Rang.class, res, "Rang '{{object}}' mis à jour.");
+			return;
+		
+		Rang rank = rankList.getSelectionModel().getSelectedItem();
+		
+		if(rank == null)
+			rank = new Rang();
+		
+		if(Integer.valueOf(idField.getText()) > 0)
+			rank.setId(Integer.valueOf(idField.getText()));
+		
+		rank.setLibelle(libelleField.getText());
+		
+		if(rank.getId() > 0){
+			rank = (Rang) updateObject(rank, rank.getId());
+			if(rank != null){
 				mainApp.getTaskQueue().getAll(Rang.class);
-			} catch (Exception e) {
-				GraphicUtils.showException(e);
+				showRank(rank);
 			}
-		} else {
-			//Insertion
-			Rang rank = new Rang();
-			rank.setLibelle(libelleField.getText());
-			try {
-				String res = mainApp.getWebGate().add(rank);
-				Rang r = (Rang) checkResult(Rang.class, res, "Rang '{{object}}' ajouté.");
-				if(r != null){
-					mainApp.getWebGate().getList(Rang.class).add(r);
-					showRank(r);
-				}
-			} catch (Exception e) {
-				GraphicUtils.showException(e);
-			}
-		}
+		}else{
+			rank = (Rang) addObject(rank);
+			if(rank != null){
+				mainApp.getWebGate().getList(Rang.class).add(rank);
+				showRank(rank);
+			}			
+		}		
     }
     
     @FXML
@@ -122,19 +117,16 @@ public class ManageRankController extends Controller{
     @FXML
     void handleDelete(ActionEvent event) {
 
-    	int selInxdex = rankList.getSelectionModel().getSelectedIndex();
-		Rang selectedRank = rankList.getSelectionModel().getSelectedItem();
-		if (selInxdex >= 0) {
-			boolean response = gUtils.showDialog("Suppression", "Supprimer un rang ?", "Voulez-vous vraiment supprimer le rang '" + selectedRank.getLibelle() + "' ?");
-			if(response){
-				
-				try {
-					
-					String res  = mainApp.getWebGate().delete(selectedRank, selectedRank.getId());
-					checkResult(Rang.class, res, "Rang '{{object}}' supprimé.");
-					rankList.getItems().remove(selInxdex);
-				} catch (Exception e) {
-					Notifier.notifyWarning("Impossible de supprimer le rang", "Le rang est-il lié à un utilisateur ?");
+    	Rang selectedRank = rankList.getSelectionModel().getSelectedItem();
+		if (selectedRank != null) {
+			boolean response = gUtils.showDialog("Suppression", "Supprimer un rang ?",
+					"Voulez-vous vraiment supprimer le rang '" + selectedRank.getLibelle() + "' ?");
+			if (response) {
+				Boolean o = deleteObject(selectedRank, selectedRank.getId());
+				if(o){
+					mainApp.getWebGate().getList(Rang.class).remove(selectedRank);
+				}else{
+					Notifier.notifyWarning("Impossible de supprimer le rang", "Le rang est-il affecté à des utilisateurs ?");
 				}
 			}
 		} else {

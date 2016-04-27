@@ -121,6 +121,6 @@ public class Question {
 	}
 	@Override
 	public String toString() {
-		return " [libelle] = " + libelle+" [idUtilisateur] = " + idUtilisateur+" [id] = " + id+" [type] = " + type;
+		return libelle;
 	}
 }

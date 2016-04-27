@@ -11,7 +11,6 @@ import com.qmp.admin.models.Groupe;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
-import com.qmp.admin.utils.GraphicUtils;
 import com.qmp.admin.utils.JBCrypt;
 import com.qmp.admin.utils.Notifier;
 
@@ -163,11 +162,12 @@ public class ManageUserController extends Controller {
 	@FXML
 	void handleSave(ActionEvent event) throws ClientProtocolException, IOException {
 		
-		if(!checkFields()) return;
+		if(!checkFields())
+			return;
 		
-		int selInxdex = userList.getSelectionModel().getSelectedIndex();
-
-		if(passwordField.getText().isEmpty() && selInxdex >= 0){
+		Utilisateur user = userList.getSelectionModel().getSelectedItem();
+		
+		if(passwordField.getText().isEmpty() && Integer.valueOf(idField.getText()) <= 0){
 			Notifier.notifyError("Champ vide !", "Veuillez renseigner le champ 'Mot de passe'");
 			return;
 		}
@@ -176,49 +176,36 @@ public class ManageUserController extends Controller {
 			return;
 		}
 		
-		
-		if (selInxdex >= 0) {
-			// Update
-			Utilisateur selectedUser = userList.getSelectionModel().getSelectedItem();
-			selectedUser.setNom(surnameField.getText());
-			selectedUser.setPrenom(nameField.getText());
-			selectedUser.setMail(mailField.getText());
-			selectedUser.setIdRang(rankField.getValue().getId());
-
-			if (passwordField.getText() != "") {
-				selectedUser.setPassword(JBCrypt.hashpw(passwordField.getText(), JBCrypt.gensalt()));
-			}
-
-			try {
-				String res = mainApp.getWebGate().update(selectedUser, selectedUser.getId());
-				checkResult(Utilisateur.class, res, "Utilisateur '{{object}}' mis à jour.");
-				mainApp.getTaskQueue().getAll(Utilisateur.class);
-			} catch (Exception e) {
-				Notifier.notifyError("Erreur", "Une erreur est survenue lors de la modification de l'utilisateur");
-			}
-		} else {
-			// Insertion
-			Utilisateur user = new Utilisateur();
-			user.setNom(surnameField.getText());
-			user.setPrenom(nameField.getText());
-			user.setMail(mailField.getText());
+		if(user == null){
+			user = new Utilisateur();
 			user.setPassword(JBCrypt.hashpw(passwordField.getText(), JBCrypt.gensalt()));
-			user.setIdRang(rankField.getValue().getId());
-			user.setRang(rankField.getValue());
-
-			try {
-				String res = mainApp.getWebGate().add(user);
-				Utilisateur u = (Utilisateur) checkResult(Utilisateur.class, res, "Utilisateur '{{object}}' ajouté.");
-				if(u != null){
-					u.setIdRang(rankField.getValue().getId());
-					u.setRang(rankField.getValue());
-					mainApp.getWebGate().getList(Utilisateur.class).add(u);
-					showUser(u);
-				}
-			} catch (Exception e) {
-				Notifier.notifyError("Erreur", "Une erreur est survenue lors de l'ajout de l'utilisateur");
+		}
+		
+		if(Integer.valueOf(idField.getText()) > 0)
+			user.setId(Integer.valueOf(idField.getText()));
+		
+		user.setNom(surnameField.getText());
+		user.setPrenom(nameField.getText());
+		user.setMail(mailField.getText());
+		user.setIdRang(rankField.getValue().getId());
+		user.setRang(rankField.getValue());
+		
+		if(user.getId() > 0){
+			user = (Utilisateur) updateObject(user, user.getId());
+			if(user != null){
+				mainApp.getTaskQueue().getAll(Utilisateur.class);
+				showUser(user);
 			}
-
+		}else{
+			user = (Utilisateur) addObject(user);
+			if(user != null){
+				mainApp.getWebGate().getList(Utilisateur.class).add(user);
+				showUser(user);
+			}			
+		}
+		
+		if(user != null){
+			userList.getSelectionModel().select(user);
 		}
 	}
 
@@ -231,25 +218,20 @@ public class ManageUserController extends Controller {
 	@FXML
 	void handleDelete(ActionEvent event) {
 
-		int selInxdex = userList.getSelectionModel().getSelectedIndex();
 		Utilisateur selectedUser = userList.getSelectionModel().getSelectedItem();
-		if (selInxdex >= 0) {
+		if (selectedUser != null) {
 			boolean response = gUtils.showDialog("Suppression", "Supprimer un utilisateur ?",
-					"Voulez-vous vraiment supprimer l'utilisateur '" + selectedUser.getMail() + "' ?");
+					"Voulez-vous vraiment supprimer l'utilisateur '" + selectedUser.toString() + "' ?");
 			if (response) {
-				
-				
-				try {
-					
-					String res = mainApp.getWebGate().delete(selectedUser, selectedUser.getId());
-					checkResult(Utilisateur.class, res, "Utilisateur '{{object}}' supprimé.");
-					userObs.remove(selInxdex);
-				} catch (Exception e) {
-					Notifier.notifyError("Impossible de supprimer l'utilisateur","L'utilisateur est-il lié à un groupe ou un questionnaire ?");
+				Boolean o = deleteObject(selectedUser, selectedUser.getId());
+				if(o){
+					mainApp.getWebGate().getList(Utilisateur.class).remove(selectedUser);
+				}else{
+					Notifier.notifyWarning("Impossible de supprimer l'utlisateur", "il contient probablement des réalisations/groupes.");
 				}
 			}
 		} else {
-			Notifier.notifyWarning("Attention", "Aucun Utilisateur sélectionné");
+			Notifier.notifyWarning("Attention", "Aucun utilisateur sélectionné.");
 		}
 	}
 

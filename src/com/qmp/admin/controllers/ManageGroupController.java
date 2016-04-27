@@ -125,7 +125,6 @@ public class ManageGroupController extends Controller {
 
 		// Set filter for the groupList
 		setFilterTableView(this.groupSearch, this.groupList, this.groupObs, fields);
-
 	}
 
 	@FXML
@@ -179,36 +178,31 @@ public class ManageGroupController extends Controller {
 		if(!checkFields())
 			return;
 		
-		int selInxdex = groupList.getSelectionModel().getSelectedIndex();
-		if (selInxdex >= 0) {
-			// Update
-			Groupe selectedGroup = groupList.getSelectionModel().getSelectedItem();
-			selectedGroup.setLibelle(libelleField.getText());
-			selectedGroup.setCode(codeField.getText());
-			try {
-				String res = mainApp.getWebGate().update(selectedGroup, selectedGroup.getId());
-				checkResult(Groupe.class, res, "Groupe '{{object}}' mis à jour.");
+		Groupe group = groupList.getSelectionModel().getSelectedItem();
+		
+		if(group == null)
+			group = new Groupe();
+		
+		if(Integer.valueOf(idField.getText()) > 0)
+			group.setId(Integer.valueOf(idField.getText()));
+		
+		group.setLibelle(libelleField.getText());
+		group.setCode(codeField.getText());
+		
+		if(group.getId() > 0){
+			group = (Groupe) updateObject(group, group.getId());
+			if(group != null){
 				mainApp.getTaskQueue().getAll(Groupe.class);
-			} catch (Exception e) {
-				GraphicUtils.showException(e);
+				showGroup(group);
 			}
-		} else {
-			// Insertion
-			Groupe group = new Groupe();
-			group.setLibelle(libelleField.getText());
-			group.setCode(codeField.getText());
-			try {
-				String res = mainApp.getWebGate().add(group);
-				Groupe g = (Groupe) checkResult(Groupe.class, res, "Groupe '{{object}}' ajouté.");
-				
-				if(g == null) return;
-				
-				mainApp.getWebGate().getList(Groupe.class).add(g);
-				showGroup(g);
-			} catch (Exception e) {
-				GraphicUtils.showException(e);
+		}else{
+			group = (Groupe) addObject(group);
+			if(group != null){
+				mainApp.getWebGate().getList(Groupe.class).add(group);
+				showGroup(group);
 			}
-		}
+			
+		}		
 	}
 
 	@FXML
@@ -220,24 +214,20 @@ public class ManageGroupController extends Controller {
 	@FXML
 	void handleDelete(ActionEvent event) {
 
-		int selInxdex = groupList.getSelectionModel().getSelectedIndex();
 		Groupe selectedGroup = groupList.getSelectionModel().getSelectedItem();
-		if (selInxdex >= 0) {
+		if (selectedGroup != null) {
 			boolean response = gUtils.showDialog("Suppression", "Supprimer un groupe ?",
 					"Voulez-vous vraiment supprimer le groupe '" + selectedGroup.getLibelle() + "' ?");
 			if (response) {
-				
-				try {
-					
-					String res = mainApp.getWebGate().delete(selectedGroup, selectedGroup.getId());
-					checkResult(Groupe.class, res, "Groupe '{{object}}' supprimé");
-					groupObs.remove(selInxdex);
-				} catch (Exception e) {
-					Notifier.notifyWarning("Impossible de supprimer le groupe", "Le groupe est-il lié à un utilisateur ou un questionnaire ?");
+				Boolean o = deleteObject(selectedGroup, selectedGroup.getId());
+				if(o){
+					mainApp.getWebGate().getList(Groupe.class).remove(selectedGroup);
+				}else{
+					Notifier.notifyWarning("Impossible de supprimer le groupe", "Le groupe contient-il des utilisateurs ?");
 				}
 			}
 		} else {
-			Notifier.notifyWarning("Attention", "Aucun groupe sélectionné");
+			Notifier.notifyWarning("Attention", "Aucun groupe sélectionné.");
 		}
 	}
 

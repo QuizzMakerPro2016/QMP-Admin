@@ -27,8 +27,6 @@ public class MainController extends Controller {
 	@FXML
 	private Text errorText;
 
-	private Utilisateur user;
-
 	public MainController() {
 
 	}

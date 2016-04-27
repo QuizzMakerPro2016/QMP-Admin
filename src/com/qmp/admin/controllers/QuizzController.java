@@ -32,6 +32,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
@@ -98,6 +99,9 @@ public class QuizzController extends Controller {
     @FXML
     private TextField tfAnsLibelle;
     
+    @FXML
+    private Label lblUniqueAns;
+    
     private boolean isQuestionModified;
     private Questionnaire quizz;
     
@@ -152,6 +156,14 @@ public class QuizzController extends Controller {
 				isQuestionModified = true;				
 			}
 		});
+		
+		tfAnsLibelle.setVisible(false);
+		checkIsTrue.setVisible(false);
+		btnAnsAction.setVisible(false);
+		lblUniqueAns.setVisible(false);
+		
+		
+		addFieldsToCheck(libelleQuizz);
 
 	}
 	
@@ -204,10 +216,8 @@ public class QuizzController extends Controller {
     	try {
 			q.setReponses(mainApp.getWebGate().getMembers(Question.class, q.getId(), "reponses", Reponse.class));
 	    	showQuestion(q);
-
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			GraphicUtils.showException(e);
 		}
     	
     }
@@ -254,7 +264,7 @@ public class QuizzController extends Controller {
     	}
     	
     	try {
-			mainApp.getWebGate().deleteRelation(Question_questionnaire.class, this.quizz.getId(), q.getId());
+			mainApp.getWebGate().deleteRelation(Question_questionnaire.class, q.getId(), this.quizz.getId());
 			this.quizz.getQuestions().remove(q);
 			showQuizzQuestions(null);
 		} catch (Exception e) {
@@ -328,12 +338,14 @@ public class QuizzController extends Controller {
 			}
 
 			tfQuestLibelle.setText(q.getLibelle());
+			tfQuestLibelle.setId(String.valueOf(q.getId()));
 
 			showAnswers(q);
 		} else {
 			cbMultiQuest.setSelected(false);
 			cbOpenQuest.setSelected(false);
 			tfQuestLibelle.setText("");
+			tfQuestLibelle.setId("0");
 			tableAnsList.setVisible(false);
 			tfUniqueAns.setVisible(false);
 		}
@@ -356,7 +368,12 @@ public class QuizzController extends Controller {
 		tableAnsList.setVisible(!q.isType());
 		cbMultiQuest.setSelected(!q.isType());
 		cbOpenQuest.setSelected(q.isType());
-		
+		tfAnsLibelle.setVisible(!q.isType());
+		checkIsTrue.setVisible(!q.isType());
+		btnAnsAction.setVisible(!q.isType());
+		lblUniqueAns.setVisible(q.isType());
+
+
 		if (q.isType()) {
 			// Open
 			if (q.getReponses().size() < 1) {
@@ -433,114 +450,90 @@ public class QuizzController extends Controller {
 		return popup;
 	 }
 	 
-	 private void saveQuizz(){
-		 if(this.quizz==null){
-	    		this.quizz=new Questionnaire();
-	    	}
-	    	this.quizz.setDescription(descQuizz.getText());
-	    	this.quizz.setLibelle(libelleQuizz.getText());
-	    	this.quizz.setIdDomaine(cbDomain.getSelectionModel().getSelectedItem().getId());
-	    	this.quizz.setIdUtilisateur(mainApp.getUser().getId());
+	 private Questionnaire saveQuizz(){
+		 
+		 if(!checkFields()) return null;
+		 
+		 if(this.quizz==null) 
+			 this.quizz=new Questionnaire();
 	    	
-	    	Instant instant = dateQuizz.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
-	    	java.sql.Date date = new java.sql.Date(Date.from(instant).getTime());
-			this.quizz.setDate(date);
-			
-			try {
-				String res = null;
-				if(this.quizz.getId() > 0){
-					res = mainApp.getWebGate().update(quizz, quizz.getId());
-					checkResult(Questionnaire.class, res, "Questionnaire '{{object}}' mis à jour.");		
-				}else{
-					res = mainApp.getWebGate().add(quizz);
-					checkResult(Questionnaire.class, res, "Questionnaire '{{object}}' ajouté.");
-				}
-			} catch (IllegalArgumentException | IllegalAccessException | IOException e) {
-					GraphicUtils.showException(e);
-			}
+    	this.quizz.setDescription(descQuizz.getText());
+    	this.quizz.setLibelle(libelleQuizz.getText());
+    	this.quizz.setIdDomaine(cbDomain.getSelectionModel().getSelectedItem().getId());
+    	this.quizz.setIdUtilisateur(mainApp.getUser().getId());
+    	
+    	Instant instant = dateQuizz.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+    	java.sql.Date date = new java.sql.Date(Date.from(instant).getTime());
+		this.quizz.setDate(date);
+    			
+		if (this.quizz.getId() > 0) {
+			//Update
+			this.quizz = (Questionnaire) updateObject(this.quizz, this.quizz.getId());
+		} else {
+			//Add
+			this.quizz = (Questionnaire) addObject(this.quizz);
+		}
+		return this.quizz;
 	 }
 	 
-	 protected Question saveQuestion(){
-		 Question q = tableQuestionsList.getSelectionModel().getSelectedItem();
+	 private Question saveQuestion(){
+ 		if(saveQuizz() == null) return null;
+ 		
+ 		if(!checkFields()) return null;
+    	
+ 		Question q = tableQuestionsList.getSelectionModel().getSelectedItem();
+    	if(q == null)
+    		q = new Question();
+    	
+    	if(Integer.valueOf(tfQuestLibelle.getId()) > 0)
+    		q.setId(Integer.valueOf(tfQuestLibelle.getId()));
+    	
+    	q.setIdUtilisateur(mainApp.getUser().getId());
+		q.setLibelle(tfQuestLibelle.getText());
+		q.setType(cbOpenQuest.isSelected());
+		
+		if (q.getId() > 0) {
+			//Update
+			q = (Question) updateObject(q, q.getId());
+			if(q != null)
+    			showQuizzQuestions(q);
+				
+		} else {
+			//Add
+			q = (Question) addObject(q);
+			if(q != null)
+				quizz.getQuestions().add(q);
+		}
 	    	
-	    	//Empty Fields Check
-	    	if(tfQuestLibelle.getText().isEmpty()){
-	    		Notifier.notifyError("Impossible d'enregitrer la question", "Veuillez renseigner le libellé de la question");
-	    		return null;
-	    	}
-	    	if(!cbOpenQuest.isSelected() && !cbMultiQuest.isSelected()){
-	    		Notifier.notifyError("Impossible d'enregitrer la question", "Veuillez renseigner le type de la question");
-	    		return null;
-	    	}  
-	    	if(cbOpenQuest.isSelected() && tfUniqueAns.getText().isEmpty()){
-	    		Notifier.notifyError("Impossible d'enregitrer la question", "Veuillez renseigner la réponse à la question");
-	    		return null;
-	    	}
+		if(q == null)
+			return null;
 	    	
-	    	if(q != null){
-	    		//Update
-	    		q.setLibelle(tfQuestLibelle.getText());
-	    		
-	    		try {
-					mainApp.getWebGate().update(q, q.getId());
-	    			showQuizzQuestions(q);
-
-				} catch (Exception e) {
-					GraphicUtils.showException(e);
-				}
-	    		
-	    	}else{
-	    		//Insert
-	    		Question newQuest = new Question();
-	    		newQuest.setIdUtilisateur(mainApp.getUser().getId());
-	    		newQuest.setLibelle(tfQuestLibelle.getText());
-	    		newQuest.setType(cbOpenQuest.isSelected());
-	    		quizz.getQuestions().add(newQuest);    		
-
-	    		
-	    		saveQuizz();
-	    		
-	    		try {
-					String resQuest = mainApp.getWebGate().add(newQuest);
-					q = (Question) mainApp.getWebGate().getObjectFromJson(resQuest, Question.class);				
-				} catch (IllegalArgumentException | IllegalAccessException | IOException e) {
-					GraphicUtils.showException(e);
-				}
-	    		
-	    		
-	    	}
-	    	
-	    	if(q.getId() < 1){
-	    		Notifier.notifyError("Impossible de lier la question au quizz", "Erreur lors de l'enregistrement de la question");
-	    		return null;
-	    	}
-	    	
-	    	affectQuestToQuizz(q);
+	    affectQuestToQuizz(q);
 			
 			//IF Open Question, auto save answer
-			if(q.isType()){
-
-				Reponse rep = new Reponse();
-				rep.setIdQuestion(q.getId());
-				rep.setGood(true);
-				// Makes some weird things....
-				rep.setLibelle(tfUniqueAns.getText());
+		if(q.isType()){
+			Reponse rep = new Reponse();
+			rep.setIdQuestion(q.getId());
+			rep.setGood(true);
+			// Makes some weird things....
+			rep.setLibelle(tfUniqueAns.getText());
+			
+			rep.setId(Integer.valueOf(tfUniqueAns.getId()));
+			
+			if(rep.getId() > 0 ){
+				//Update
+				rep = (Reponse) updateObject(rep, rep.getId());
 				
-				try {
-					int id  = Integer.valueOf(tfUniqueAns.getId());
-					if( id > 0){
-						rep.setId(id);
-						mainApp.getWebGate().update(rep, rep.getId());
-					}else{
-						String resRep = mainApp.getWebGate().add(rep);
-						Reponse repRes = (Reponse) mainApp.getWebGate().getObjectFromJson(resRep, Reponse.class);
-						q.getReponses().add(repRes);
-					}
-				} catch (Exception e) {
-					GraphicUtils.showException(e);
+			} else {
+				//Add
+				rep = (Reponse) addObject(rep);
+				if(rep != null){
+					q.getReponses().add(rep);
 				}
 			}
-			showQuizzQuestions(q);
-			return q;
+			
+		}
+		showQuizzQuestions(q);
+		return q;
 	 }
 }

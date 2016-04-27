@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.http.client.ClientProtocolException;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.qmp.admin.MainApp;
 import com.qmp.admin.utils.GraphicUtils;
@@ -111,6 +112,7 @@ public class Controller {
 	}
 	
 	protected  <T> Object checkResult(Class<T> clazz, String json, String successMsg){
+		@SuppressWarnings("unchecked")
 		T obj = (T) mainApp.getWebGate().getObjectFromJson(json, clazz);
 		if(obj != null){
 			Notifier.notifySuccess("Succès", successMsg.replace("{{object}}", obj.toString()));
@@ -119,7 +121,7 @@ public class Controller {
 		Gson gson = MyGsonBuilder.create();
 		JsonObject jso = gson.fromJson(json, JsonObject.class);
 		if (jso.get("error") != null) {
-			Notifier.notifyError("Erreur", ((JsonObject) jso.get("error")).get("message").toString());
+			Notifier.notifyError("Erreur", ((JsonElement) jso.get("message")).toString());
 		}
 		return null;
 	}

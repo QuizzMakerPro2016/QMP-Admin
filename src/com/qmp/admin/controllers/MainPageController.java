@@ -14,7 +14,6 @@ import com.qmp.admin.models.Question;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
-import com.qmp.admin.utils.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -66,7 +65,7 @@ public class MainPageController extends Controller {
 	}
 
 	public void setActualButton(Button button){
-		ArrayList <Button> arrayButton = new ArrayList();
+		ArrayList <Button> arrayButton = new ArrayList<Button>();
 		arrayButton.add(this.dcButton);
 		arrayButton.add(this.domainButton);
 		arrayButton.add(this.quizzButton);
