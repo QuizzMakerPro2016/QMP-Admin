@@ -65,7 +65,6 @@ public class MainController extends Controller {
 				Notifier.notifyError("Connexion échouée", "Cet utilisateur ne dispose pas des droits nécessaires");
 			}
 		} else {
-			errorText.setText("Connexion échouée");
 			Notifier.notifyError("Connexion échouée", "Identifaint ou mot de passe incorrect");
 		}
 		
