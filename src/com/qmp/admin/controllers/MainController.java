@@ -12,6 +12,7 @@ import com.qmp.admin.utils.Notifier;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
@@ -20,7 +21,7 @@ public class MainController extends Controller {
 	@FXML
 	private TextField loginField;
 	@FXML
-	private TextField passwordField;
+	private PasswordField passwordField;
 	@FXML
 	private Button connectButton;
 
@@ -54,18 +55,14 @@ public class MainController extends Controller {
 		mainApp.setUser(result);
 		if (mainApp.isLogged() == true) {
 			if (mainApp.isAdmin()) {
-				errorText.setText(
-						"Connection réussie de " + mainApp.getUser().getPrenom() + " " + mainApp.getUser().getNom());
 				Notifier.notifySuccess("Connexion réussie", "Connecté en tant que : "+ mainApp.getUser().getPrenom() + " " + mainApp.getUser().getNom());
 				gUtils.loadMenu();
 				gUtils.switchView("HomeLayout");
 
 			} else {
-				errorText.setText("Cet utilisateur ne dispose pas des droits nécessaires ("
-						+ result.getRang().getLibelle() + ")");
+				Notifier.notifyError("Connexion échouée", "Cet utilisateur ne dispose pas des droits nécessaires");
 			}
 		} else {
-			errorText.setText("Connexion échouée");
 			Notifier.notifyError("Connexion échouée", "Identifaint ou mot de passe incorrect");
 		}
 		
