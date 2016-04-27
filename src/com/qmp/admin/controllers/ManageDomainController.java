@@ -4,6 +4,7 @@ import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.utils.GraphicUtils;
+import com.qmp.admin.utils.Notifier;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -57,7 +58,6 @@ public class ManageDomainController extends Controller {
 	@FXML
 	private void initialize() {
 		
-		// Initialize the person table with the two columns.
 		tableDomainListColumn.setCellValueFactory((CellDataFeatures<Domaine, String> feature) -> {
 			Domaine domain = feature.getValue();
 			return new SimpleObjectProperty<>(domain.getLibelle());
@@ -84,15 +84,15 @@ public class ManageDomainController extends Controller {
 			if(response){
 				tableDomainList.getItems().remove(selInxdex);
 				try {
-					mainApp.getTaskQueue().delete(selectedDomain, selectedDomain.getId());
+					String res = mainApp.getWebGate().delete(selectedDomain, selectedDomain.getId());
+					checkResult(Domaine.class, res, "Domaine {{object}} supprimé.");
 				} catch (Exception e) {
 					GraphicUtils.showException(e);
 				}
 			}
 			
 		} else {
-			//error no selected
-			//TODO create Bootstrap Like Alerts
+			Notifier.notifyWarning("Erreur", "Aucun domaine selectionné.");
 		}
 		
     }
