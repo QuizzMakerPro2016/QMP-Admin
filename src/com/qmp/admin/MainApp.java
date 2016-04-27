@@ -60,6 +60,8 @@ public class MainApp extends Application implements Observer {
 
 		this.primaryStage.setHeight(698);
 		this.primaryStage.setWidth(1240);
+		this.primaryStage.setMinHeight(698);
+		this.primaryStage.setMinWidth(920);
 
 		initRootLayout();
 
