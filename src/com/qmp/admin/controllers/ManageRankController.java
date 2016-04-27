@@ -1,5 +1,9 @@
 package com.qmp.admin.controllers;
 
+import java.io.IOException;
+
+import org.apache.http.client.ClientProtocolException;
+
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
@@ -39,7 +43,7 @@ public class ManageRankController extends Controller{
     
     
     @Override
-    public void setMainApp(MainApp mainApp) {
+    public void setMainApp(MainApp mainApp) throws ClientProtocolException, IOException {
     	super.setMainApp(mainApp);
     	ObservableList<Rang> rankObs = mainApp.getWebGate().getList(Rang.class);
     	rankList.setItems(rankObs);
@@ -123,12 +127,14 @@ public class ManageRankController extends Controller{
 		if (selInxdex >= 0) {
 			boolean response = gUtils.showDialog("Suppression", "Supprimer un rang ?", "Voulez-vous vraiment supprimer le rang '" + selectedRank.getLibelle() + "' ?");
 			if(response){
-				rankList.getItems().remove(selInxdex);
+				
 				try {
+					
 					String res  = mainApp.getWebGate().delete(selectedRank, selectedRank.getId());
 					checkResult(Rang.class, res, "Rang '{{object}}' supprimé.");
+					rankList.getItems().remove(selInxdex);
 				} catch (Exception e) {
-					GraphicUtils.showException(e);
+					Notifier.notifyWarning("Impossible de supprimer le rang", "Le rang est-il lié à un utilisateur ?");
 				}
 			}
 		} else {

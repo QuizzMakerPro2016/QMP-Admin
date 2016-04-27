@@ -1,15 +1,15 @@
 package com.qmp.admin.controllers;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import javax.swing.table.TableCellRenderer;
+import org.apache.http.client.ClientProtocolException;
 
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Domaine;
@@ -104,7 +104,7 @@ public class QuizzController extends Controller {
     
 
 	@Override
-	public void setMainApp(MainApp mainApp) {
+	public void setMainApp(MainApp mainApp) throws ClientProtocolException, IOException {
 		super.setMainApp(mainApp);
 		cbDomain.setItems(FXCollections.observableArrayList(mainApp.getWebGate().getList(Domaine.class)));
 	}
@@ -352,12 +352,13 @@ public class QuizzController extends Controller {
 	}
 	
 	private void showAnswers(Question q) {
+		tfUniqueAns.setVisible(q.isType());
+		tableAnsList.setVisible(!q.isType());
+		cbMultiQuest.setSelected(!q.isType());
+		cbOpenQuest.setSelected(q.isType());
+		
 		if (q.isType()) {
 			// Open
-			tfUniqueAns.setVisible(true);
-			tableAnsList.setVisible(false);
-			cbMultiQuest.setSelected(false);
-			cbOpenQuest.setSelected(true);
 			if (q.getReponses().size() < 1) {
 				tfUniqueAns.setId("0");
 				return;
@@ -366,11 +367,7 @@ public class QuizzController extends Controller {
 			tfUniqueAns.setId(String.valueOf(q.getReponses().get(0).getId()));
 		} else {
 			// Multiple
-			tfUniqueAns.setVisible(false);
-			tableAnsList.setVisible(true);
 			tableAnsList.setItems(FXCollections.observableArrayList(q.getReponses()));
-			cbMultiQuest.setSelected(true);
-			cbOpenQuest.setSelected(false);
 		}
 	}
 

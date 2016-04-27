@@ -244,3 +244,7 @@ BorderPane{
 	-fx-background-color: -fx-control-inner-background;
 	-fx-background-radius: 0px;
 }
+
+.chart-bar {
+    -fx-background-color: derive(#2C98D4, 30%);
+}

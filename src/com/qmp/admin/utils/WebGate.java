@@ -111,6 +111,14 @@ public class WebGate {
 		return result;
 	}
 	
+	public <T> List<T> getAll(Class<T> clazz, int offset, int limit, int cd ,String field, String type) throws ClientProtocolException, IOException {
+		List<T> result = new ArrayList<T>();
+		String jsonUsers = HttpUtils.getHTML(baseUrl + getControllerUrl(clazz) + "/limit/"+ offset + "/" + limit+"/"+cd+"/"+field+"/"+type);
+		Gson gson = MyGsonBuilder.create();
+		result = gson.fromJson(jsonUsers, new ListType<T>(clazz));
+		return result;
+	}
+	
 	public <T> List<T> getAll(Class<T> clazz, int offset, int limit) throws ClientProtocolException, IOException {
 		return getAll(clazz, offset, limit, 1);
 	}

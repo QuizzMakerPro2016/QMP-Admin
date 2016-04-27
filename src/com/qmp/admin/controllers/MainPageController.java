@@ -3,6 +3,8 @@ package com.qmp.admin.controllers;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.http.client.ClientProtocolException;
+
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Groupe;
@@ -43,16 +45,13 @@ public class MainPageController extends Controller {
 	
 	@FXML
 	private Text userText;
-
-	
-	
 	
 	
 	public MainPageController() {
 	}
 
 	@Override
-	public void setMainApp(MainApp mainApp) {
+	public void setMainApp(MainApp mainApp) throws ClientProtocolException, IOException {
 		super.setMainApp(mainApp);
 		userText.setText(mainApp.getUser().getNom().toUpperCase() + " " + mainApp.getUser().getPrenom());
 	}
@@ -83,13 +82,12 @@ public class MainPageController extends Controller {
 				b.setStyle("-fx-background-color : derive(#37474f, 20%)");
 			}
 		}
-		
 	}
 	
 	@FXML
 	void handleUser(ActionEvent event) throws IOException {
 		mainApp.getTaskQueue().getAll(Rang.class);
-		mainApp.getTaskQueue().getAll(Utilisateur.class, 2);
+		mainApp.getTaskQueue().getAllRefresh(Utilisateur.class, 2);
 		gUtils.switchView("ManageUserLayout");
 		this.setActualButton(userButton);
 	}

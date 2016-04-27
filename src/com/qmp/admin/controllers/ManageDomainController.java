@@ -1,5 +1,9 @@
 package com.qmp.admin.controllers;
 
+import java.io.IOException;
+
+import org.apache.http.client.ClientProtocolException;
+
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Questionnaire;
@@ -47,7 +51,7 @@ public class ManageDomainController extends Controller {
     private TableColumn<Questionnaire, String> tableQuizzesListCol;
     
     @Override
-    public void setMainApp(MainApp mainApp) {
+    public void setMainApp(MainApp mainApp) throws ClientProtocolException, IOException {
     	super.setMainApp(mainApp);
     	ObservableList<Domaine> lstDo = mainApp.getWebGate().getList(Domaine.class);
 		tableDomainList.setItems(lstDo);
@@ -80,8 +84,12 @@ public class ManageDomainController extends Controller {
 		if (selInxdex >= 0) {
 			boolean response = gUtils.showDialog("Suppression", "Supprimer un domaine ?", "Voulez-vous vraiment supprimer le domaine '" + selectedDomain.getLibelle() + "' ?");
 			if(response){
-				deleteObject(selectedDomain, selectedDomain.getId());
-				tableDomainList.getItems().remove(selInxdex);
+				Boolean o = deleteObject(selectedDomain, selectedDomain.getId());
+				if(o){
+					tableDomainList.getItems().remove(selInxdex);
+				}else{
+					Notifier.notifyWarning("Impossible de supprimer le domaine", "Le domaine est-il lié à un quizz ?");
+				}
 			}
 		} else {
 			Notifier.notifyWarning("Attention", "Aucun domaine selectionné.");

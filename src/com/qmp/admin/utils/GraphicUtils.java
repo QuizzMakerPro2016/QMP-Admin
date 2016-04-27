@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Optional;
 
+import org.apache.http.client.ClientProtocolException;
 import org.controlsfx.control.NotificationPane;
 
 import com.qmp.admin.MainApp;
@@ -53,7 +54,7 @@ public class GraphicUtils {
 		return null;
 	}
 	
-	public void loadMenu(){
+	public void loadMenu()throws ClientProtocolException, IOException {
 		//Load menu
 		FXMLLoader loaderMenu = new FXMLLoader();
 		loaderMenu.setLocation(MainApp.class.getResource("/com/qmp/admin/views/MainPage.fxml"));
