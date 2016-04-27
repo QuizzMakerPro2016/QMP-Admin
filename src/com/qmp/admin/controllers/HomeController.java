@@ -4,6 +4,7 @@ import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Utilisateur;
 
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -20,4 +21,7 @@ public class HomeController extends Controller{
 
     @FXML
     private TableColumn<Questionnaire, String> quizzColumn;
+    
+    @FXML
+    private BarChart<?, ?> quizzBar;
 }
