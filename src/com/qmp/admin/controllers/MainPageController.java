@@ -45,9 +45,6 @@ public class MainPageController extends Controller {
 	
 	@FXML
 	private Text userText;
-
-	
-	
 	
 	
 	public MainPageController() {
@@ -85,13 +82,12 @@ public class MainPageController extends Controller {
 				b.setStyle("-fx-background-color : derive(#37474f, 20%)");
 			}
 		}
-		
 	}
 	
 	@FXML
 	void handleUser(ActionEvent event) throws IOException {
 		mainApp.getTaskQueue().getAll(Rang.class);
-		mainApp.getTaskQueue().getAll(Utilisateur.class, 2);
+		mainApp.getTaskQueue().getAllRefresh(Utilisateur.class, 2);
 		gUtils.switchView("ManageUserLayout");
 		this.setActualButton(userButton);
 	}

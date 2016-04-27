@@ -101,6 +101,23 @@ public class TaskQueue extends Observable {
 			e.printStackTrace();
 		}
 	}
+	//Permet de getAll sans prendre en compte si la liste à été modifiée ou pas
+	public void getAllRefresh(Class<? extends Object> clazz, int cd) {
+		int size = 10;
+		WebGateList wgList = webGate.getWebGateList(clazz);
+		wgList.getList().clear();
+		try {
+			size = webGate.count(clazz);
+			service.setOpCount(size);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for (int i = 0; i < size / rowGroupSize + 1; i++) {
+			get(clazz, i * rowGroupSize, rowGroupSize, cd);
+		}
+		wgList.setTimestamp(System.currentTimeMillis());
+	}
 	
 	public void getAll(Class<? extends Object> clazz){
 		getAll(clazz, 1);
