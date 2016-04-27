@@ -139,6 +139,6 @@ public class Groupe {
 	
 	@Override
 	public String toString() {
-		return " [code] = " + code+" [libelle] = " + libelle+" [id] = " + id;
+		return libelle;
 	}
 }

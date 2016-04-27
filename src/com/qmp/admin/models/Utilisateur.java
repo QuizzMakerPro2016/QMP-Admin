@@ -245,8 +245,7 @@ public class Utilisateur {
 
 	@Override
 	public String toString() {
-		return " [password] = " + password + " [mail] = " + mail + " [idRang] = " + idRang + " [id] = " + id
-				+ " [nom] = " + nom + " [prenom] = " + prenom;
+		return nom + " " + prenom;
 	}
 
 	@Override

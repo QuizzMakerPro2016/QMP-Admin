@@ -13,6 +13,7 @@ import com.qmp.admin.models.Rang;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
 import com.qmp.admin.utils.JBCrypt;
+import com.qmp.admin.utils.Notifier;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -134,6 +135,8 @@ public class ManageUserController extends Controller {
 		showUser(null);
 		userList.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> showUser(newValue));
+		
+		addFieldsToCheck(nameField, surnameField, mailField);
 
 	}
 
@@ -159,7 +162,21 @@ public class ManageUserController extends Controller {
 
 	@FXML
 	void handleSave(ActionEvent event) throws ClientProtocolException, IOException {
+		
+		if(!checkFields()) return;
+		
 		int selInxdex = userList.getSelectionModel().getSelectedIndex();
+
+		if(passwordField.getText().isEmpty() && selInxdex >= 0){
+			Notifier.notifyError("Champ vide !", "Veuillez renseigner le champ 'Mot de passe'");
+			return;
+		}
+		if(rankField.getValue() == null){
+			Notifier.notifyError("Champ vide !", "Veuillez renseigner le champ 'Rang'");
+			return;
+		}
+		
+		
 		if (selInxdex >= 0) {
 			// Update
 			Utilisateur selectedUser = userList.getSelectionModel().getSelectedItem();
@@ -173,7 +190,8 @@ public class ManageUserController extends Controller {
 			}
 
 			try {
-				mainApp.getWebGate().update(selectedUser, selectedUser.getId());
+				String res = mainApp.getWebGate().update(selectedUser, selectedUser.getId());
+				checkResult(Utilisateur.class, res, "Utilisateur '{{object}}' mis à jour.");
 				mainApp.getTaskQueue().getAll(Utilisateur.class);
 			} catch (Exception e) {
 				GraphicUtils.showException(e);
@@ -190,11 +208,13 @@ public class ManageUserController extends Controller {
 
 			try {
 				String res = mainApp.getWebGate().add(user);
-				Utilisateur u = (Utilisateur) mainApp.getWebGate().getObjectFromJson(res, Utilisateur.class);
-				u.setIdRang(rankField.getValue().getId());
-				u.setRang(rankField.getValue());
-				mainApp.getWebGate().getList(Utilisateur.class).add(u);
-				showUser(u);
+				Utilisateur u = (Utilisateur) checkResult(Utilisateur.class, res, "Utilisateur '{{object}}' ajouté.");
+				if(u != null){
+					u.setIdRang(rankField.getValue().getId());
+					u.setRang(rankField.getValue());
+					mainApp.getWebGate().getList(Utilisateur.class).add(u);
+					showUser(u);
+				}
 			} catch (Exception e) {
 				GraphicUtils.showException(e);
 			}
@@ -220,13 +240,14 @@ public class ManageUserController extends Controller {
 				userObs.remove(selInxdex);
 				
 				try {
-					mainApp.getTaskQueue().delete(selectedUser, selectedUser.getId());
+					String res = mainApp.getWebGate().delete(selectedUser, selectedUser.getId());
+					checkResult(Utilisateur.class, res, "Utilisateur '{{object}}' supprimé.");
 				} catch (Exception e) {
 					GraphicUtils.showException(e);
 				}
 			}
 		} else {
-			new GraphicUtils(this.mainApp).showDialog("Erreur", "", "Veuillez selectionner un utilisateur");
+			Notifier.notifyWarning("Attention", "Aucun Utilisateur sélectionné");
 		}
 	}
 
