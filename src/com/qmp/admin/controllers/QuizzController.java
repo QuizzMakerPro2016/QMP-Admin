@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.table.TableCellRenderer;
+
 import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Domaine;
 import com.qmp.admin.models.Question;
@@ -26,8 +28,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuButton;
@@ -85,7 +87,16 @@ public class QuizzController extends Controller {
     private TextArea descQuizz;
     
     @FXML
-    private Button btnSaveQuizz;   
+    private Button btnSaveQuizz;
+
+    @FXML
+    private MenuButton btnAnsAction;
+
+    @FXML
+    private CheckBox checkIsTrue;
+    
+    @FXML
+    private TextField tfAnsLibelle;
     
     private boolean isQuestionModified;
     private Questionnaire quizz;
@@ -114,6 +125,9 @@ public class QuizzController extends Controller {
 
 		tableQuestionsList.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> showQuestion(newValue));
+		
+		tableAnsList.getSelectionModel().selectedItemProperty()
+			.addListener((observable, oldValue, newValue) -> showAnwser(newValue));
 
 		cbMultiQuest.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -157,9 +171,65 @@ public class QuizzController extends Controller {
 	 */
     @FXML
     void handleAddAns(ActionEvent event) {
-    	//TODO Nicolas
+    	showAnwser(null);
+    	tableAnsList.getSelectionModel().clearSelection();
+    }
+
+    @FXML
+    void handleSaveAns(Event event){
+    	
+    	Question q = saveQuestion();
+    	if(q == null)
+    		return;
+    	
+    	Reponse reponse = tableAnsList.getSelectionModel().getSelectedItem();
+    	if(reponse == null){
+    		reponse = new Reponse();
+    	}
+    	
+    	if(Integer.valueOf(tfAnsLibelle.getId()) > 0){
+    		reponse.setId(Integer.valueOf(tfAnsLibelle.getId()));
+    	}
+    	
+    	reponse.setLibelle(tfAnsLibelle.getText().toString());
+    	reponse.setGood(checkIsTrue.isSelected());
+    	reponse.setIdQuestion(q.getId());
+    	
+    	if(reponse.getId()>0){
+    		reponse = (Reponse) updateObject(reponse, reponse.getId());
+    	}else{
+    		reponse = (Reponse) addObject(reponse);
+    	}
+    	
+    	try {
+			q.setReponses(mainApp.getWebGate().getMembers(Question.class, q.getId(), "reponses", Reponse.class));
+	    	showQuestion(q);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
     }
     
+    /**
+     * Remove Answer from quizz and from DB
+     * @param event
+     */
+    @FXML
+    void handleRemAns(ActionEvent event) {
+    	Reponse reponse = tableAnsList.getSelectionModel().getSelectedItem();
+    	if(reponse != null){
+    		boolean ok = gUtils.showDialog("Suppression", "Supprimer une réponse?", "Voulez-vous vraiment supprimer la réponse '"+reponse.getLibelle()+"'");
+    		if(ok){
+    			deleteObject(reponse, reponse.getId());
+    			tableAnsList.getItems().remove(reponse);
+    		}
+    	}else{
+    		Notifier.notifyWarning("Attention", "Aucune réponse sélectionnée.");
+    	}
+    }
+
     /**
      * Add question to quizz
      * @param event
@@ -169,17 +239,7 @@ public class QuizzController extends Controller {
     	showQuestion(null);
     	tableQuestionsList.getSelectionModel().clearSelection();
     }
-
-
-    /**
-     * Remove Answer from quizz and from DB
-     * @param event
-     */
-    @FXML
-    void handleRemAns(ActionEvent event) {
-    	//TODO Nicolas
-    }
-
+    
     /**
      * Remove Question from quizz
      * IF not used and creator delete from DB ?
@@ -208,86 +268,7 @@ public class QuizzController extends Controller {
      */
     @FXML
     void handleSaveQuest(ActionEvent event) {
-    	Question q = tableQuestionsList.getSelectionModel().getSelectedItem();
-    	
-    	//Empty Fields Check
-    	if(tfQuestLibelle.getText().isEmpty()){
-    		Notifier.notifyError("Impossible d'enregitrer la question", "Veuillez renseigner le libellé de la question");
-    		return;
-    	}
-    	if(!cbOpenQuest.isSelected() && !cbMultiQuest.isSelected()){
-    		Notifier.notifyError("Impossible d'enregitrer la question", "Veuillez renseigner le type de la question");
-    		return;
-    	}  
-    	if(cbOpenQuest.isSelected() && tfUniqueAns.getText().isEmpty()){
-    		Notifier.notifyError("Impossible d'enregitrer la question", "Veuillez renseigner la réponse à la question");
-    		return;
-    	}
-    	
-    	if(q != null){
-    		//Update
-    		q.setLibelle(tfQuestLibelle.getText());
-    		
-    		try {
-				mainApp.getWebGate().update(q, q.getId());
-    			showQuizzQuestions(q);
-
-			} catch (Exception e) {
-				GraphicUtils.showException(e);
-			}
-    		
-    	}else{
-    		//Insert
-    		Question newQuest = new Question();
-    		newQuest.setIdUtilisateur(mainApp.getUser().getId());
-    		newQuest.setLibelle(tfQuestLibelle.getText());
-    		newQuest.setType(cbOpenQuest.isSelected());
-    		quizz.getQuestions().add(newQuest);    		
-
-    		
-    		saveQuizz();
-    		
-    		try {
-				String resQuest = mainApp.getWebGate().add(newQuest);
-				q = (Question) mainApp.getWebGate().getObjectFromJson(resQuest, Question.class);				
-			} catch (IllegalArgumentException | IllegalAccessException | IOException e) {
-				GraphicUtils.showException(e);
-			}
-    		
-    		
-    	}
-    	
-    	if(q.getId() < 1){
-    		Notifier.notifyError("Impossible de lier la question au quizz", "Erreur lors de l'enregistrement de la question");
-    		return;
-    	}
-    	
-    	affectQuestToQuizz(q);
-		
-		//IF Open Question, auto save answer
-		if(q.isType()){
-
-			Reponse rep = new Reponse();
-			rep.setIdQuestion(q.getId());
-			rep.setGood(true);
-			// Makes some weird things....
-			rep.setLibelle(tfUniqueAns.getText());
-			
-			try {
-				int id  = Integer.valueOf(tfUniqueAns.getId());
-				if( id > 0){
-					rep.setId(id);
-					mainApp.getWebGate().update(rep, rep.getId());
-				}else{
-					String resRep = mainApp.getWebGate().add(rep);
-					Reponse repRes = (Reponse) mainApp.getWebGate().getObjectFromJson(resRep, Reponse.class);
-					q.getReponses().add(repRes);
-				}
-			} catch (Exception e) {
-				GraphicUtils.showException(e);
-			}
-		}
-		showQuizzQuestions(q);
+    	saveQuestion();
     }
     
     @FXML
@@ -310,6 +291,7 @@ public class QuizzController extends Controller {
 		this.quizz = quizz;
 		showQuizzGeneral();
 		showQuizzQuestions(null);
+		showAnwser(null);
 	}
 
 	private void showQuizzGeneral() {
@@ -357,6 +339,18 @@ public class QuizzController extends Controller {
 		}
 	}
 
+	private void showAnwser(Reponse r){
+		if(r != null){
+			tfAnsLibelle.setText(r.getLibelle());
+			checkIsTrue.setSelected(r.isGood());
+			tfAnsLibelle.setId(String.valueOf(r.getId()));
+		}else{
+			tfAnsLibelle.setText("");
+			checkIsTrue.setSelected(false);
+			tfAnsLibelle.setId("0");
+		}
+	}
+	
 	private void showAnswers(Question q) {
 		if (q.isType()) {
 			// Open
@@ -378,7 +372,6 @@ public class QuizzController extends Controller {
 			cbMultiQuest.setSelected(true);
 			cbOpenQuest.setSelected(false);
 		}
-
 	}
 
 	private void switchQuestionType(Boolean isOpenNew) {
@@ -468,5 +461,89 @@ public class QuizzController extends Controller {
 			} catch (IllegalArgumentException | IllegalAccessException | IOException e) {
 					GraphicUtils.showException(e);
 			}
+	 }
+	 
+	 protected Question saveQuestion(){
+		 Question q = tableQuestionsList.getSelectionModel().getSelectedItem();
+	    	
+	    	//Empty Fields Check
+	    	if(tfQuestLibelle.getText().isEmpty()){
+	    		Notifier.notifyError("Impossible d'enregitrer la question", "Veuillez renseigner le libellé de la question");
+	    		return null;
+	    	}
+	    	if(!cbOpenQuest.isSelected() && !cbMultiQuest.isSelected()){
+	    		Notifier.notifyError("Impossible d'enregitrer la question", "Veuillez renseigner le type de la question");
+	    		return null;
+	    	}  
+	    	if(cbOpenQuest.isSelected() && tfUniqueAns.getText().isEmpty()){
+	    		Notifier.notifyError("Impossible d'enregitrer la question", "Veuillez renseigner la réponse à la question");
+	    		return null;
+	    	}
+	    	
+	    	if(q != null){
+	    		//Update
+	    		q.setLibelle(tfQuestLibelle.getText());
+	    		
+	    		try {
+					mainApp.getWebGate().update(q, q.getId());
+	    			showQuizzQuestions(q);
+
+				} catch (Exception e) {
+					GraphicUtils.showException(e);
+				}
+	    		
+	    	}else{
+	    		//Insert
+	    		Question newQuest = new Question();
+	    		newQuest.setIdUtilisateur(mainApp.getUser().getId());
+	    		newQuest.setLibelle(tfQuestLibelle.getText());
+	    		newQuest.setType(cbOpenQuest.isSelected());
+	    		quizz.getQuestions().add(newQuest);    		
+
+	    		
+	    		saveQuizz();
+	    		
+	    		try {
+					String resQuest = mainApp.getWebGate().add(newQuest);
+					q = (Question) mainApp.getWebGate().getObjectFromJson(resQuest, Question.class);				
+				} catch (IllegalArgumentException | IllegalAccessException | IOException e) {
+					GraphicUtils.showException(e);
+				}
+	    		
+	    		
+	    	}
+	    	
+	    	if(q.getId() < 1){
+	    		Notifier.notifyError("Impossible de lier la question au quizz", "Erreur lors de l'enregistrement de la question");
+	    		return null;
+	    	}
+	    	
+	    	affectQuestToQuizz(q);
+			
+			//IF Open Question, auto save answer
+			if(q.isType()){
+
+				Reponse rep = new Reponse();
+				rep.setIdQuestion(q.getId());
+				rep.setGood(true);
+				// Makes some weird things....
+				rep.setLibelle(tfUniqueAns.getText());
+				
+				try {
+					int id  = Integer.valueOf(tfUniqueAns.getId());
+					if( id > 0){
+						rep.setId(id);
+						mainApp.getWebGate().update(rep, rep.getId());
+					}else{
+						String resRep = mainApp.getWebGate().add(rep);
+						Reponse repRes = (Reponse) mainApp.getWebGate().getObjectFromJson(resRep, Reponse.class);
+						q.getReponses().add(repRes);
+					}
+				} catch (Exception e) {
+					GraphicUtils.showException(e);
+				}
+			}
+			showQuizzQuestions(q);
+			return q;
 	 }
 }
