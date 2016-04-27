@@ -92,7 +92,7 @@ public class ManageDomainController extends Controller {
 			}
 			
 		} else {
-			Notifier.notifyWarning("Erreur", "Aucun domaine selectionné.");
+			Notifier.notifyWarning("Attention", "Aucun domaine selectionné.");
 		}
 		
     }

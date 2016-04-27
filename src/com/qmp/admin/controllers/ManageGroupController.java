@@ -7,9 +7,11 @@ import com.qmp.admin.MainApp;
 import com.qmp.admin.models.Groupe;
 import com.qmp.admin.models.Groupe_questionnaire;
 import com.qmp.admin.models.Groupe_utilisateur;
+import com.qmp.admin.models.Question_questionnaire;
 import com.qmp.admin.models.Questionnaire;
 import com.qmp.admin.models.Utilisateur;
 import com.qmp.admin.utils.GraphicUtils;
+import com.qmp.admin.utils.Notifier;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -149,6 +151,8 @@ public class ManageGroupController extends Controller {
 		showGroup(null);
 		groupList.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> showGroup(newValue));
+		
+		addFieldsToCheck(codeField, libelleField);
 
 	}
 
@@ -168,6 +172,10 @@ public class ManageGroupController extends Controller {
 
 	@FXML
 	void handleSave(ActionEvent event) {
+		
+		if(!checkFields())
+			return;
+		
 		int selInxdex = groupList.getSelectionModel().getSelectedIndex();
 		if (selInxdex >= 0) {
 			// Update
@@ -175,7 +183,8 @@ public class ManageGroupController extends Controller {
 			selectedGroup.setLibelle(libelleField.getText());
 			selectedGroup.setCode(codeField.getText());
 			try {
-				mainApp.getWebGate().update(selectedGroup, selectedGroup.getId());
+				String res = mainApp.getWebGate().update(selectedGroup, selectedGroup.getId());
+				checkResult(Groupe.class, res, "Groupe {{object}} mis à jour.");
 				mainApp.getTaskQueue().getAll(Groupe.class);
 			} catch (Exception e) {
 				GraphicUtils.showException(e);
@@ -187,7 +196,10 @@ public class ManageGroupController extends Controller {
 			group.setCode(codeField.getText());
 			try {
 				String res = mainApp.getWebGate().add(group);
-				Groupe g = (Groupe) mainApp.getWebGate().getObjectFromJson(res, Groupe.class);
+				Groupe g = (Groupe) checkResult(Groupe.class, res, "Groupe {{object}} ajouté.");
+				
+				if(g == null) return;
+				
 				mainApp.getWebGate().getList(Groupe.class).add(g);
 				showGroup(g);
 			} catch (Exception e) {
@@ -213,13 +225,14 @@ public class ManageGroupController extends Controller {
 			if (response) {
 				groupObs.remove(selInxdex);
 				try {
-					mainApp.getTaskQueue().delete(selectedGroup, selectedGroup.getId());
+					String res = mainApp.getWebGate().delete(selectedGroup, selectedGroup.getId());
+					checkResult(Groupe.class, res, "Groupe {{object}} supprimé");
 				} catch (Exception e) {
 					GraphicUtils.showException(e);
 				}
 			}
 		} else {
-			new GraphicUtils(this.mainApp).showDialog("Erreur", "", "Veuillez selectionner un groupe");
+			Notifier.notifyWarning("Attention", "Aucun groupe sélectionné");
 		}
 	}
 
@@ -303,7 +316,8 @@ public class ManageGroupController extends Controller {
 		groupList.getSelectionModel().getSelectedItem().removeQuestionnaire(quizz);
 		// Supprime la relation
 		try {
-			mainApp.getTaskQueue().deleteRelation(relation, group.getId(), quizz.getId());
+			String res = mainApp.getWebGate().deleteRelation(Groupe_questionnaire.class, group.getId(), quizz.getId());
+			checkResult(Question_questionnaire.class, res, "Modifications enregistrées.");
 		} catch (Exception e) {
 			GraphicUtils.showException(e);
 		}
@@ -365,8 +379,7 @@ public class ManageGroupController extends Controller {
 		// listes sur le layout plus la liste des groupes.
 		try {
 			String res = mainApp.getWebGate().add(gu);
-			Groupe_utilisateur g = (Groupe_utilisateur) mainApp.getWebGate().getObjectFromJson(res,
-					Groupe_utilisateur.class);
+			Groupe_utilisateur g = (Groupe_utilisateur) checkResult(Groupe_utilisateur.class, res, "Utilisateur ajouté avec succès.");
 			mainApp.getWebGate().getList(Groupe_utilisateur.class).add(g);
 			this.actualUsers.add(user);
 			userList.getItems().add(user);
@@ -393,7 +406,8 @@ public class ManageGroupController extends Controller {
 		groupList.getSelectionModel().getSelectedItem().removeUtilisateur(user);
 		// Supprime la relation
 		try {
-			mainApp.getWebGate().deleteRelation(relation.getClass(), user.getId(), group.getId());
+			String res = mainApp.getWebGate().deleteRelation(relation.getClass(), user.getId(), group.getId());
+			checkResult(relation.getClass(), res, "Modifiactions enregistrées.");
 		} catch (Exception e) {
 			GraphicUtils.showException(e);
 		}
