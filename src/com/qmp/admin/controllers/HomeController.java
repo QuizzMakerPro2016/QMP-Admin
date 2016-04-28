@@ -98,7 +98,10 @@ public class HomeController extends Controller{
 			public void handle(MouseEvent event) {
 					mainApp.getTaskQueue().getAll(Rang.class);
 					mainApp.getTaskQueue().getAllRefresh(Utilisateur.class, 2);
-					gUtils.switchView("ManageUserLayout");
+					if (event.getClickCount()>1) {
+				    	ManageUserController c = (ManageUserController) gUtils.switchView("ManageUserLayout");
+				    	c.getUserList().getSelectionModel().select(userList.getSelectionModel().getSelectedItem()); 
+				    }
 			    }
 		});
 		
@@ -107,7 +110,10 @@ public class HomeController extends Controller{
 			public void handle(MouseEvent event) {
 					mainApp.getTaskQueue().getAll(Rang.class);
 					mainApp.getTaskQueue().getAllRefresh(Utilisateur.class, 2);
-					gUtils.switchView("QuizzHomeLayout");
+					if (event.getClickCount()>1) {
+				    	QuizzController c = (QuizzController) gUtils.switchView("QuizzLayout");
+				    	c.setQuizz(quizzList.getSelectionModel().getSelectedItem());    
+				    }
 			    }
 		});
 		

@@ -179,6 +179,9 @@ public class ManageUserController extends Controller {
 		if(user == null){
 			user = new Utilisateur();
 			user.setPassword(JBCrypt.hashpw(passwordField.getText(), JBCrypt.gensalt()));
+		}else{
+			if(passwordField.getText().isEmpty())
+				user.setPassword(JBCrypt.hashpw(passwordField.getText(), JBCrypt.gensalt()));
 		}
 		
 		if(Integer.valueOf(idField.getText()) > 0)
@@ -233,6 +236,10 @@ public class ManageUserController extends Controller {
 		} else {
 			Notifier.notifyWarning("Attention", "Aucun utilisateur sélectionné.");
 		}
+	}
+	
+	public TableView<Utilisateur> getUserList(){
+		return this.userList;
 	}
 
 }
