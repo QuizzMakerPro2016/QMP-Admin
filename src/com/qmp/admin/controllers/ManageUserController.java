@@ -180,8 +180,9 @@ public class ManageUserController extends Controller {
 			user = new Utilisateur();
 			user.setPassword(JBCrypt.hashpw(passwordField.getText(), JBCrypt.gensalt()));
 		}else{
-			if(passwordField.getText().isEmpty())
+			if(!passwordField.getText().isEmpty()){
 				user.setPassword(JBCrypt.hashpw(passwordField.getText(), JBCrypt.gensalt()));
+			}
 		}
 		
 		if(Integer.valueOf(idField.getText()) > 0)
