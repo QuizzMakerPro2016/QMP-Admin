@@ -3,7 +3,6 @@ package com.qmp.admin.controllers;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
 
@@ -14,31 +13,37 @@ import com.qmp.admin.MainApp;
 import com.qmp.admin.utils.GraphicUtils;
 import com.qmp.admin.utils.MyGsonBuilder;
 import com.qmp.admin.utils.Notifier;
+import com.qmp.admin.utils.fieldchecker.TextFieldChecker;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 
 public class Controller {
 
 	protected MainApp mainApp;
 	protected GraphicUtils gUtils;
 	
-	private List<TextField> fieldsToCheck;
+	private TextFieldChecker defaultFieldChecker;
 
 	public void setMainApp(MainApp mainApp) throws ClientProtocolException, IOException {
 		this.mainApp = mainApp;
 		this.gUtils = new GraphicUtils(mainApp);
 	}
 	
-	protected void addFieldsToCheck(TextField... fields){
-		if(this.fieldsToCheck == null)
-			this.fieldsToCheck = new ArrayList<>();
-		for(TextField field : fields){
-			this.fieldsToCheck.add(field);
+	protected void addFieldsToCheck(TextInputControl... fields){
+		if(this.defaultFieldChecker == null){
+			defaultFieldChecker = new TextFieldChecker(fields);
+			return;
 		}
+		defaultFieldChecker.addAll(fields);
+	}
+	
+	protected boolean checkFields(){
+		return defaultFieldChecker.run();
 	}
 
 	/**
@@ -98,17 +103,6 @@ public class Controller {
 
 		// Add sorted (and filtered) data to the table.
 		liste.setItems(sortedData);
-	}
-	
-	protected boolean checkFields(){
-		
-		for(TextField tf : this.fieldsToCheck){
-			if(tf.getText().isEmpty()){
-				Notifier.notifyWarning("Champ vide !", "Veuillez renseigner le champ '" + tf.getPromptText() + "'.");
-				return false;
-			}
-		}
-		return true;
 	}
 	
 	protected  <T> Object checkResult(Class<T> clazz, String json, String successMsg){
