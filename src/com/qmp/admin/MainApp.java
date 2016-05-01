@@ -55,7 +55,7 @@ public class MainApp extends Application implements Observer {
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle("QuizzMakerPro 2016 Admin");
+		this.primaryStage.setTitle("QuizzMakerPro 2016 Extreme Edition - Admin ");
 		this.primaryStage.getIcons().add(new Image("/com/qmp/admin/views/logo-11.png"));
 
 		this.primaryStage.setHeight(698);
