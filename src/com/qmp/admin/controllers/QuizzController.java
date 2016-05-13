@@ -469,6 +469,11 @@ public class QuizzController extends Controller {
 				return null;
 		 }
 		 
+		 if(dateQuizz.getValue() == null){
+			 Notifier.notifyWarning("Champ vide !", "Veuillez renseigner la date du questionnaire.");
+			return null;
+		 }
+		 
 		 if(this.quizz==null) 
 			 this.quizz=new Questionnaire();
 	    	
