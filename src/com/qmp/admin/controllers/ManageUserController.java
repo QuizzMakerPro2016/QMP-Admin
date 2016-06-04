@@ -147,7 +147,9 @@ public class ManageUserController extends Controller {
 			passwordField.setText("");
 			nameField.setText("");
 			mailField.setText("");
+			super.changeTitleLabel("Gestion des utilisateurs - Nouvel Utilisateur");
 		} else {
+			super.changeTitleLabel("Gestion des utilisateurs - " +user.getNom() +" "+ user.getPrenom());
 			idField.setText(String.valueOf(user.getId()));
 			surnameField.setText(user.getNom());
 			nameField.setText(user.getPrenom());

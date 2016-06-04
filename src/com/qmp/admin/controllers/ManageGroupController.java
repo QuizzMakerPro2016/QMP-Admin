@@ -163,6 +163,8 @@ public class ManageGroupController extends Controller {
 			idField.setText("0");
 			libelleField.setText("");
 			codeField.setText("");
+			userList.setItems(null);
+			quizzList.setItems(null);
 		} else {
 			idField.setText(String.valueOf(group.getId()));
 			codeField.setText(group.getCode());
@@ -235,6 +237,8 @@ public class ManageGroupController extends Controller {
 	@FXML
 	void handleEditQuizz(ActionEvent event) {
 
+		
+		if(groupList.getSelectionModel().getSelectedItem() != null){
 		tabPane.getSelectionModel().select(1);
 		// Liste des Quizz dans le groupe
 		this.actualQuizz = FXCollections
@@ -266,7 +270,9 @@ public class ManageGroupController extends Controller {
 		setFilterTableView(this.quizzSearch, this.quizzIncludedList, otherQuizz, fields2);
 		// Set filter for the actualQuizzList
 		setFilterTableView(this.quizzSearch, this.quizzActualIncludedList, actualQuizz, fields2);
-
+		}else{
+			Notifier.notifyWarning("Aucun groupe selectionné", "Veuillez selectionner un groupe");
+		}
 	}
 
 	@FXML
@@ -323,6 +329,7 @@ public class ManageGroupController extends Controller {
 	@FXML
 	void handleEditUser(ActionEvent event) {
 
+		if(this.groupList.getSelectionModel().getSelectedItem() != null){
 		tabPane.getSelectionModel().select(2);
 
 		// Liste des Quizz dans le groupe
@@ -357,7 +364,10 @@ public class ManageGroupController extends Controller {
 		setFilterTableView(this.userSearch, this.userIncludedList, otherUsers, fields2);
 		// Set filter for the actualQuizzList
 		setFilterTableView(this.userSearch, this.userActualIncludedList, actualUsers, fields2);
-
+		}
+		else{
+			Notifier.notifyWarning("Aucun groupe selectionné", "Veuillez selectionner un groupe pour effectuer des modifications");
+		}
 	}
 
 	@FXML
@@ -402,7 +412,7 @@ public class ManageGroupController extends Controller {
 		// Supprime la relation
 		try {
 			String res = mainApp.getWebGate().deleteRelation(relation.getClass(), user.getId(), group.getId());
-			checkResult(relation.getClass(), res, "Modifiactions enregistrées.");
+			checkResult(relation.getClass(), res, "Modifications enregistrées.");
 		} catch (Exception e) {
 			GraphicUtils.showException(e);
 		}

@@ -18,6 +18,8 @@ import com.qmp.admin.utils.fieldchecker.TextFieldChecker;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
@@ -28,7 +30,11 @@ public class Controller {
 	protected GraphicUtils gUtils;
 	
 	private TextFieldChecker defaultFieldChecker;
-
+	
+	@FXML
+	protected Label title;
+	
+	
 	public void setMainApp(MainApp mainApp) throws ClientProtocolException, IOException {
 		this.mainApp = mainApp;
 		this.gUtils = new GraphicUtils(mainApp);
@@ -155,4 +161,8 @@ public class Controller {
 		return true;
 	}
 
+	protected void changeTitleLabel(String text){
+		this.title.setText(text);
+	}
+	
 }
